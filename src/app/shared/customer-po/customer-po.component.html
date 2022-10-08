@@ -1,0 +1,119 @@
+<app-add-popup title="Customer PO" acceptLabel="Ok" cancelLabel="Cancel" acceptIcon="fa fa-plus" [widthArg]="400" [heightArg]="400" (acceptClick)="onOkClick($event, customerPOForm)" (cancelClick)="onCancelClick()">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Part</legend>
+        <div class="formData">
+            <form [formGroup]="customerPOForm">
+                <div formArrayName="customerPOFormArray" *ngFor="let row of f?.customerPOFormArray['controls']; let i = index">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="partCode" for="partCode" cssClass="required">Part Code</label>
+                                    <input class="form-control" path="partCode" formControlName="partCode" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="partName" for="partName" cssClass="required">Part Name</label>
+                                    <input OnlyLetter class="form-control" path="partName" formControlName="partName" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="description" for="description" cssClass="required">Description</label>
+                                    <input class="form-control" path="description" formControlName="description" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="uom" for="series" cssClass="required" required="true">UOM</label>
+                                    <input class="form-control" formControlName="uom" readonly>
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="unitrate" for="series" cssClass="required" required="true">UnitRate</label>
+                                    <input class="form-control" formControlName="unitrate" readonly />
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="amount" for="series" cssClass="required" required="true">Quantity</label>
+                                    <input OnlyNumber class="form-control" formControlName="qunty" (change)="onChangeQty($event,i)" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="totalamount" for="series" cssClass="required" required="true">TotalAmount</label>
+                                    <input class="form-control" formControlName="totalamount" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1" style="left: 80px;top: 20px;">
+                                <button type="button" class="btn btn-primary submit" (click)="addItem()"><i
+                                        class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-warning reset" (click)="removeItem(i)"><i
+                                        class="fa fa-minus" aria-hidden="true"></i></button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="drawingNo" for="drawingNo" cssClass="required">Drawing No.</label>
+                                    <input class="form-control" path="drawingNo" formControlName="drawingNo" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="revisionNo" for="revisionNo" cssClass="required">Revision No.</label>
+                                    <input class="form-control" path="revisionNo" formControlName="revisionNo" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <div class="p-fluid p-grid p-formgrid">
+                                        <div class="p-field p-col-12 p-md-5">
+                                            <label path="revisionDate" for="revisionDate" cssClass="required">Revision Date</label>
+                                            <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="revisionDate" inputId="navigators" [showIcon]="true" inputId="icon">
+                                            </p-calendar>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="hsn" for="hsn" cssClass="required">HSN/SAC</label>
+                                    <input OnlyNumber class="form-control" path="hsn" formControlName="hsn" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label path="gst" for="gst" cssClass="required">GST %</label>
+                                    <input OnlyNumber class="form-control" path="gst" formControlName="gst" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</app-add-popup>

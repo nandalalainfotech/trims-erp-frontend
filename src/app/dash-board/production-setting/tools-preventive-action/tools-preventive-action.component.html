@@ -1,0 +1,104 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Tools Preventive Action</legend>
+        <div class="formData">
+            <form [formGroup]="toolspreventiveActionForm" (ngSubmit)="onPreventiveClick($event, toolspreventiveActionForm)">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="trcslno" for="trcslno" cssClass="required">Tools RootCause Name</label>
+                            <select class="form-control" name="trcslno" formControlName="trcslno" [ngClass]="{'is-invalid': submitted && f.trcslno.errors}">
+                                <option value="" hidden> - Select Fixture RootCause - </option>machine
+                                <option value="null"> - Select Fixture RootCause - </option>
+                                <option *ngFor="let toolsRootcause001mb of rootcauses" [value]="toolsRootcause001mb.slNo">
+                                    {{toolsRootcause001mb.tname}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.trcslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.trcslno.errors.required">
+                                    RootCause Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tname" for="tname" cssClass="required">Tools PreventiveAction Name</label>
+                            <input class="form-control" formControlName="tname" [ngClass]="{'is-invalid': submitted && f.tname.errors}">
+                            <div *ngIf="submitted && f.tname.errors" class="invalid-feedback">
+                                <div *ngIf="f.tname.errors.required">
+                                    PreventiveAction Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tdetails" for="tdetails" cssClass="required">Details</label>
+                            <input class="form-control" formControlName="tdetails" [ngClass]="{'is-invalid': submitted && f.tdetails.errors}">
+                            <div *ngIf="submitted && f.tdetails.errors" class="invalid-feedback">
+                                <div *ngIf="f.tdetails.errors.required">
+                                    Details is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="sslno" for="sslno" cssClass="required">Status</label>
+                            <select class="form-control" name="sslno" formControlName="sslno" [ngClass]="{'is-invalid': submitted && f.sslno.errors}">
+                                <option value="" hidden> - Select the Status - </option>machine
+                                <option value="null"> - Select the Status - </option>
+                                <option *ngFor="let toolsstatus001mb of statussets" [value]="toolsstatus001mb.slNo">
+                                    {{toolsstatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.sslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.sslno.errors.required">
+                                    Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-warning reset " (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List of Preventive Action</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px" [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>
+

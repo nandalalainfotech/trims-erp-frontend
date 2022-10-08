@@ -1,0 +1,497 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+
+        <ul class="nav nav-tabs">
+            <li>
+                <a data-target="#opt" data-toggle="tab"><span class="scheduler-border">Raw Material</span></a
+              >
+            </li>
+            <li >
+              <a data-target="#opt1" data-toggle="tab">
+                  <span class="scheduler-border">Consumables Item</span></a
+              >
+            </li>
+            <li >
+                <a data-target="#opt2" data-toggle="tab">
+                <span class="scheduler-border">Child Part</span></a
+                >
+            </li>
+            <li >
+                <a data-target="#opt3" data-toggle="tab">
+              <span class="scheduler-border">Part</span></a
+                >
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade  " id="opt">
+                <div class="formData">
+                    <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="itemslno" for="itemslno" cssClass="required">Item Code</label>
+                                    <select class="form-control" path="orderslno" formControlName="itemslno">
+                                            
+                                        <option value="null"> -Select item Code- </option>
+                                        <option *ngFor="let rawmetriealcode of rawmetriealcodes" [value]="rawmetriealcode.slNo">
+                                            {{rawmetriealcode.itemcode2.itemcode}} </option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="qunty" for="qunty" cssClass="required">Issued Qty</label>
+                                    <input OnlyNumber class="form-control" path="qunty" formControlName="qunty" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="department" for="department" cssClass="required">Issued To</label>
+                                    <input OnlyLetter class="form-control" path="department" formControlName="department" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <div class="p-fluid p-grid p-formgrid">
+                                        <div class="p-field p-col-12 p-md-5">
+                                            <label path="date" for="date" cssClass="required"> Date</label>
+                                            <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="date" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                            </p-calendar>
+                                            <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                                                <div *ngIf="f.date.errors.required">
+                                                    D.C Date is Required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="date" for="date" cssClass="required">Date</label>
+                                    <input class="form-control" formControlName="date" readonly />
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="shift" for="shift" cssClass="required">Shift</label>
+                                    <select class="form-control" path="orderslno" formControlName="shift">
+                                        <option value="" hidden>--Select the Shift--</option>
+                                        <option value="null" disabled selected>--Select the Shift--</option>
+                                        <option>1st Shift</option>
+                                        <option>2nd  Shift</option>
+                                        <option>3rd Shift</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="time" for="time" cssClass="required">Time</label>
+                                    <input type="time" class="form-control" path="time" formControlName="time"  />
+                                    <!-- <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
+                                        <div *ngIf="f.startTime.errors.required">
+                                            Start Time is Required
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary submit">Submit</button>
+                                    <button type="button" class="btn btn-warning reset" (click)="onReset()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="scrollbar">
+                    <fieldset class="scheduler-border" style="margin-bottom: 25px;">
+                
+                        <div class="row" style="margin-bottom: 25px;">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                                    (click)="itemViewClick()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                                </button>
+                                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                                    (click)="itemPdfReport()">
+                                    Export Pdf
+                                </button>
+                                <button type="button" class="btn btn-warning reset" (click)="itemExcelReport()">
+                                    Export Excel
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        
+                        <legend class="scheduler-border">Raw Material</legend>
+                        <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions1" style="width: 100%; height: 350px;" [pagination]="true" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </fieldset>
+                </div>
+                
+            </div>
+            <div class="tab-pane fade  " id="opt1">
+                <div class="formData">
+                    <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="consumslno" for="consumslno" cssClass="required">Consumable Code</label>
+                                    <select class="form-control" path="cucode" formControlName="consumslno">
+                                    
+                                        <option value="null"> -Select item Code- </option>
+                                        <option *ngFor="let Consumablecode of Consumablecodes" [value]="Consumablecode.slNo">
+                                            {{Consumablecode.cucode2.consmno}} </option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cuqunty" for="cuqunty" cssClass="required">Issued Qty</label>
+                                    <input OnlyNumber class="form-control" path="cuqunty" formControlName="cuqunty" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cudepartment" for="cudepartment" cssClass="required">Issued To</label>
+                                    <input OnlyLetter class="form-control" path="cudepartment" formControlName="cudepartment" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <div class="p-fluid p-grid p-formgrid">
+                                        <div class="p-field p-col-12 p-md-5">
+                                            <label path="cudate" for="cudate" cssClass="required"> Date</label>
+                                            <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="cudate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                            </p-calendar>
+                                            <div *ngIf="submitted && f.cudate.errors" class="invalid-feedback">
+                                                <div *ngIf="f.cudate.errors.required">
+                                                    D.C Date is Required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cudate" for="cudate" cssClass="required">Date</label>
+                                    <input class="form-control" formControlName="cudate" readonly />
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cushift" for="cushift" cssClass="required">Shift</label>
+                                    <select class="form-control" path="cushift" formControlName="cushift">
+                                        <option value="" hidden>--Select the Shift--</option>
+                                        <option value="null" disabled selected>--Select the Shift--</option>
+                                        <option>1st Shift</option>
+                                        <option>2nd  Shift</option>
+                                        <option>3rd Shift</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cutime" for="cutime" cssClass="required">Time</label>
+                                    <input type="time" class="form-control" path="cutime" formControlName="cutime" />
+                                    <!-- <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
+                                        <div *ngIf="f.startTime.errors.required">
+                                            Start Time is Required
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary submit">Submit</button>
+                                    <button type="button" class="btn btn-warning reset" (click)="onReset()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="scrollbar">
+                    <fieldset class="scheduler-border">
+                
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                                    (click)="consumableViewClick()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                                </button>
+                                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                                    (click)="consumablePdfReport()">
+                                    Export Pdf
+                                </button>
+                                <button type="button" class="btn btn-warning reset" (click)="consumableExcelReport()">
+                                    Export Excel
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        
+                        <legend class="scheduler-border">consumable Item</legend>
+                        <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions2" style="width: 100%; height: 350px;" [pagination]="true" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="tab-pane fade  " id="opt2">
+                <div class="formData">
+                     <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="childslno" for="childslno" cssClass="required">Child Part Code</label>
+                                    <select class="form-control" path="childslno" formControlName="childslno" >
+                                    
+                                        <option value="null"> -Select item Code- </option>
+                                        <option *ngFor="let ChildPartcode of ChildPartcodes" [value]="ChildPartcode.slNo">
+                                            {{ChildPartcode.cptcode2.cpartno}} </option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cptqunty" for="cptqunty" cssClass="required">Issued Qty</label>
+                                    <input OnlyNumber class="form-control" path="cptqunty" formControlName="cptqunty" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cptdepartment" for="cptdepartment" cssClass="required">Issued To</label>
+                                    <input OnlyLetter class="form-control" path="cptdepartment" formControlName="cptdepartment" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <div class="p-fluid p-grid p-formgrid">
+                                        <div class="p-field p-col-12 p-md-5">
+                                            <label path="cptdate" for="cptdate" cssClass="required">Date</label>
+                                            <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="cptdate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                            </p-calendar>
+                                            <div *ngIf="submitted && f.cptdate.errors" class="invalid-feedback">
+                                                <div *ngIf="f.cptdate.errors.required">
+                                                    D.C Date is Required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cptdate" for="cptdate" cssClass="required">Date</label>
+                                    <input class="form-control" formControlName="cptdate" readonly />
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cptshift" for="cptshift" cssClass="required">Shift</label>
+                                    <select class="form-control" path="orderslno" formControlName="cptshift">
+                                        <option value="" hidden>--Select the Shift--</option>
+                                        <option value="null" disabled selected>--Select the Shift--</option>
+                                        <option>1st Shift</option>
+                                        <option>2nd  Shift</option>
+                                        <option>3rd Shift</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="cpttime" for="cpttime" cssClass="required">Time</label>
+                                    <input type="time" class="form-control" path="cpttime" formControlName="cpttime"  />
+                                    <!-- <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
+                                        <div *ngIf="f.startTime.errors.required">
+                                            Start Time is Required
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary submit">Submit</button>
+                                    <button type="button" class="btn btn-warning reset" (click)="onReset()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="scrollbar">
+                    <fieldset class="scheduler-border">
+                
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                                (click)="childPartViewClick()">
+                                <i class="fa fa-eye" aria-hidden="true"></i> View
+                            </button>
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                                (click)="childPartPdfReport()">
+                                Export Pdf
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="childPartExcelReport()">
+                                Export Excel
+                            </button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        
+                        <legend class="scheduler-border">Child Part</legend>
+                        <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions3" style="width: 100%; height: 350px;" [pagination]="true" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="tab-pane fade  " id="opt3">
+                <div class="formData">
+                    <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prtslno" for="prtslno" cssClass="required">Part Code</label>
+                                    <select class="form-control" path="prtslno" formControlName="prtslno">
+                                    
+                                        <option value="null"> -Select item Code- </option>
+                                        <option *ngFor="let Partcode of Partcodes" [value]="Partcode.slNo">
+                                            {{Partcode.prtcode2.partno}} </option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prtqunty" for="prtqunty" cssClass="required">Issued Qty</label>
+                                    <input OnlyNumber class="form-control" path="prtqunty" formControlName="prtqunty" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prtdepartment" for="prtdepartment" cssClass="required">Issued To</label>
+                                    <input OnlyLetter class="form-control" path="prtdepartment" formControlName="prtdepartment" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <div class="p-fluid p-grid p-formgrid">
+                                        <div class="p-field p-col-12 p-md-5">
+                                            <label path="prtdate" for="prtdate" cssClass="required"> Date</label>
+                                            <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="prtdate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                            </p-calendar>
+                                            <div *ngIf="submitted && f.prtdate.errors" class="invalid-feedback">
+                                                <div *ngIf="f.prtdate.errors.required">
+                                                    D.C Date is Required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prtdate" for="prtdate" cssClass="required">Date</label>
+                                    <input class="form-control" formControlName="prtdate" readonly />
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prtshift" for="prtshift" cssClass="required">Shift</label>
+                                    <select class="form-control" path="prtshift" formControlName="prtshift">
+                                        <option value="" hidden>--Select the Shift--</option>
+                                        <option value="null" disabled selected>--Select the Shift--</option>
+                                        <option>1st Shift</option>
+                                        <option>2nd  Shift</option>
+                                        <option>3rd Shift</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3">
+                                <div class="form-group">
+                                    <label path="prttime" for="prttime" cssClass="required">Time</label>
+                                    <input type="time" class="form-control" path="prttime" formControlName="prttime" />
+                                    <!-- <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
+                                        <div *ngIf="f.startTime.errors.required">
+                                            Start Time is Required
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary submit">Submit</button>
+                                    <button type="button" class="btn btn-warning reset" (click)="onReset()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="scrollbar">
+                    <fieldset class="scheduler-border">
+                
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                                    (click)="partViewClick()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                                </button>
+                                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                                    (click)="partPdfReport()">
+                                    Export Pdf
+                                </button>
+                                <button type="button" class="btn btn-warning reset" (click)="partExcelReport()">
+                                    Export Excel
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        
+                        <legend class="scheduler-border">Part</legend>
+                        <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions4" style="width: 100%; height: 350px;" [pagination]="true" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

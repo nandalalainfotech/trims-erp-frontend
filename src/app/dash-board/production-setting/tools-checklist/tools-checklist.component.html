@@ -1,0 +1,102 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List Of Tools & Die Checklist</legend>
+        <div class="formData">
+            <form [formGroup]="toolschecklistForm" (ngSubmit)="onChecklistClick($event, toolschecklistForm)">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tcslno" for="tcslno" cssClass="required">Tools & die Code</label>
+                            <select class="form-control" formControlName="tcslno"
+                                [ngClass]="{'is-invalid': submitted && f.tcslno.errors}">
+                                <option value="" hidden> - Select the Tools&Die Code - </option>
+                                <option *ngFor="let toolsSetting of toolsSettings;" [value]='toolsSetting.slNo'>
+                                    {{toolsSetting.tcode}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.tcslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.tcslno.errors.required">
+                                    Fixture Code is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tname" for="tname" cssClass="required">Tools & Die Name</label>
+                            <input class="form-control" name="tname" formControlName="tname" readonly />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tcheckpoints" for="tcheckpoints" cssClass="required">Tools check Points</label>
+                            <input class="form-control" name="tcheckpoints" formControlName="tcheckpoints"
+                                [ngClass]="{'is-invalid': submitted && f.tcheckpoints.errors}" />
+                            <div *ngIf="submitted && f.tcheckpoints.errors" class="invalid-feedback">
+                                <div *ngIf="f.tcheckpoints.errors.required">
+                                  Tools Check Points is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tstatus" for="tstatus" cssClass="required">Fixture Status</label>
+                            <select class="form-control" name="tstatus" formControlName="tstatus"
+                                [ngClass]="{'is-invalid': submitted && f.tstatus.errors}">
+                                <option value="" hidden> - Select the Fixture Status - </option>machine
+                                <option value="null"> - Select the Fixture Status - </option>
+                                <option *ngFor="let ToolsStatus001mb of statussets" [value]="ToolsStatus001mb.slNo">
+                                    {{ToolsStatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.tstatus.errors" class="invalid-feedback">
+                                <div *ngIf="f.tstatus.errors.required">
+                            Tools Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" (click)="onReset()" class="btn btn-warning reset" (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List Of Tools&Die Checklist</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px"
+        [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>

@@ -1,0 +1,167 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List Of Fixture </legend>
+        <div class="formData">
+            <form [formGroup]="listOfFixtureForm" (ngSubmit)="onFixtureClick($event, listOfFixtureForm)">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fcode" for="fcode">Fixture Code</label>
+                            <input type="text" class="form-control" path="fcode" formControlName="fcode" readonly value="SE/FX/01"/>
+                        </div>
+                        <div *ngIf="submitted && f.fcode.errors" class="invalid-feedback">
+                            <div *ngIf="f.fcode.errors.required">
+                                Fixture Code is Required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" path="slNo" />
+                            <label path="fname" for="series" cssClass="required" required="true">Fixture
+                                Name</label>
+                            <input class="form-control" type="text" name="fname" formControlName="fname" [ngClass]="{
+                                'is-invalid': submitted && f.fname.errors
+                            }" />
+                            <div *ngIf="submitted && f.fname.errors" class="invalid-feedback">
+                                <div *ngIf="f.fname.errors.required">
+                                    Fixture Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <div class="p-fluid p-grid p-formgrid">
+                                <div class="p-field p-col-12 p-md-5">
+                                    <label path="fyear" for="fyear" cssClass="required">Fixture Year of purchase</label>
+                                    <!-- <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="date"
+                                        [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030"
+                                        inputId="navigators" [showIcon]="true" inputId="icon">
+                                    </p-calendar> -->
+                                    <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="fyear" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                    </p-calendar>
+                                    <div *ngIf="submitted && f.fyear.errors" class="invalid-feedback">
+                                        <div *ngIf="f.fyear.errors.required">Year of purchase is Required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fcapacity" for="fcapacity" cssClass="required" required="true">Fixture Capacity</label>
+                            <input class="form-control" type="text" name="fcapacity" formControlName="fcapacity" [ngClass]="{
+                                'is-invalid': submitted && f.fcapacity.errors
+                            }" />
+                            <div *ngIf="submitted && f.fcapacity.errors" class="invalid-feedback">
+                                <div *ngIf="f.fcapacity.errors.required">
+                                    Capacity is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="ftype" for="series" cssClass="required" required="true">Fixture Type/Size</label>
+                            <input class="form-control" type="text"name="ftype" formControlName="ftype" [ngClass]="{
+                                'is-invalid': submitted && f.ftype.errors
+                            }" />
+                            <div *ngIf="submitted && f.ftype.errors" class="invalid-feedback">
+                                <div *ngIf="f.ftype.errors.required">
+                                    Type/Size is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fmake" for="series" cssClass="required" required="true">Make</label>
+                            <input class="form-control" type="text" name="fmake" formControlName="fmake" [ngClass]="{
+                                'is-invalid': submitted && f.fmake.errors
+                            }" />
+                            <div *ngIf="submitted && f.fmake.errors" class="invalid-feedback">
+                                <div *ngIf="f.fmake.errors.required">
+                                    Make is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <!-- <input type="hidden" class="form-control" path="prId" /> -->
+                            <label path="flocation" for="series" cssClass="required" required="true">Location</label>
+                            <input class="form-control" type="text" name="flocation" formControlName="flocation" [ngClass]="{
+                                'is-invalid': submitted && f.flocation.errors
+                            }" />
+                            <div *ngIf="submitted && f.flocation.errors" class="invalid-feedback">
+                                <div *ngIf="f.flocation.errors.required">
+                                    Location is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="sslno" for="series" cssClass="required" required="true">Status</label>
+                            <select class="form-control" name="sslno" formControlName="sslno">
+
+                                <option value="" hidden> - Select the Fixture Status - </option>
+                                <option value="null"> - Select the Fixture Status - </option>
+                                <option *ngFor="let FixtureStatus001mb of statussets" [value]="FixtureStatus001mb.slNo">
+                                    {{FixtureStatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.sslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.sslno.errors.required">
+                                    Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List Of Fixture</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px;"
+        [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>
+
+

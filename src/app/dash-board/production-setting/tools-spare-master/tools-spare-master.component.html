@@ -1,0 +1,157 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Tools & Die Spares</legend>
+        <div class="formData">
+            <form [formGroup]="toolsspareSettingForm" (ngSubmit)="onListOfSparesClick($event, toolsspareSettingForm)">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="msslno" for="msslno" cssClass="required">Tools & Die Code</label>
+                            <select class="form-control" formControlName="msslno" [ngClass]="{'is-invalid': submitted && f.msslno.errors}">
+                                <option  value="" hidden> - Select the Tools & Die Code - </option>
+                                <option *ngFor="let toolsSetting of toolsSetting;" [value]='toolsSetting.slNo'>
+                                    {{toolsSetting.tcode}}</option>
+
+                            </select>
+                            <div *ngIf="submitted && f.msslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.msslno.errors.required">
+                                    Tools & Die code is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="tname" for="tname" cssClass="required">Tools & Die Name</label>
+                            <input class="form-control" name="tname" formControlName="tname" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tspares" for="tspares" cssClass="required">Spares</label>
+                            <input class="form-control" type="text"name="tspares" formControlName="tspares" [ngClass]="{'is-invalid': submitted && f.tspares.errors}" />
+                            <div *ngIf="submitted && f.tspares.errors" class="invalid-feedback">
+                                <div *ngIf="f.tspares.errors.required">
+                                    Spares Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tsparescost" for="tsparescost" cssClass="required">Spares Cost</label>
+                            <input class="form-control" type="number" name="tsparescost" formControlName="tsparescost" [ngClass]="{'is-invalid': submitted && f.tsparescost.errors}" />
+                            <div *ngIf="submitted && f.tsparescost.errors" class="invalid-feedback">
+                                <div *ngIf="f.tsparescost.errors.required">
+                                    Spares Cost is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tspecification" for="tspecification" cssClass="required">Specification</label>
+                            <input class="form-control" type="text" name="tspecification" formControlName="tspecification" [ngClass]="{'is-invalid': submitted && f.tspecification.errors}" />
+                            <div *ngIf="submitted && f.tspecification.errors" class="invalid-feedback">
+                                <div *ngIf="f.tspecification.errors.required">
+                                    Specification is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tleadtime" for="tleadtime" cssClass="required">Lead Time
+                            </label>
+                            <input class="form-control" name="tleadtime" formControlName="tleadtime" [ngClass]="{'is-invalid': submitted && f.tleadtime.errors}" />
+                            <div *ngIf="submitted && f.tleadtime.errors" class="invalid-feedback">
+                                <div *ngIf="f.tleadtime.errors.required">
+                                    Lead Time is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tminimumstocklevel" for="tminimumstocklevel" cssClass="required">Minimum stock
+                                Level </label>
+                            <input class="form-control" type="number" name="tminimumstocklevel" formControlName="tminimumstocklevel" [ngClass]="{'is-invalid': submitted && f.tminimumstocklevel.errors}" />
+                            <div *ngIf="submitted && f.tminimumstocklevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.tminimumstocklevel.errors.required">
+                                    StockLevel is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="treorderlevel" for="treorderlevel" cssClass="required">Re-order
+                                Level(ROL)</label>
+                            <input class="form-control" type="number"name="treorderlevel" formControlName="treorderlevel" [ngClass]="{'is-invalid': submitted && f.treorderlevel.errors}" />
+                            <div *ngIf="submitted && f.treorderlevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.treorderlevel.errors.required">
+                                    Re-Order Level is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tsslno" for="tsslno" cssClass="required">Status</label>
+                            <select class="form-control" name="tsslno" formControlName="tsslno" [ngClass]="{'is-invalid': submitted && f.tsslno.errors}">
+                                <option value="" hidden> - Select the Tools & Die Status - </option>
+                                <option value="null"> - Select the Tools & Die Status - </option>
+                                <option *ngFor="let ToolsStatus001mb of statussets" [value]="ToolsStatus001mb.slNo">
+                                    {{ToolsStatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.tsslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.tsslno.errors.required">
+                                    Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List of Tools & Die Spares</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px" [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>
+

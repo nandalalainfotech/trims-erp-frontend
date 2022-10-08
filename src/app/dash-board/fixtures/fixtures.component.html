@@ -1,0 +1,16 @@
+<div class="manu-breadcrumb">
+    <app-breadcrumb></app-breadcrumb>
+</div> 
+
+<nav mat-tab-nav-bar>
+  
+    <a mat-tab-link routerLink="./app-fixture-preventive-maintenance-plan" [queryParams]="{mslno:mslno}"  routerLinkActive #fixturepreventivePlanTab="routerLinkActive" [active]="fixturepreventivePlanTab.isActive">Fixture Preventive Maintenance Plan</a>
+    <a mat-tab-link routerLink="./app-fixture-preventive-maintenance-checklist" [queryParams]="{mslno:mslno}"  routerLinkActive #fixturepreventiveListTab="routerLinkActive" [active]="fixturepreventiveListTab.isActive">Fixture Preventive Maintenance Checklist</a>
+    <a mat-tab-link routerLink="./app-fixture-daily-maintenance-checklist"  [queryParams]="{mslno:mslno}" routerLinkActive #fixturedailyListTab="routerLinkActive" [active]="fixturedailyListTab.isActive">Fixture Daily Maintenance Checklist</a>
+    <a mat-tab-link routerLink="./app-fixture-breakdown-register"   routerLinkActive #fixturebreakDownTab="routerLinkActive" [active]="fixturebreakDownTab.isActive">Fixture Break Down Register</a>
+    <a mat-tab-link routerLink="./app-fixture-report" routerLinkActive #fixturereportTab="routerLinkActive" [active]="fixturereportTab.isActive">Fixture Reports</a>
+    
+</nav>
+
+<router-outlet></router-outlet>
+

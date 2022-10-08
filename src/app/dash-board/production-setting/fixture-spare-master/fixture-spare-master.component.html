@@ -1,0 +1,156 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Fixture Spares</legend>
+        <div class="formData">
+            <form [formGroup]="fixturespareSettingForm" (ngSubmit)="onListOfSparesClick($event, fixturespareSettingForm)">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="msslno" for="msslno" cssClass="required">Fixture Code</label>
+                            <select class="form-control" formControlName="msslno" [ngClass]="{'is-invalid': submitted && f.msslno.errors}">
+                                <option  value="" hidden> - Select the Fixture Code - </option>
+                                <option *ngFor="let fixtureSetting of fixtureSetting;" [value]='fixtureSetting.slNo'>
+                                    {{fixtureSetting.fcode}}</option>
+
+                            </select>
+                            <div *ngIf="submitted && f.msslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.msslno.errors.required">
+                                    Fixture code is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="form-group">
+                            <label path="fname" for="fname" cssClass="required">Fixture Name</label>
+                            <input class="form-control" name="fname" formControlName="fname" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fspares" for="fspares" cssClass="required">Spares</label>
+                            <input class="form-control" type="text"name="fspares" formControlName="fspares" [ngClass]="{'is-invalid': submitted && f.fspares.errors}" />
+                            <div *ngIf="submitted && f.fspares.errors" class="invalid-feedback">
+                                <div *ngIf="f.fspares.errors.required">
+                                    Spares Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fsparescost" for="fsparescost" cssClass="required">Spares Cost</label>
+                            <input class="form-control" type="number" name="fsparescost" formControlName="fsparescost" [ngClass]="{'is-invalid': submitted && f.fsparescost.errors}" />
+                            <div *ngIf="submitted && f.fsparescost.errors" class="invalid-feedback">
+                                <div *ngIf="f.fsparescost.errors.required">
+                                    Spares Cost is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fspecification" for="fspecification" cssClass="required">Specification</label>
+                            <input class="form-control" type="text" name="fspecification" formControlName="fspecification" [ngClass]="{'is-invalid': submitted && f.fspecification.errors}" />
+                            <div *ngIf="submitted && f.fspecification.errors" class="invalid-feedback">
+                                <div *ngIf="f.fspecification.errors.required">
+                                    Specification is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fleadtime" for="fleadtime" cssClass="required">Lead Time
+                            </label>
+                            <input class="form-control" name="fleadtime" formControlName="fleadtime" [ngClass]="{'is-invalid': submitted && f.fleadtime.errors}" />
+                            <div *ngIf="submitted && f.fleadtime.errors" class="invalid-feedback">
+                                <div *ngIf="f.fleadtime.errors.required">
+                                    Lead Time is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="fminimumstocklevel" for="fminimumstocklevel" cssClass="required">Minimum stock
+                                Level </label>
+                            <input class="form-control" type="number" name="fminimumstocklevel" formControlName="fminimumstocklevel" [ngClass]="{'is-invalid': submitted && f.fminimumstocklevel.errors}" />
+                            <div *ngIf="submitted && f.fminimumstocklevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.fminimumstocklevel.errors.required">
+                                    StockLevel is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="freorderlevel" for="freorderlevel" cssClass="required">Re-order
+                                Level(ROL)</label>
+                            <input class="form-control" type="number"name="freorderlevel" formControlName="freorderlevel" [ngClass]="{'is-invalid': submitted && f.freorderlevel.errors}" />
+                            <div *ngIf="submitted && f.freorderlevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.freorderlevel.errors.required">
+                                    Re-Order Level is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="sslno" for="sslno" cssClass="required">Status</label>
+                            <select class="form-control" name="sslno" formControlName="sslno" [ngClass]="{'is-invalid': submitted && f.sslno.errors}">
+                                <option value="" hidden> - Select the Fixture Status - </option>
+                                <option value="null"> - Select the Fixture Status - </option>
+                                <option *ngFor="let FixtureStatus001mb of statussets" [value]="FixtureStatus001mb.slNo">
+                                    {{FixtureStatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.sslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.sslno.errors.required">
+                                    Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List of Fixture Spares</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px" [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>

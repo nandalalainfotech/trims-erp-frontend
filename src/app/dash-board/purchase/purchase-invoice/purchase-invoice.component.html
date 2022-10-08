@@ -1,0 +1,165 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Purchase Invoice</legend>
+        <div class="formData">
+            <form [formGroup]="purchaseInvoiceForm" (ngSubmit)="onPurchaseClick($event, purchaseInvoiceForm)">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="cDate" for="cDate" cssClass="required">Date</label>
+                            <input class="form-control" formControlName="cDate" readonly />
+
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="poSlno" for="series" cssClass="required" required="true">PO No</label>
+                            <select class="form-control" path="poSlno" formControlName="poSlno" (change)="onChange($event)">
+                                <option value="" hidden> - Select the PO Number - </option>
+                                <option value="null"> - Select the PO Number - </option>
+                                <option *ngFor="let purchaseorder001wb of purchaseorder001wbs" [value]='purchaseorder001wb.slNo'>
+                                    {{purchaseorder001wb.pono}}</option>
+                            </select>
+                            <!-- <p-autoComplete 
+                           placeholder="Select a PO NO"
+                            field="prsno"
+                            [dropdown]="true">
+                            <ng-template style="width:200px">
+                                <select class="form-control" path="prsno" formControlName="prsno">
+                                    
+                                </select>
+                            </ng-template>
+                            </p-autoComplete> -->
+
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="prsNo" for="series" cssClass="required" required="true">PRS No</label>
+                            <input type="text" class="form-control" path="prsNo" formControlName="prsNo" readonly/>
+                            <!-- <p-autoComplete 
+                           placeholder="Select a PRS No"
+                            field="prsno"
+                            [dropdown]="true">
+                            <ng-template style="width:200px">
+                                <select class="form-control" path="prsno" formControlName="prsno">
+                                   
+                                </select>
+                            </ng-template>
+                            </p-autoComplete> -->
+
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="grnNo" for="series" cssClass="required" required="true">GRS NO</label>
+                            <input class="form-control" formControlName="grnNo" readonly>
+                            <!-- <select class="form-control" path="grnNo" formControlName="grnNo" (change)="onChangegrs($event)">
+                                <option value="" hidden> - Select the PO Number - </option>
+                                <option value="null"> - Select the PO Number - </option>
+                                <option *ngFor="let materialinward001wb of materialinward001wbs" [value]='materialinward001wb.slNo'>
+                                    {{materialinward001wb.grn}}</option>
+                            </select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="suppliercode" for="series" cssClass="required" required="true">Supplier Code</label>
+                            <input class="form-control" formControlName="suppliercode" readonly />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="suppliername" for="series" cssClass="required" required="true">Supplier Name</label>
+                            <input class="form-control" formControlName="suppliername" readonly />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="purchaseInvoice" for="series" cssClass="required" required="true">Purchase Invoice No</label>
+                            <input class="form-control" formControlName="purchaseInvoice" />
+                        </div>
+                    </div>
+                    <div class="col-xs-1 col-sm-1"></div>
+
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <div class="p-fluid p-grid p-formgrid">
+                                <div class="p-field p-col-12 p-md-5">
+                                    <label path="date" for="date" cssClass="required">Requried Date</label>
+                                    <!-- <input type='date' class="form-control" formControlName="reqDate" /> -->
+                                    <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="reqDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                    </p-calendar>
+                                    <!-- <div *ngIf="submitted && f.reqDate.errors" class="invalid-feedback">
+                                        <div *ngIf="f.reqDate.errors.required">Requried Date is Required</div>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3">
+                        <div class="form-group">
+                            <label path="incomingNo" for="incomingNo" cssClass="required">Incoming Inspection No</label>
+                            <input type="text" class="form-control" path="incomingNo" formControlName="incomingNo" readonly/>
+                            <!-- <select class="form-control" path="incomingNo" formControlName="incomingNo">
+                                <option value="" hidden> - Select the PO Number - </option>
+                                <option value="null"> - Select the PO Number - </option> -->
+                            <!-- <option *ngFor="let materialinward001wb of materialinward001wbs" [value]='materialinward001wb.slNo'>
+                                    {{materialinward001wb.grn}}</option> -->
+                            <!-- </select> -->
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3">
+                        <label>File Upload:</label>
+                        <input type="file" class="form-control" formControlName="filename" (change)="onFileSelected($event)" />
+                        <span>"Upload the Purchase Invoice"</span>
+                        <!-- <div *ngIf="submitted && f.filename.errors" class="invalid-feedback">
+                            <div *ngIf="f.filename.errors.required">
+                                File Upload is Required
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="form-group">
+
+                            <button type="button" class="btn btn-primary" style="left: 67%;" (click)="AddPopup($event)">Add items</button>
+                            <button type="submit" class="btn btn-primary " style="left: 45%;" (click)="onStatusClick()">Requst For Payment </button>
+                            <button type="submit" class="btn btn-primary submit">Submit</button>
+                            <button type="button" class="btn btn-warning reset" (click)="onReset()">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+<div class="scrollbar">
+    <fieldset class="scheduler-border">
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary submit" style="margin-right: 150px;" (click)="onViewClick()">
+                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                    </button>
+                    <button type="button" class="btn btn-primary submit" (click)="onGeneratePdfReport()" style="margin-right: 40px;">
+                        Export Pdf
+                    </button>
+                    <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                        Export Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+        <legend class="scheduler-border">Purchase Invoice</legend>
+        <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" [getRowStyle]="getRowStyle" (rowClicked)="rowClicked($event)" style="width: 100%; height: 350px;" [pagination]="true" [frameworkComponents]="frameworkComponents">
+        </ag-grid-angular>
+    </fieldset>
+</div>

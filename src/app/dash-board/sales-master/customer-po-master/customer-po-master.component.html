@@ -1,0 +1,144 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Customer PO Form</legend>
+    <div class="formData">
+        <form [formGroup]="custemerPOForm">
+            <div class="row">
+                <!-- <div class="col-xs-1 col-sm-1"></div> -->
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="custemercode" for="custemercode" cssClass="required"> Custemer Code</label>
+                                <input type="text" class="form-control" path="custemercode" formControlName="custemercode" />
+                                <!-- <div *ngIf="submitted && f.custemercode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.custemercode.errors.required">Custemer Code is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="custemername" for="custemername" cssClass="required"> CustemerName</label>
+                                <input OnlyLetter type="text" class="form-control" path="custemername" formControlName="custemername" />
+                                <!-- <div *ngIf="submitted && f.custemername.errors" class="invalid-feedback">
+                                    <div *ngIf="f.custemername.errors.required">Custemer Name is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="custemerPONo" for="custemerPONo" cssClass="required"> Custemer PO No.</label>
+                                <input type="text" class="form-control" path="custemerPONo" formControlName="custemerPONo" />
+                                <!-- <div *ngIf="submitted && f.custemerPONo.errors" class="invalid-feedback">
+                                    <div *ngIf="f.custemerPONo.errors.required">Custemer PO No. is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="poDate" for="poDate" cssClass="required">PO Date</label>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="poDate" inputId="navigators" [showIcon]="true" inputId="icon">
+                                </p-calendar>
+                                <!-- <div *ngIf="submitted && f.poDate.errors" class="invalid-feedback">
+                                    <div *ngIf="f.poDate.errors.required">
+                                        PO Date is Required
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- <div class="col-xs-1 col-sm-1"></div> -->
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="deliveryDate" for="deliveryDate" cssClass="required">Delivery Date</label>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="deliveryDate" inputId="navigators" [showIcon]="true" inputId="icon">
+                                </p-calendar>
+                                <!-- <div *ngIf="submitted && f.deliveryDate.errors" class="invalid-feedback">
+                                    <div *ngIf="f.deliveryDate.errors.required">
+                                        Delivery Date is Required
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="packing" for="packing" cssClass="required">Packing Condition</label>
+                                <input type="text" class="form-control" path="packing" formControlName="packing" />
+                                <!-- <div *ngIf="submitted && f.packing.errors" class="invalid-feedback">
+                                    <div *ngIf="f.packing.errors.required">Packing Condition is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="logistic" for="logistic" cssClass="required">Logistic Condition</label>
+                                <input type="text" class="form-control" path="logistic" formControlName="logistic" />
+                                <!-- <div *ngIf="submitted && f.logistic.errors" class="invalid-feedback">
+                                    <div *ngIf="f.logistic.errors.required">Logistic Condition is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3 col-sm-3">
+                    <div class="form-group">
+                        <div class="p-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-5">
+                                <label path="inspection" for="inspection" cssClass="required">Inspection Condition</label>
+                                <input type="text" class="form-control" path="inspection" formControlName="inspection" />
+                                <!-- <div *ngIf="submitted && f.inspection.errors" class="invalid-feedback">
+                                    <div *ngIf="f.inspection.errors.required">Inspection Condition is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-sm-8 "></div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" (click)="onAddbuttonClick()">Add Parts</button>
+                        <button type="submit" class="btn btn-primary submit">Approve</button>
+                        <button type="button" class="btn btn-warning reset">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</fieldset>

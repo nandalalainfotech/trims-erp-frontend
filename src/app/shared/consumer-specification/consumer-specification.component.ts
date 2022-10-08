@@ -1,0 +1,140 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridOptions } from 'ag-grid-community';
+import { deserialize } from 'serializer.ts/Serializer';
+import { IconRendererComponent } from '../services/renderercomponent/icon-renderer-component';
+import { AuthManager } from '../services/restcontroller/bizservice/auth-manager.service';
+import { ConsumerspecificationManager } from '../services/restcontroller/bizservice/consumablespecific.sevice';
+import { Consumerspecification001wb } from '../services/restcontroller/entities/consumablespecific001wb';
+import { Login001mb } from '../services/restcontroller/entities/Login001mb';
+import { CalloutService } from '../services/services/callout.service';
+import { DataSharedService } from '../services/services/datashared.service';
+
+@Component({
+  selector: 'app-consumer-specification',
+  templateUrl: './consumer-specification.component.html',
+  styleUrls: ['./consumer-specification.component.css']
+})
+export class ConsumerSpecificationComponent implements OnInit {
+
+   
+  @Input() consumableForm: any;
+  @Input() specifications: any;
+  orderspecificationForm: FormGroup | any;
+  orderspecificationFormArray: FormArray | any;
+  frameworkComponents: any;
+  public gridOptions: GridOptions | any;
+  submitted = false;
+
+
+  slNo: number | any;
+  itemslno: number | any;
+  parameter: string = "";
+  specification: string = "";
+  inspecmethod: string = "";
+  insertUser: string = "";
+  insertDatetime: Date | any;
+  updatedUser: string | null = "";
+  updatedDatetime: Date | any;
+  consumerspecification001wb?:Consumerspecification001wb;
+  consumerspecification001wbs:Consumerspecification001wb[]=[];
+  user?:Login001mb|any;
+  unitslno?:number;
+  constructor(
+    private formBuilder: FormBuilder,
+    public activeModal: NgbActiveModal,
+    private authManager: AuthManager,
+    private calloutService: CalloutService,
+    private dataSharedService: DataSharedService,
+    private consumerspecificationManager: ConsumerspecificationManager,
+    private modalService: NgbModal,
+    private httpClient: HttpClient, private http: HttpClient) {
+    this.frameworkComponents = {
+      iconRenderer: IconRendererComponent
+    }
+  }
+  ngOnInit(): void {
+    this.user = this.authManager.getcurrentUser;
+    this.orderspecificationForm = this.formBuilder.group({
+      orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
+    });
+
+    this.consumerspecificationManager.cosumspecificationall(this.user.unitslno).subscribe(response => {
+      this.consumerspecification001wbs = deserialize<Consumerspecification001wb[]>(Consumerspecification001wb, response);
+    });
+
+  }
+
+  get f() { return this.orderspecificationForm.controls; }
+  get o() { return this.f.orderspecificationFormArray as FormArray; }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+  // [this.ItemForm.value.itemcode],
+
+  createItem() {
+    return this.formBuilder.group({
+      consumslno: [this.consumableForm.value.consmno],
+      parameter: ['', Validators.required],
+      specification: ['', Validators.required],
+      inspecmethod: ['', Validators.required],
+
+      orderspecificationFormArray: new FormArray([]),
+    });
+
+  }
+
+  addItem() {
+    this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+    let status: boolean = false;
+    for(let control of this.orderspecificationFormArray.controls) {
+      if(control.status == 'INVALID'){
+        this.calloutService.showError("An input field is missing!");
+        status = true;
+        break;
+      }
+    }
+    if(status) {
+      return;
+    }
+    this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+    this.orderspecificationFormArray.push(this.createItem());
+  }
+
+  removeItem(idx: number): void {
+    (this.f['orderspecificationFormArray'] as FormArray).removeAt(idx);
+  }
+
+  onOkClick(event: any, orderspecificationForm: any) {
+    let consumerspecification001wbs: Consumerspecification001wb[] = [];
+    for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
+      let consumerspecification001wb = new Consumerspecification001wb();
+      consumerspecification001wb.consumslno = this.f.orderspecificationFormArray.value[i].consumslno ? this.f.orderspecificationFormArray.value[i].consumslno : null;
+      consumerspecification001wb.parameter = this.f.orderspecificationFormArray.value[i].parameter ? this.f.orderspecificationFormArray.value[i].parameter : "";
+      consumerspecification001wb.specification = this.f.orderspecificationFormArray.value[i].specification ? this.f.orderspecificationFormArray.value[i].specification : "";
+      consumerspecification001wb.inspecmethod = this.f.orderspecificationFormArray.value[i].inspecmethod ? this.f.orderspecificationFormArray.value[i].inspecmethod : "";
+      consumerspecification001wbs.push(consumerspecification001wb);
+
+      this.activeModal.close({
+        status: "Yes",
+        specifications: consumerspecification001wbs,
+      });
+    }
+    console.log("specifications",this.specifications);
+    
+
+  }
+
+  onCancelClick() {
+    this.activeModal.close('No');
+  }
+
+}

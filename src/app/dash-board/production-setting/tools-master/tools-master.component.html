@@ -1,0 +1,168 @@
+<div class="wrapper1">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List Of Tools & Die </legend>
+        <div class="formData">
+            <form [formGroup]="listOftoolsForm" (ngSubmit)="onToolsClick($event, listOftoolsForm)">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tcode" for="tcode">Tools & Die Code</label>
+                            <input type="text" class="form-control" path="tcode" formControlName="tcode" readonly value="SE/TD/01"/>
+                        </div>
+                        <div *ngIf="submitted && f.tcode.errors" class="invalid-feedback">
+                            <div *ngIf="f.tcode.errors.required">
+                                Tools & Die Code is Required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" path="slNo" />
+                            <label path="tname" for="series" cssClass="required" required="true">Tools & Die
+                                Name</label>
+                            <input class="form-control" type="text" name="tname" formControlName="tname" [ngClass]="{
+                                'is-invalid': submitted && f.tname.errors
+                            }" />
+                            <div *ngIf="submitted && f.tname.errors" class="invalid-feedback">
+                                <div *ngIf="f.tname.errors.required">
+                                    Tools & Die Name is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <div class="p-fluid p-grid p-formgrid">
+                                <div class="p-field p-col-12 p-md-5">
+                                    <label path="tyear" for="tyear" cssClass="required">Tools & Die Year of purchase</label>
+                                    <!-- <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="date"
+                                        [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030"
+                                        inputId="navigators" [showIcon]="true" inputId="icon">
+                                    </p-calendar> -->
+                                    <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="tyear" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
+                                    </p-calendar>
+                                    <div *ngIf="submitted && f.tyear.errors" class="invalid-feedback">
+                                        <div *ngIf="f.tyear.errors.required">Year of purchase is Required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tcapacity" for="tcapacity" cssClass="required" required="true">Tools & Die Capacity</label>
+                            <input class="form-control" type="text" name="tcapacity" formControlName="tcapacity" [ngClass]="{
+                                'is-invalid': submitted && f.tcapacity.errors
+                            }" />
+                            <div *ngIf="submitted && f.tcapacity.errors" class="invalid-feedback">
+                                <div *ngIf="f.tcapacity.errors.required">
+                                    Capacity is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="ttype" for="series" cssClass="required" required="true">Tools & Die Type/Size</label>
+                            <input class="form-control" type="text"name="ttype" formControlName="ttype" [ngClass]="{
+                                'is-invalid': submitted && f.ttype.errors
+                            }" />
+                            <div *ngIf="submitted && f.ttype.errors" class="invalid-feedback">
+                                <div *ngIf="f.ttype.errors.required">
+                                    Type/Size is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tmake" for="series" cssClass="required" required="true">Tools & Die Make</label>
+                            <input class="form-control" type="text" name="tmake" formControlName="tmake" [ngClass]="{
+                                'is-invalid': submitted && f.tmake.errors
+                            }" />
+                            <div *ngIf="submitted && f.tmake.errors" class="invalid-feedback">
+                                <div *ngIf="f.tmake.errors.required">
+                                    Make is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <!-- <input type="hidden" class="form-control" path="prId" /> -->
+                            <label path="tlocation" for="series" cssClass="required" required="true">Tools & Die Location</label>
+                            <input class="form-control" type="text" name="tlocation" formControlName="tlocation" [ngClass]="{
+                                'is-invalid': submitted && f.tlocation.errors
+                            }" />
+                            <div *ngIf="submitted && f.tlocation.errors" class="invalid-feedback">
+                                <div *ngIf="f.tlocation.errors.required">
+                                    Location is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4">
+                        <div class="form-group">
+                            <label path="tsslno" for="series" cssClass="required" required="true">Status</label>
+                            <select class="form-control" name="tsslno" formControlName="tsslno">
+
+                                <option value="" hidden> - Select the Tools & Die Status - </option>
+                                <option value="null"> - Select the Tools & Die Status - </option>
+                                <option *ngFor="let ToolsStatus001mb of statussets" [value]="ToolsStatus001mb.slNo">
+                                    {{ToolsStatus001mb.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.tsslno.errors" class="invalid-feedback">
+                                <div *ngIf="f.tsslno.errors.required">
+                                    Status is Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary submit">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onReset()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+<fieldset class="scheduler-border">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary submit" style="margin-right: 150px;"
+                    (click)="onViewClick()">
+                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                </button>
+                <button type="button" class="btn btn-primary submit" style="margin-right: 40px;"
+                    (click)="onGeneratePdfReport()">
+                    Export Pdf
+                </button>
+                <button type="button" class="btn btn-warning reset" (click)="onGenerateExcelReport()">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+    <legend class="scheduler-border">List Of Tools & Die</legend>
+    <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions" style="width: 100%; height: 350px;"
+        [pagination]="true" [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+</fieldset>
+
+
+
