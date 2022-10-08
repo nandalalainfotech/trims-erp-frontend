@@ -5,15 +5,15 @@ export class Returnstock001wb {
     unitslno?: number;
     date?: Date | null;
     time?: string;
-    paidamount?: number;
+    paidamount?: number | any;
     dispatch?: string;
     vichleno?: string;
     personname?: string;
-    mobilenumber?: string;
+    mobilenumber?: number | any;
     status?: string;
     referenceid?: string;
     ordernumber?: number | any;
-    rejectitems?: number;
+    rejectitems?: number | any;
 
     cudate?: Date;
     cutime?: string;
@@ -21,11 +21,11 @@ export class Returnstock001wb {
     cudispatch?: string;
     cuvichleno?: string;
     cupersonname?: string;
-    cumobilenumber?: string;
+    cumobilenumber?: number | any;
     custatus?: string;
     cureferenceid?: string;
-    cuordernumber?:string | any;
-    curejectitems?: number;
+    cuordernumber?:number | any;
+    curejectitems?: number | any;
 
     cptdate?: Date;
     cpttime?: string;
@@ -33,11 +33,11 @@ export class Returnstock001wb {
     cptdispatch?: string;
     cptvichleno?: string;
     cptpersonname?: string;
-    cptmobilenumber?: string;
+    cptmobilenumber?: number;
     cptstatus?: string
     cptreferenceid?: string;
-    childpartnumber?:number;
-    cptrejectitems?: number;
+    childpartnumber?:number | any;
+    cptrejectitems?: number | any;
 
     prtdate?: Date;
     prttime?: string;
@@ -45,11 +45,11 @@ export class Returnstock001wb {
     prtdispatch?: string;
     prtvichleno?: string;
     prtpersonname?: string;
-    prtmobilenumber?: string;
+    prtmobilenumber?: number;
     prtstatus?: string;
     prtreferenceid?: string;
-    partnumber?: number;
-    prtrejectitems?: number;
+    partnumber?: number | any;
+    prtrejectitems?: number | any;
 
     insertUser?: string;
     insertDatetime?: Date;

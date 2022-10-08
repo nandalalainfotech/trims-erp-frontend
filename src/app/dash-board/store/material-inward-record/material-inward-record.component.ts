@@ -211,18 +211,18 @@ export class MaterialInwardRecordComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      // {
-      //   headerName: 'Edit',
-      //   cellRenderer: 'iconRenderer',
-      //   width: 80,
-      //   // flex: 1,
-      //   suppressSizeToFit: true,
-      //   cellStyle: { textAlign: 'center' },
-      //   cellRendererParams: {
-      //     onClick: this.onEditButtonClick.bind(this),
-      //     label: 'Edit'
-      //   },
-      // },
+      {
+        headerName: 'Edit',
+        cellRenderer: 'iconRenderer',
+        width: 80,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onEditButtonClick.bind(this),
+          label: 'Edit'
+        },
+      },
       {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
@@ -238,14 +238,14 @@ export class MaterialInwardRecordComponent implements OnInit {
 
       {
         headerName: 'P.O No',
-        // field: 'purchseSlno',
+        field: 'purchseSlno',
         width: 200,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        valueGetter: this.setSupplierName.bind(this)
+        valueGetter: this.setPONO.bind(this)
       },
 
       {
@@ -354,18 +354,18 @@ export class MaterialInwardRecordComponent implements OnInit {
         suppressSizeToFit: true,
       },
 
-      // {
-      //   headerName: 'Edit',
-      //   cellRenderer: 'iconRenderer',
-      //   width: 80,
-      //   // flex: 1,
-      //   suppressSizeToFit: true,
-      //   cellStyle: { textAlign: 'center' },
-      //   cellRendererParams: {
-      //     onClick: this.onEditButtonClick.bind(this),
-      //     label: 'Edit'
-      //   },
-      // },
+      {
+        headerName: 'Edit',
+        cellRenderer: 'iconRenderer',
+        width: 80,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onEditButtonClick.bind(this),
+          label: 'Edit'
+        },
+      },
       {
         headerName: 'Delete',
         cellRenderer: 'iconRenderer',
@@ -398,8 +398,8 @@ export class MaterialInwardRecordComponent implements OnInit {
   //   return params.data.purchseSlno ? this.purchaseorder001wbs.find(x => x.slNo === params.data.purchseSlno)?.pono : null;
   // }
 
-  setSupplierName(params: any): string {
-    return params.data.purchseSlno ? this.purchaseorder001wbs.find(x => x.slNo === params.data.purchseSlno)?.pono : null;
+  setPONO(params: any): string {
+    return params.data.purchseSlno2 ?  params.data.purchseSlno2.pono :null;
 
   }
 

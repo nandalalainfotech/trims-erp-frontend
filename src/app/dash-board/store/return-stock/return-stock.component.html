@@ -153,6 +153,18 @@
                         </ag-grid-angular>
                     </div>
                     <div class="col-sm-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 150px" (click)="onViewItemClick()" >
+                                 <i class="fa fa-eye" aria-hidden="true"></i> View
+                            </button>
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 40px" (click)="onGenerateItemPdfReport()" >
+                                Export Pdf
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onGenerateItemExcelReport()" >
+                                Export Excel
+                            </button>
+                              
+                        </div>
                     <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions5" (rowClicked)="rowClicked($event)"  style="width: 100%; height: 350px;margin-top: 42px;"
                         [pagination]="true" [frameworkComponents]="frameworkComponents">
                     </ag-grid-angular>
@@ -245,7 +257,7 @@
                             <div class="form-group">
                                 <label path="cuordernumber" for="cuordernumber" cssClass="required">Item code</label>
                                 <!-- <input class="form-control" formControlName="cuordernumber" readonly/> -->
-                                <select class="form-control" path="cuordernumber" formControlName="cuordernumber">
+                                <select class="form-control" path="cuordernumber" formControlName="cuordernumber" (change)="onChange($event)">
                                     
                                     <option value="null"> -Select item Code- </option>
                                     <option *ngFor="let Consumablecode of Consumablecodes" [value]="Consumablecode.slNo">
@@ -281,6 +293,18 @@
                         </ag-grid-angular>
                     </div>
                     <div class="col-sm-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 150px" (click)="onViewConsumerClick()" >
+                                 <i class="fa fa-eye" aria-hidden="true"></i> View
+                            </button>
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 40px" (click)="onGenerateConsumerPdfReport()" >
+                                Export Pdf
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onGenerateConsumerExcelReport()" >
+                                Export Excel
+                            </button>
+                              
+                        </div>
                     <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions6"   (rowClicked)="rowClicked($event)"  style="width: 100%; height: 350px;margin-top: 42px;"
                         [pagination]="true" [frameworkComponents]="frameworkComponents">
                     </ag-grid-angular>
@@ -372,7 +396,7 @@
                             <div class="form-group">
                                 <label path="childpartnumber" for="childpartnumber" cssClass="required">Item code</label>
                                 <!-- <input class="form-control" formControlName="childpartnumber" readonly/> -->
-                                <select class="form-control" path="childpartnumber" formControlName="childpartnumber" >
+                                <select class="form-control" path="childpartnumber" formControlName="childpartnumber" (change)="onChange($event)">
                                     
                                     <option value="null"> -Select item Code- </option>
                                     <option *ngFor="let ChildPartcode of ChildPartcodes" [value]="ChildPartcode.slNo">
@@ -408,6 +432,18 @@
                         </ag-grid-angular>
                     </div>
                     <div class="col-sm-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 150px" (click)="onViewchildcodeClick()" >
+                                 <i class="fa fa-eye" aria-hidden="true"></i> View
+                            </button>
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 40px" (click)="onGeneratechildcodePdfReport()" >
+                                Export Pdf
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onGeneratechildcodeExcelReport()" >
+                                Export Excel
+                            </button>
+                              
+                        </div>
                         <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions7"   (rowClicked)="rowClicked($event)"  style="width: 100%; height: 350px;margin-top: 42px;"
                             [pagination]="true" [frameworkComponents]="frameworkComponents">
                         </ag-grid-angular>
@@ -498,7 +534,7 @@
                             <div class="form-group">
                                 <label path="partnumber" for="partnumber" cssClass="required">Item code</label>
                                 <!-- <input class="form-control" formControlName="partnumber" readonly/> -->
-                                <select class="form-control" path="partnumber" formControlName="partnumber">
+                                <select class="form-control" path="partnumber" formControlName="partnumber" (change)="onChange($event)">
                                     
                                     <option value="null"> -Select item Code- </option>
                                     <option *ngFor="let Partcode of Partcodes" [value]="Partcode.slNo">
@@ -534,6 +570,18 @@
                         </ag-grid-angular>
                     </div>
                     <div class="col-sm-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 150px" (click)="onViewPrtClick()" >
+                                 <i class="fa fa-eye" aria-hidden="true"></i> View
+                            </button>
+                            <button type="button" class="btn btn-primary submit" style="margin-right: 40px" (click)="onGeneratePrtPdfReport()" >
+                                Export Pdf
+                            </button>
+                            <button type="button" class="btn btn-warning reset" (click)="onGeneratePrtExcelReport()" >
+                                Export Excel
+                            </button>
+                              
+                        </div>
                         <ag-grid-angular #agGrid class="ag-theme-balham" [gridOptions]="gridOptions8"  (rowClicked)="rowClicked($event)"  style="width: 100%; height: 350px;margin-top: 42px;"
                             [pagination]="true" [frameworkComponents]="frameworkComponents">
                         </ag-grid-angular>

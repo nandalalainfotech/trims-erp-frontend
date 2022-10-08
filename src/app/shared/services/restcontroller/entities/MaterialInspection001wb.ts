@@ -4,8 +4,8 @@ import { Rawmaterialinspection001wb } from "./Rawmaterialinspection001wb";
 export class Materialinspection001wb {
     slNo?: number;
     unitslno?: number;
-    iirno?: string;
-    cdate?: Date;
+    iirno?: string | any;
+    cdate?: Date | any;
     scname?: string;
     dcno?: string;
     refno?: string;

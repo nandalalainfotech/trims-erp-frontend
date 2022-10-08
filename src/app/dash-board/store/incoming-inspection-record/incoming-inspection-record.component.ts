@@ -190,18 +190,18 @@ export class IncomingInspectionRecordComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      // {
-      //   headerName: 'Date',
-      //   width: 200,
-      //   // flex: 1,
-      //   sortable: true,
-      //   filter: true,
-      //   resizable: true,
-      //   suppressSizeToFit: true,
-      //   valueGetter: (params: any) => {
-      //     return params.data.cdate ? this.datepipe.transform(params.data.cdate, 'dd-MM-yyyy') : '';
-      //   }
-      // },
+      {
+        headerName: 'Date',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        valueGetter: (params: any) => {
+          return params.data.cdate ? this.datepipe.transform(params.data.cdate, 'dd-MM-yyyy') : '';
+        }
+      },
       {
         headerName: 'Supplier/Customer Name',
         field: 'scname',
@@ -282,18 +282,18 @@ export class IncomingInspectionRecordComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      // {
-      //   headerName: 'Edit',
-      //   cellRenderer: 'iconRenderer',
-      //   width: 80,
-      //   // flex: 1,
-      //   suppressSizeToFit: true,
-      //   cellStyle: { textAlign: 'center' },
-      //   cellRendererParams: {
-      //     onClick: this.onEditButtonClick.bind(this),
-      //     label: 'Edit'
-      //   },
-      // },
+      {
+        headerName: 'Edit',
+        cellRenderer: 'iconRenderer',
+        width: 80,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onEditButtonClick.bind(this),
+          label: 'Edit'
+        },
+      },
       {
         headerName: 'Delete',
         cellRenderer: 'iconRenderer',
@@ -478,11 +478,11 @@ export class IncomingInspectionRecordComponent implements OnInit {
 
       this.materialInspectionManager.materialinspectionSave(materialinspection001wb).subscribe((response) => {
         this.calloutService.showSuccess("Material Inspection Record Saved Successfully");
+        this.materialInspectionForm.reset();
+        this.rawmaterialinspection=[];
         this.materialInspectionForm.patchValue(
           { cdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
         );
-        this.materialInspectionForm.reset();
-        this.rawmaterialinspection=[];
         this.loadData();
         this.submitted = false;
       });

@@ -27,7 +27,7 @@ export class Rawmaterialinspection001wb {
     cptqunty?:number;
     prtqunty?: number;
     receivedQty?: number;
-    acceptedQty?: number;
+    acceptedQty?: number | any;
     rejectedQty?: number;
     outstanding?: number;
 
@@ -50,8 +50,12 @@ export class Rawmaterialinspection001wb {
     mslevel?: string;
     orderlevel?: string;
     leadtime?: string;
-    opening?:number;
+    opening?:number | any;
     closing?:number;
+    acceptedsum:number | any;
+    cuacceptedsum:number | any;
+    prtacceptedsum:number | any;
+    cptacceptedsum:number | any;
    
     insertUser?: string;
     insertDatetime?: Date;

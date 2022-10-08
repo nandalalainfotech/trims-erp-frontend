@@ -29,6 +29,7 @@ import { ReturnStockComponent } from './return-stock/return-stock.component';
 import { MaterialMomentsManager } from 'src/app/shared/services/restcontroller/bizservice/Materialmoments.service';
 import { OnlyNumberModule } from 'src/app/shared/modules/onlynumber.module';
 import { OnlyLetterModule } from 'src/app/shared/modules/onlyLetter.module';
+import { StockComponent } from './stock/stock.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { OnlyLetterModule } from 'src/app/shared/modules/onlyLetter.module';
     MaterialStockComponent,
     IncomingInspectionRecordComponent,
     CustomerProportyRegisterComponent,
-    ReturnStockComponent],
+    ReturnStockComponent,
+    StockComponent],
   imports: [
     CommonModule,
     StoreRoutingModule,
