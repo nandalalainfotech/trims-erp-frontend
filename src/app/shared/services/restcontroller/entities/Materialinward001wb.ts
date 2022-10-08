@@ -1,4 +1,5 @@
 import { Materialreceiveditem001wb } from "./Materialreceiveditem001wb";
+import { Purchaseorder001wb } from "./Purchaseorder001wb";
 
 export class Materialinward001wb {
     slNo?: number;
@@ -22,4 +23,5 @@ export class Materialinward001wb {
     updatedDatetime?: Date | null;
     // metriealitems?: Materialreceiveditem001wb[]|any;
     materialreceiveditem001wbs: Materialreceiveditem001wb[]|any;
+    purchseSlno2?:Purchaseorder001wb;
 }

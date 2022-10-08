@@ -1,8 +1,9 @@
+import { Rawmaterialinspection001wb } from "./Rawmaterialinspection001wb";
 
 export class Materialmoments001wb {
     slNo?: number;
     unitslno?: number;
-    itemslno?: number;
+    itemslno?: number | any;
     childslno?: number;
     prtslno?: number;
     consumslno?: number;

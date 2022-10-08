@@ -17,6 +17,33 @@ export class RawmaterialinspectionManager extends BaseService {
         data['unitslno'] = unitslno;
         return this.getCallService(`${this.rawmaterialUrl}` + "/findAll", data);
     }
+
+
+   
+    findByItem(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService(`${this.rawmaterialUrl}` + "/findByItem", data);
+    } 
+    findByConsumableItem(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService(`${this.rawmaterialUrl}` + "/findByConsumableItem", data);
+    }
+    findByChildItem(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService(`${this.rawmaterialUrl}` + "/findByChildItem", data);
+    }
+    findByPartItem(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService(`${this.rawmaterialUrl}` + "/findByPartItem", data);
+    }
+    
+    
+    
+
     findNotificationAll() {
         return this.getCallService(`${this.rawmaterialUrl}` + "/findNotificationAll");
     }
@@ -43,12 +70,58 @@ export class RawmaterialinspectionManager extends BaseService {
     }
 
     
+
+    itemStockPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/itemStockpdf", data)
+    }
+    itemStockExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/itemStockexcel", data)
+    }
+
+    consumableStockPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/consumableStockpdf", data)
+    }
+    consumableStockExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/consumablStockexcel", data)
+    }
+
+    childPartStockPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/childPartStockpdf", data)
+    }
+    childPartStockExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/childPartStockexcel", data)
+    }
+
+
+    PartStockPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/partStockpdf", data)
+    }
+    PartStockExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.rawmaterialUrl}` + "/partStockexcel", data)
+    }
+    
     itemPdf(unitslno:any) {
         let data:any={};
         data['unitslno']=unitslno; 
         return this.getCallService1(`${this.rawmaterialUrl}` + "/itempdf", data)
     }
-    iemExcel(unitslno:any) {
+    itemExcel(unitslno:any) {
         let data:any={};
         data['unitslno']=unitslno; 
         return this.getCallService1(`${this.rawmaterialUrl}` + "/itemexcel", data)

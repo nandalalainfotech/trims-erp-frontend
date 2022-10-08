@@ -29,6 +29,54 @@ export class ReturnStockManager extends BaseService {
         return this.deleteCallService(`${this.StockUrl}` + "/delete", data);
     }
 
+    itemFullpdfId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/itemFullpdf", data)
+    }
+
+    itemFullExcelId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/itemFullexcel", data)
+    }
+
+    consumFullpdfId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/consumFullpdf", data)
+    }
+
+    consumFullExcelId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/consumFullexcel", data)
+    }
+
+    cpartFullpdfId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/cpartFullpdf", data)
+    }
+
+    cpartFullExcelId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/cpartFullexcel", data)
+    }
+
+    partFullpdfId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/partFullpdf", data)
+    }
+
+    partFullExcelId(unitslno:any) {
+        let data: any = {};
+        data['unitdepartslNo']=unitslno;
+        return this.getCallService1(`${this.StockUrl}` + "/partFullexcel", data)
+    }
+
     itempdfId(id: any,unitslno:any) {
         let data: any = {};
         data['id'] = id;

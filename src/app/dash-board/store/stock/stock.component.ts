@@ -14,7 +14,6 @@ import { IconRendererComponent } from 'src/app/shared/services/renderercomponent
 import { AuthManager } from 'src/app/shared/services/restcontroller/bizservice/auth-manager.service';
 import { ChildPartManager } from 'src/app/shared/services/restcontroller/bizservice/ChildPart.service';
 import { ConsumbleManager } from 'src/app/shared/services/restcontroller/bizservice/consumble.service';
-import { MaterialInspectionManager } from 'src/app/shared/services/restcontroller/bizservice/Materialinspection.service';
 import { MaterialMomentsManager } from 'src/app/shared/services/restcontroller/bizservice/Materialmoments.service';
 import { MaterialreceiveditemManager } from 'src/app/shared/services/restcontroller/bizservice/Materialreceiveditem.service';
 import { MaterialStockManager } from 'src/app/shared/services/restcontroller/bizservice/materialStock.service';
@@ -24,7 +23,6 @@ import { RawmaterialinspectionManager } from 'src/app/shared/services/restcontro
 import { ChildPart001mb } from 'src/app/shared/services/restcontroller/entities/ChildPart001mb';
 import { Consumble001mb } from 'src/app/shared/services/restcontroller/entities/Consumble001mb';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
-import { Materialinspection001wb } from 'src/app/shared/services/restcontroller/entities/MaterialInspection001wb';
 import { Materialreceiveditem001wb } from 'src/app/shared/services/restcontroller/entities/Materialreceiveditem001wb';
 import { Orderitem001mb } from 'src/app/shared/services/restcontroller/entities/Orderitem001mb';
 import { Part001mb } from 'src/app/shared/services/restcontroller/entities/Part001mb';
@@ -33,11 +31,11 @@ import { MaterialStock001wb } from 'src/app/shared/services/restcontroller/entit
 import { CalloutService } from 'src/app/shared/services/services/callout.service';
 
 @Component({
-  selector: 'app-material-stock',
-  templateUrl: './material-stock.component.html',
-  styleUrls: ['./material-stock.component.css']
+  selector: 'app-stock',
+  templateUrl: './stock.component.html',
+  styleUrls: ['./stock.component.css']
 })
-export class MaterialStockComponent implements OnInit {
+export class StockComponent implements OnInit {
 
   frameworkComponents: any;
   public gridOptions1: GridOptions | any;
@@ -86,8 +84,13 @@ export class MaterialStockComponent implements OnInit {
   consumableItems: any = [];
   childpartItems: any = [];
   partItems: any = [];
-  inspections:Materialinspection001wb[]=[];
-
+  itemCode: Rawmaterialinspection001wb[] = [];
+  rawmaterialinspection001wb_itemcode: number | any;
+  rawmaterialinspection001wb_cucode: number | any;
+  rawmetriealcodes: any = [];
+  Consumablecodes: any = [];
+  ChildPartcodes: any = [];
+  Partcodes: any = [];
 
   constructor(private formBuilder: FormBuilder,
     private authManager: AuthManager,
@@ -101,7 +104,6 @@ export class MaterialStockComponent implements OnInit {
     private materialMomentsManager: MaterialMomentsManager,
     private partManager: PartManager,
     private materialStockManager: MaterialStockManager,
-    private materialInspectionManager: MaterialInspectionManager,
     private rawmaterialinspectionManager: RawmaterialinspectionManager,
     private datepipe: DatePipe) {
     this.frameworkComponents = {
@@ -124,63 +126,113 @@ export class MaterialStockComponent implements OnInit {
     let res2 = this.childPartManager.allChildpart(this.user.unitslno);
     let res3 = this.partManager.allpart(this.user.unitslno);
     let res4 = this.orderItemSettingManager.allitem(this.user.unitslno);
-    let res5 =  this.materialInspectionManager.materialinspectionfindall(this.user.unitslno);
-    forkJoin([res0, res1, res2, res3, res4,res5]).subscribe((data: any) => {
+    forkJoin([res0, res1, res2, res3, res4]).subscribe((data: any) => {
       this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, data[0]);
       this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, data[1]);
       this.part001mbs = deserialize<Part001mb[]>(Part001mb, data[2]);
       this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, data[3]);
       this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb, data[4]);
-      this.inspections = deserialize<Materialinspection001wb[]>(Materialinspection001wb, data[5]);
-      
-      this.loadData();
     });
-   
+    this.loadData();
+
+    this.rawmaterialinspectionManager.findByItem(this.user.unitslno).subscribe(response => {
+      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+
+
+    });
   }
 
 
   get f() { return this.materialStockForm.controls }
 
   loadData() {
+
     this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
       this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+
       for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
-        if (this.rawmaterialinspection001wbs[i].cucode) {
-          this.consumable.push(this.rawmaterialinspection001wbs[i])
-        }
         if (this.rawmaterialinspection001wbs[i].itemcode) {
-          this.rawmetrieal.push(this.rawmaterialinspection001wbs[i])
+          this.rawmetriealcodes.push(this.rawmaterialinspection001wbs[i])
+        }
+        if (this.rawmaterialinspection001wbs[i].cucode) {
+          this.Consumablecodes.push(this.rawmaterialinspection001wbs[i])
         }
         if (this.rawmaterialinspection001wbs[i].cptcode) {
-          this.childpart.push(this.rawmaterialinspection001wbs[i])
+          this.ChildPartcodes.push(this.rawmaterialinspection001wbs[i])
         }
         if (this.rawmaterialinspection001wbs[i].prtcode) {
-          this.part.push(this.rawmaterialinspection001wbs[i])
+          this.Partcodes.push(this.rawmaterialinspection001wbs[i])
         }
       }
-      if (this.rawmetrieal.length > 0) {
-        this.gridOptions1?.api?.setRowData(this.rawmetrieal);
+      this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) =>  this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+      this.Consumablecodes = this.Consumablecodes.filter((e, i) =>  this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
+      this.ChildPartcodes = this.ChildPartcodes.filter((e, i) =>  this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+      this.Partcodes = this.Partcodes.filter((e, i) =>  this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+      if (this.rawmetriealcodes.length > 0) {
+        this.gridOptions1?.api?.setRowData(this.rawmetriealcodes);
       } else {
         this.gridOptions1?.api?.setRowData([]);
       }
-      if (this.consumable.length > 0) {
-        this.gridOptions2?.api?.setRowData(this.consumable);
+       if (this.Consumablecodes.length > 0) {
+        this.gridOptions2?.api?.setRowData(this.Consumablecodes);
       } else {
         this.gridOptions2?.api?.setRowData([]);
       }
-      if (this.childpart.length > 0) {
-        this.gridOptions3?.api?.setRowData(this.childpart);
+      if (this.ChildPartcodes.length > 0) {
+        this.gridOptions3?.api?.setRowData(this.ChildPartcodes);
       } else {
         this.gridOptions3?.api?.setRowData([]);
       }
-      if (this.part.length > 0) {
-        this.gridOptions4?.api?.setRowData(this.part);
+       if (this.Partcodes.length > 0) {
+        this.gridOptions4?.api?.setRowData(this.Partcodes);
       } else {
         this.gridOptions4?.api?.setRowData([]);
       }
     });
+      // this.rawmaterialinspectionManager.findByItem(this.user.unitslno).subscribe(response => {
+    //   this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+    //   console.log("this.rawmaterialinspection001wbs",this.rawmaterialinspection001wbs);
+      
+    //   if (this.rawmaterialinspection001wbs.length > 0) {
+    //     this.gridOptions1?.api?.setRowData(this.rawmaterialinspection001wbs);
+    //   } else {
+    //     this.gridOptions1?.api?.setRowData([]);
+    //   }
+
+    // });
+
+    // this.rawmaterialinspectionManager.findByConsumableItem(this.user.unitslno).subscribe(response => {
+    //   this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+    //   if (this.rawmaterialinspection001wbs.length > 0) {
+    //     this.gridOptions2?.api?.setRowData(this.rawmaterialinspection001wbs);
+    //   } else {
+    //     this.gridOptions2?.api?.setRowData([]);
+    //   }
+    // });
+
+    // this.rawmaterialinspectionManager.findByChildItem(this.user.unitslno).subscribe(response => {
+    //   this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+    //   if (this.rawmaterialinspection001wbs.length > 0) {
+    //     this.gridOptions3?.api?.setRowData(this.rawmaterialinspection001wbs);
+    //   } else {
+    //     this.gridOptions3?.api?.setRowData([]);
+    //   }
+    // });
+
+    // this.rawmaterialinspectionManager.findByPartItem(this.user.unitslno).subscribe(response => {
+    //   this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+    //   console.log("this.rawmaterialinspection001wbs", this.rawmaterialinspection001wbs);
+
+    //   if (this.rawmaterialinspection001wbs.length > 0) {
+    //     this.gridOptions4?.api?.setRowData(this.rawmaterialinspection001wbs);
+    //   } else {
+    //     this.gridOptions4?.api?.setRowData([]);
+    //   }
+    // });
 
   }
+
+
 
   createDataGrid001(): void {
     this.gridOptions1 = {
@@ -192,20 +244,7 @@ export class MaterialStockComponent implements OnInit {
     this.gridOptions1.animateRows = true;
     this.gridOptions1.columnDefs = [
       {
-        headerName: 'Incoming No',
-        // field: 'itemcode',
-        width: 97,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        valueGetter: this.setincoming.bind(this)
-
-      },
-      {
-        headerName: 'Item Code',
+        headerName: 'item Code',
         field: 'itemcode',
         width: 97,
         // flex: 1,
@@ -239,9 +278,38 @@ export class MaterialStockComponent implements OnInit {
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
       },
+     
       {
-        headerName: 'Accepted Date',
-        // field: 'insertDatetime',
+        headerName: 'Opening Balance',
+        field: 'acceptedsum',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        cellStyle: (params: { data: { acceptedsum: number, itemcode2: { mslevel: number } } }) => {
+          if (params.data.acceptedsum <= params.data.itemcode2.mslevel) {
+            return { background: '#FF5733' };
+          } else if(params.data.acceptedsum >= params.data.itemcode2.mslevel) {
+            return { background: '#00FFFF' };
+          }
+          return null;
+        },
+      },
+      {
+        headerName: 'Closing Balance',
+        field: 'closing',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Location',
+        field: 'location',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -249,74 +317,54 @@ export class MaterialStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
-        valueGetter: this.setincomingDate.bind(this)
+        valueGetter: this.setlocation.bind(this)
       },
       {
-        headerName: 'Accepted Qty',
-        field: 'acceptedQty',
-        width: 120,
+        headerName: 'M.S.Level',
+        field: 'mslevel',
+        width: 100,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        // cellStyle: (params: { data: { acceptedQty: number, itemcode2: { mslevel: number } } }) => {
-        //   if (params.data.acceptedQty <= params.data.itemcode2.mslevel) {
-        //     return { background: '#FF8C00' };
-        //   } else if (params.data.acceptedQty >= params.data.itemcode2.mslevel) {
-        //     return { background: '#0000FF' };
-        //   }
-        //   return null;
-        // },
+        cellStyle: (params: { data: { acceptedsum: number, itemcode2: { mslevel: number } } }) => {
+          if (params.data.acceptedsum < params.data.itemcode2.mslevel) {
+            return { background: '#ff0000' };
+          } else {
+            return { background: '#FFFF00' };
+          }
+          return null;
+        },
+        valueGetter: this.setMSLevel.bind(this)
       },
       {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Lead Time',
+        field: 'leadtime',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
         suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
+        valueGetter: this.setleadtime.bind(this)
       },
       {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Re-Order Level',
+        field: 'orderlevel',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
+        suppressSizeToFit: true,
+        valueGetter: this.setorderlevel.bind(this)
       },
+     
 
     ];
-  }
-
-  setincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
-    return datas
-  }
-  setincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
-    return incoming
   }
 
   setitemcode(params: any): string {
@@ -334,6 +382,7 @@ export class MaterialStockComponent implements OnInit {
   setorderlevel(params: any): string {
     return params.data.itemcode ? this.orderitem001mbs.find(x => x.slNo === params.data.itemcode)?.orderlevel : null;
   }
+ 
 
   rowClicked(params: any) {
     params.node.setData({
@@ -348,6 +397,8 @@ export class MaterialStockComponent implements OnInit {
 
   getRowStyle1(params) {
 
+
+
     // if (params.data.acceptedQty < 50) {
     //   return { 'background-color': '#FF8C00' };
     // } else if (params.data.status == 'Partially Approved') {
@@ -360,7 +411,12 @@ export class MaterialStockComponent implements OnInit {
     // return true;
   }
   getRowStyle(params) {
-
+    // if (params.data.acceptedQty < params.data.itemcode2_mslevel) {
+    //   return { 'background-color': '#FF0000' };
+    // } else {
+    //   return { 'background-color': ' #FFFF00 ' };
+    // }
+    // return true
 
     // if (params.data.acceptedQty < 50) {
     //   return { 'background-color': '#FF8C00' };
@@ -383,19 +439,6 @@ export class MaterialStockComponent implements OnInit {
     this.gridOptions2.enableRangeSelection = true;
     this.gridOptions2.animateRows = true;
     this.gridOptions2.columnDefs = [
-      {
-        headerName: 'Incoming No',
-        // field: 'itemcode',
-        width: 97,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        valueGetter: this.setcuincoming.bind(this)
-
-      },
       {
         headerName: 'consumable Code',
         field: 'cucode',
@@ -428,8 +471,36 @@ export class MaterialStockComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Accepted Date',
-        field: 'insertDatetime',
+        headerName: 'Opening Balance',
+        field: 'cuacceptedsum',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        cellStyle: (params: { data: { cuacceptedsum: number, cucode2: { mslevel: number } } }) => {
+          if (params.data.cuacceptedsum <= params.data.cucode2.mslevel) {
+            return { background: '#FF8C00' };
+          }  else if (params.data.cuacceptedsum >= params.data.cucode2.mslevel) {
+            return { background: '#0000FF' };
+          }
+          return null;
+        },
+      },
+      {
+        headerName: 'Closing Balance',
+        field: 'cucolsing',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Location',
+        field: 'location',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -437,74 +508,55 @@ export class MaterialStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
-        valueGetter: this.setincomingcuDate.bind(this)
+        valueGetter: this.setculocation.bind(this)
       },
       {
-        headerName: 'Accepted Quantity',
-        field: 'cuacceptedQty',
-        width: 200,
+        headerName: 'M.S.Level',
+        field: 'mslevel',
+        width: 100,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        // cellStyle: (params: { data: { cuacceptedQty: number, cucode2: { mslevel: number } } }) => {
-        //   if (params.data.cuacceptedQty <= params.data.cucode2.mslevel) {
-        //     return { background: '#FF8C00' };
-        //   }  else if (params.data.cuacceptedQty >= params.data.cucode2.mslevel) {
-        //     return { background: '#0000FF' };
-        //   }
-        //   return null;
-        // },
+        cellStyle: (params: { data: { cuacceptedsum: number, cucode2: { mslevel: number } } }) => {
+          if (params.data.cuacceptedsum < params.data.cucode2.mslevel) {
+            return { background: '#ff0000' };
+          } else {
+            return { background: '#FFFF00' };
+          }
+          return null;
+        },
+        valueGetter: this.setcuMSLevel.bind(this)
       },
       {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Lead Time',
+        field: 'leadtime',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
+        suppressSizeToFit: true,
+        valueGetter: this.setculeadtime.bind(this)
       },
       {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
+        headerName: 'Re-Order Level',
+        field: 'orderlevel',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
         suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
+        valueGetter: this.setcuorderlevel.bind(this)
       },
 
     ];
   }
 
-  setincomingcuDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
-    return datas
-  }
-  setcuincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
-    return incoming
-  }
 
   setcucode(params: any): string {
     return params.data.cucode2 ? params.data.cucode2.consmno : null;
@@ -531,19 +583,6 @@ export class MaterialStockComponent implements OnInit {
     this.gridOptions3.enableRangeSelection = true;
     this.gridOptions3.animateRows = true;
     this.gridOptions3.columnDefs = [
-      {
-        headerName: 'Incoming No',
-        // field: 'itemcode',
-        width: 97,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        valueGetter: this.setcptincoming.bind(this)
-
-      },
       {
         headerName: 'Child Part Code',
         field: 'cptcode',
@@ -576,21 +615,26 @@ export class MaterialStockComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Accepted Date',
-        field: 'insertDatetime',
-        width: 100,
+        headerName: 'Opening Balance',
+        field: 'cptacceptedsum',
+        width: 200,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        valueGetter: this.setcptincomingDate.bind(this)
-
+        cellStyle: (params: { data: { cptacceptedsum: number, cptcode2: { mslevel: number } } }) => {
+          if (params.data.cptacceptedsum <= params.data.cptcode2.mslevel) {
+            return { background: '#FF8C00' };
+          } else if (params.data.cptacceptedsum >= params.data.cptcode2.mslevel) {
+            return { background: '#0000FF' };
+          }
+          return null;
+        },
       },
       {
-        headerName: 'Child Part Quantity',
-        field: 'cptacceptedQty',
+        headerName: 'Closing Balance',
+        field: 'cptcolsing',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -599,53 +643,62 @@ export class MaterialStockComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Location',
+        field: 'location',
+        width: 100,
         // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
+        valueGetter: this.setcptlocation.bind(this)
       },
       {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
+        headerName: 'M.S.Level',
+        field: 'mslevel',
+        width: 100,
         // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
         suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
+        cellStyle: (params: { data: { cptacceptedsum: number, cptcode2: { mslevel: number } } }) => {
+          if (params.data.cptacceptedsum < params.data.cptcode2.mslevel) {
+            return { background: '#ff0000' };
+          } else {
+            return { background: '#FFFF00' };
+          }
+          return null;
         },
+        valueGetter: this.setcptMSLevel.bind(this)
       },
       {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Lead Time',
+        field: 'leadtime',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
+        suppressSizeToFit: true,
+        valueGetter: this.setcptleadtime.bind(this)
+      },
+      {
+        headerName: 'Re-Order Level',
+        field: 'orderlevel',
+        width: 100,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: { textAlign: 'center' },
+        suppressSizeToFit: true,
+        valueGetter: this.setcptorderlevel.bind(this)
       },
 
     ];
-  }
-
-
-  setcptincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
-    return datas
-  }
-  setcptincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
-    return incoming
   }
 
   setcptcode(params: any): string {
@@ -673,19 +726,6 @@ export class MaterialStockComponent implements OnInit {
     this.gridOptions4.enableRangeSelection = true;
     this.gridOptions4.animateRows = true;
     this.gridOptions4.columnDefs = [
-      {
-        headerName: 'Incoming No',
-        // field: 'itemcode',
-        width: 97,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        valueGetter: this.setprtincoming.bind(this)
-
-      },
       {
         headerName: 'Part Code',
         field: 'prtcode',
@@ -718,8 +758,36 @@ export class MaterialStockComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Accepted Date',
-        field: 'insertDatetime',
+        headerName: 'Opening Balance',
+        field: 'prtacceptedsum',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        cellStyle: (params: { data: { prtacceptedsum: number, prtcode2: { mslevel: number } } }) => {
+          if (params.data.prtacceptedsum < params.data.prtcode2.mslevel) {
+            return { background: '#FF8C00' };
+          } else if (params.data.prtacceptedsum >= params.data.prtcode2.mslevel) {
+            return { background: '#0000FF' };
+          }
+          return null;
+        },
+      },
+      {
+        headerName: 'Closing Balance',
+        field: 'prtcolsing',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Location',
+        field: 'location',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -727,74 +795,53 @@ export class MaterialStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
-        valueGetter: this.setprtincomingDate.bind(this)
+        valueGetter: this.setprtlocation.bind(this)
       },
       {
-        headerName: 'Recived Quantity',
-        field: 'prtacceptedQty',
-        width: 200,
+        headerName: 'M.S.Level',
+        field: 'mslevel',
+        width: 100,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        // cellStyle: (params: { data: { prtacceptedQty: number, prtcode2: { mslevel: number } } }) => {
-        //   if (params.data.prtacceptedQty < params.data.prtcode2.mslevel) {
-        //     return { background: '#FF8C00' };
-        //   } else if (params.data.prtacceptedQty >= params.data.prtcode2.mslevel) {
-        //     return { background: '#0000FF' };
-        //   }
-        //   return null;
-        // },
-      },
-      
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
+        cellStyle: (params: { data: { prtacceptedsum: number, prtcode2: { mslevel: number } } }) => {
+          if (params.data.prtacceptedsum < params.data.prtcode2.mslevel) {
+            return { background: '#ff0000' };
+          } else {
+            return { background: '#FFFF00' };
+          }
+          return null;
         },
+        valueGetter: this.setprtMSLevel.bind(this)
       },
       {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
+        headerName: 'Lead Time',
+        field: 'leadtime',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
+        suppressSizeToFit: true,
+        valueGetter: this.setprtleadtime.bind(this)
       },
       {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
+        headerName: 'Re-Order Level',
+        field: 'orderlevel',
+        width: 100,
         // flex: 1,
-        suppressSizeToFit: true,
+        sortable: true,
+        filter: true,
+        resizable: true,
         cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
+        suppressSizeToFit: true,
+        valueGetter: this.setprtorderlevel.bind(this)
       },
-
+     
     ];
-  }
-
-  setprtincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
-    return datas
-  }
-  setprtincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
-    return incoming
   }
 
   setprtcode(params: any): string {
@@ -858,61 +905,7 @@ export class MaterialStockComponent implements OnInit {
     })
   }
 
-  private markFormGroupTouched(formGroup: FormGroup) {
-    (<any>Object).values(formGroup.controls).forEach((control: any) => {
-      control.markAsTouched();
-      if (control.controls) {
-        this.markFormGroupTouched(control);
-      }
-    });
-  }
 
-  onMaterialStockClick(event: any, materialStockForm: any) {
-    this.markFormGroupTouched(this.materialStockForm);
-    this.submitted = true;
-    if (this.materialStockForm.invalid) {
-      return;
-    }
-
-    let materialStock001wb = new MaterialStock001wb();
-    materialStock001wb.cname = this.f.cname.value ? this.f.cname.value : "";
-    materialStock001wb.recdate = new Date(this.f.recdate.value);
-    materialStock001wb.proname = this.f.proname.value ? this.f.proname.value : "";
-    materialStock001wb.outdate = this.f.outdate.value ? this.f.outdate.value : "";
-    materialStock001wb.loc = this.f.loc.value ? this.f.loc.value : "";
-    if (this.slNo) {
-      materialStock001wb.slNo = this.slNo;
-      materialStock001wb.unitslno = this.unitslno;
-      materialStock001wb.insertUser = this.insertUser;
-      materialStock001wb.insertDatetime = this.insertDatetime;
-      materialStock001wb.updatedUser = this.authManager.getcurrentUser.username;
-      materialStock001wb.updatedDatetime = new Date();
-      this.materialStockManager.materialstockUpdate(materialStock001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Inward Record Updated Successfully");
-        this.materialStockForm.reset();
-        this.loadData();
-        this.slNo = null;
-        this.submitted = false;
-      });
-    } else {
-      // materialinward001wb.date = new Date();
-      // materialinward001wb.dcDate = new Date();
-      materialStock001wb.unitslno = this.user.unitslno;
-      materialStock001wb.insertUser = this.authManager.getcurrentUser.username;
-      materialStock001wb.insertDatetime = new Date();
-      this.materialStockManager.materialstockSave(materialStock001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Inward Record Saved Successfully");
-        this.materialStockForm.reset();
-        this.loadData();
-        this.submitted = false;
-      });
-    }
-  }
-
-  onReset() {
-    this.submitted = false;
-    this.materialStockForm.reset();
-  }
 
 
 
@@ -950,15 +943,30 @@ export class MaterialStockComponent implements OnInit {
   }
 
   onApprovedParamsClick(params: any) {
+    //   consumableItems: any = [];
+    // childpartItems: any = [];
+    // partItems: any = [];
     let Returnitems: any = [];
-    if (params.data.itemcode) {
+    if (params.data.itemcode ? params.data.itemcode : null) {
       this.rawmetriealItems.push(params.data)
+    } else if (params.data.cucode ? params.data.cucode : null) {
+      this.consumableItems.push(params.data)
+    } else if (params.data.cptcode ? params.data.cptcode : null) {
+      this.childpartItems.push(params.data)
+    } else if (params.data.prtcode ? params.data.prtcode : null) {
+      this.partItems.push(params.data)
     }
     if (this.rawmetriealItems.length > 0) {
       Returnitems = "Raw Material";
+    } if (this.consumableItems.length > 0) {
+      Returnitems = "Consumable Item";
+    } if (this.childpartItems.length > 0) {
+      Returnitems = "Child Part";
+    } if (this.partItems.length > 0) {
+      Returnitems = "Part";
     }
     const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
-     modalRef.componentInstance.Returnitems = Returnitems;
+    modalRef.componentInstance.Returnitems = Returnitems;
     modalRef.componentInstance.RawMaterialcode = params.data;
     modalRef.result.then((data) => {
       this.rawmetrieal = [];
@@ -973,7 +981,7 @@ export class MaterialStockComponent implements OnInit {
 
 
   itemViewClick() {
-    this.rawmaterialinspectionManager.itemStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.itemPdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
@@ -981,25 +989,25 @@ export class MaterialStockComponent implements OnInit {
   }
 
   itemPdfReport() {
-    this.rawmaterialinspectionManager.itemStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.itemPdf(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     })
   }
 
   itemExcelReport() {
-    this.rawmaterialinspectionManager.itemStockExcel(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.itemExcel(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     });
   }
 
   // ------------consumablePdf-----------------
 
   consumableViewClick() {
-    this.rawmaterialinspectionManager.consumableStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.consumablePdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
@@ -1007,25 +1015,25 @@ export class MaterialStockComponent implements OnInit {
   }
 
   consumablePdfReport() {
-    this.rawmaterialinspectionManager.consumableStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.consumablePdf(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     })
   }
 
   consumableExcelReport() {
-    this.rawmaterialinspectionManager.consumableStockExcel(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.consumableExcel(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     });
   }
 
   // ------Childpart----------------
 
   childPartViewClick() {
-    this.rawmaterialinspectionManager.childPartStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.childPartPdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
@@ -1033,25 +1041,25 @@ export class MaterialStockComponent implements OnInit {
   }
 
   childPartPdfReport() {
-    this.rawmaterialinspectionManager.childPartStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.childPartPdf(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     })
   }
 
   childPartExcelReport() {
-    this.rawmaterialinspectionManager.childPartStockExcel(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.childPartExcel(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     });
   }
 
   // ------Part----------
 
   partViewClick() {
-    this.rawmaterialinspectionManager.PartStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.PartPdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
@@ -1059,18 +1067,18 @@ export class MaterialStockComponent implements OnInit {
   }
 
   partPdfReport() {
-    this.rawmaterialinspectionManager.PartStockPdf(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.PartPdf(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     })
   }
 
   partExcelReport() {
-    this.rawmaterialinspectionManager.PartStockExcel(this.user.unitslno).subscribe((response) => {
+    this.rawmaterialinspectionManager.PartExcel(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
-      saveAs(response, "Stock-Inward-Details" + newdate);
+      saveAs(response, "Stock-Details" + newdate);
     });
   }
 

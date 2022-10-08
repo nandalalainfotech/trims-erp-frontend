@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions } from 'ag-grid-community';
 import * as saveAs from 'file-saver';
+import { forkJoin } from 'rxjs';
 import { deserialize } from 'serializer.ts/Serializer';
 import { AuditComponent } from 'src/app/shared/audit/audit.component';
 import { ConformationComponent } from 'src/app/shared/conformation/conformation.component';
@@ -14,6 +15,7 @@ import { IconRendererComponent } from 'src/app/shared/services/renderercomponent
 import { AuthManager } from 'src/app/shared/services/restcontroller/bizservice/auth-manager.service';
 import { ChildPartManager } from 'src/app/shared/services/restcontroller/bizservice/ChildPart.service';
 import { ConsumbleManager } from 'src/app/shared/services/restcontroller/bizservice/consumble.service';
+import { MaterialInspectionManager } from 'src/app/shared/services/restcontroller/bizservice/Materialinspection.service';
 import { MaterialMomentsManager } from 'src/app/shared/services/restcontroller/bizservice/Materialmoments.service';
 import { MaterialreceiveditemManager } from 'src/app/shared/services/restcontroller/bizservice/Materialreceiveditem.service';
 import { MaterialStockManager } from 'src/app/shared/services/restcontroller/bizservice/materialStock.service';
@@ -24,6 +26,7 @@ import { ReturnStockManager } from 'src/app/shared/services/restcontroller/bizse
 import { ChildPart001mb } from 'src/app/shared/services/restcontroller/entities/ChildPart001mb';
 import { Consumble001mb } from 'src/app/shared/services/restcontroller/entities/Consumble001mb';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
+import { Materialinspection001wb } from 'src/app/shared/services/restcontroller/entities/MaterialInspection001wb';
 import { Materialreceiveditem001wb } from 'src/app/shared/services/restcontroller/entities/Materialreceiveditem001wb';
 import { Orderitem001mb } from 'src/app/shared/services/restcontroller/entities/Orderitem001mb';
 import { Part001mb } from 'src/app/shared/services/restcontroller/entities/Part001mb';
@@ -154,13 +157,17 @@ export class ReturnStockComponent implements OnInit {
   ConsumableItems: Returnstock001wb[] = [];
   ChilpartItems: Returnstock001wb[] = [];
   PartItems: Returnstock001wb[] = [];
-
+  materialinspection001wbs: Materialinspection001wb[] = [];
+  materialinspection001wb?: Materialinspection001wb | any;
+  rejected: number | any;
+  rawmetriealItemsCodes: any = [];
 
   constructor(private formBuilder: FormBuilder,
     private authManager: AuthManager,
     private calloutService: CalloutService,
     private modalService: NgbModal,
     private router: Router,
+    private materialInspectionManager: MaterialInspectionManager,
     private orderItemSettingManager: OrderItemSettingManager,
     private childPartManager: ChildPartManager,
     private consumbleManager: ConsumbleManager,
@@ -191,12 +198,7 @@ export class ReturnStockComponent implements OnInit {
     this.createDataGrid008();
 
 
-    this.loadData();
-
-
-    this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
-      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
-    });
+   
 
     this.consumbleManager.allconsumble(this.user.unitslno).subscribe(response => {
       this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, response);
@@ -219,13 +221,12 @@ export class ReturnStockComponent implements OnInit {
     });
 
 
-    this.returnStockManager.allStock(this.user.unitslno).subscribe(response => {
-      this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, response);
-    });
-
-    this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
-      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
-
+  
+    let res1 = this.returnStockManager.allStock(this.user.unitslno);
+    let res2 =   this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno)
+    forkJoin([res1,res2]).subscribe((result: any) => {
+      this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, result[0]);
+      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, result[1]);
       for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
         if (this.rawmaterialinspection001wbs[i].itemcode) {
           this.rawmetriealcodes.push(this.rawmaterialinspection001wbs[i])
@@ -240,7 +241,11 @@ export class ReturnStockComponent implements OnInit {
           this.Partcodes.push(this.rawmaterialinspection001wbs[i])
         }
       }
-
+  this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+    this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
+    this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+    this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+    this.loadData();
     });
 
     this.ReturnForm = this.formBuilder.group({
@@ -300,6 +305,11 @@ export class ReturnStockComponent implements OnInit {
   get f() { return this.ReturnForm.controls }
 
   loadData() {
+    this.rawmetrieal=[];
+    this.consumable=[];
+    this.childpart=[];
+    this.part=[];
+    setTimeout(() => {
     this.returnStockManager.allStock(this.user.unitslno).subscribe(response => {
       this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, response);
       for (let i = 0; i < this.returnstock001wbs.length; i++) {
@@ -356,6 +366,10 @@ export class ReturnStockComponent implements OnInit {
           this.part.push(this.rawmaterialinspection001wbs[i])
         }
       }
+this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+      this.consumable = this.consumable.filter((e, i) => this.consumable.findIndex(a => a["cucode"] === e["cucode"]) === i);
+      this.childpart = this.childpart.filter((e, i) => this.childpart.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+      this.part = this.part.filter((e, i) => this.part.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
 
       if (this.rawmetrieal.length > 0) {
         this.gridOptions1?.api?.setRowData(this.rawmetrieal);
@@ -378,6 +392,7 @@ export class ReturnStockComponent implements OnInit {
         this.gridOptions4?.api?.setRowData([]);
       }
     });
+  }, 100);
 
   }
 
@@ -462,7 +477,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Reject Qty',
-        field: 'rejectedQty',
+        field: 'rejectesum',
         width: 120,
         // flex: 1,
         sortable: true,
@@ -470,58 +485,7 @@ export class ReturnStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      {
-        headerName: 'Dispatch Request',
-        cellRenderer: 'iconRenderer',
-        width: 100,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onApprovedParamsClick.bind(this),
-          label: 'Approval Status',
-        },
-        suppressSizeToFit: true,
-      },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
 
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
-      },
 
     ];
   }
@@ -738,7 +702,7 @@ export class ReturnStockComponent implements OnInit {
   }
 
   getRowStyle1(params) {
-    if (params.data.rejectedQty == 0) {
+    if (params.data.rejectesum == 0) {
       return { 'background-color': '#DE3163' };
     } else {
       return { 'background-color': '#FFFF00' };
@@ -746,7 +710,7 @@ export class ReturnStockComponent implements OnInit {
     return true;
   }
   getRowStyle2(params) {
-    if (params.data.curejectedQty == 0) {
+    if (params.data.curejectesum == 0) {
       return { 'background-color': '#DE3163' };
     } else {
       return { 'background-color': '#FFFF00' };
@@ -755,7 +719,7 @@ export class ReturnStockComponent implements OnInit {
   }
 
   getRowStyle3(params) {
-    if (params.data.cptrejectedQty == 0) {
+    if (params.data.cptrejectesum == 0) {
       return { 'background-color': '#DE3163' };
     } else {
       return { 'background-color': '#FFFF00' };
@@ -763,7 +727,7 @@ export class ReturnStockComponent implements OnInit {
     return true;
   }
   getRowStyle4(params) {
-    if (params.data.prtrejectedQty == 0) {
+    if (params.data.prtrejectesum == 0) {
       return { 'background-color': '#DE3163' };
     } else {
       return { 'background-color': '#FFFF00' };
@@ -849,7 +813,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Reject Quantity',
-        field: 'curejectedQty',
+        field: 'curejectesum',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -857,58 +821,7 @@ export class ReturnStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      {
-        headerName: 'Dispatch Request',
-        cellRenderer: 'iconRenderer',
-        width: 100,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onApprovedParamsCuClick.bind(this),
-          label: 'Approval Status',
-        },
-        suppressSizeToFit: true,
-      },
 
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
-      },
 
     ];
   }
@@ -923,7 +836,7 @@ export class ReturnStockComponent implements OnInit {
     this.gridOptions6.columnDefs = [
       {
         headerName: 'Dispatch Date',
-        field: 'cptdate',
+        field: 'cudate',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -937,7 +850,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Time',
-        field: 'cpttime',
+        field: 'cutime',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -949,7 +862,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'paid Amount',
-        field: 'cptpaidamount',
+        field: 'cupaidamount',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -961,7 +874,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Mode of Dispatch',
-        field: 'cptdispatch',
+        field: 'cudispatch',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -973,7 +886,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Vichle No',
-        field: 'cptvichleno',
+        field: 'cuvichleno',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -985,7 +898,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Person Name',
-        field: 'cptpersonname',
+        field: 'cupersonname',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -997,7 +910,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Mobile Number',
-        field: 'cptmobilenumber',
+        field: 'cumobilenumber',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -1009,7 +922,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Status',
-        field: 'cptstatus',
+        field: 'custatus',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -1021,7 +934,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Reference id No',
-        field: 'cptreferenceid',
+        field: 'cureferenceid',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -1033,7 +946,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Reject Qty',
-        field: 'cptrejectitems',
+        field: 'curejectitems',
         width: 100,
         // flex: 1,
         sortable: true,
@@ -1165,75 +1078,14 @@ export class ReturnStockComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Child Part Quantity',
-        field: 'cptqunty',
-        width: 200,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-      },
-      {
         headerName: 'Reject Quantity',
-        field: 'cptrejectedQty',
+        field: 'cptrejectesum',
         width: 200,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-      },
-      {
-        headerName: 'Material Request',
-        cellRenderer: 'iconRenderer',
-        width: 60,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onApprovedParamsCptClick.bind(this),
-          label: 'Approval Status',
-        },
-        suppressSizeToFit: true,
-      },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
       },
 
     ];
@@ -1492,7 +1344,7 @@ export class ReturnStockComponent implements OnInit {
       },
       {
         headerName: 'Reject Quantity',
-        field: 'prtrejectedQty',
+        field: 'prtrejectesum',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -1500,57 +1352,7 @@ export class ReturnStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      {
-        headerName: 'Material Request',
-        cellRenderer: 'iconRenderer',
-        width: 60,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onApprovedParamsPrtClick.bind(this),
-          label: 'Approval Status',
-        },
-        suppressSizeToFit: true,
-      },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
-      },
+
 
     ];
   }
@@ -1846,6 +1648,141 @@ export class ReturnStockComponent implements OnInit {
     })
   }
 
+  
+
+
+  onMaterialmomentsClick(event: any, ReturnForm: any) {
+
+    let returnstock001wb = new Returnstock001wb();
+    returnstock001wb.date = new Date(this.f.date.value);
+    returnstock001wb.time = this.f.time.value ? this.f.time.value : null;
+    returnstock001wb.paidamount = this.f.paidamount.value ? this.f.paidamount.value : null;
+    returnstock001wb.dispatch = this.f.dispatch.value ? this.f.dispatch.value : "";
+    returnstock001wb.vichleno = this.f.vichleno.value ? this.f.vichleno.value : "";
+    returnstock001wb.personname = this.f.personname.value ? this.f.personname.value : "";
+    returnstock001wb.mobilenumber = this.f.mobilenumber.value ? this.f.mobilenumber.value : null;
+    returnstock001wb.status = this.f.status.value ? this.f.status.value : "";
+    returnstock001wb.referenceid = this.f.referenceid.value ? this.f.referenceid.value : "";
+    returnstock001wb.ordernumber = Number(this.f.ordernumber.value) ? Number(this.f.ordernumber.value) : null;
+    // returnstock001wb.ordernumber = this.f.ordernumber.value ? this.orderitem001mbs.find(x => x.itemcode === this.f.ordernumber.value)?.slNo : null;
+    returnstock001wb.rejectitems = this.f.rejectitems.value ? this.f.rejectitems.value : null;
+
+    returnstock001wb.cudate = this.f.cudate.value ? this.f.cudate.value : "";
+    returnstock001wb.cutime = this.f.cutime.value ? this.f.cutime.value : null;
+    returnstock001wb.cupaidamount = this.f.cupaidamount.value ? this.f.cupaidamount.value : null;
+    returnstock001wb.cudispatch = this.f.cudispatch.value ? this.f.cudispatch.value : "";
+    returnstock001wb.cuvichleno = this.f.cuvichleno.value ? this.f.cuvichleno.value : "";
+    returnstock001wb.cupersonname = this.f.cupersonname.value ? this.f.cupersonname.value : "";
+    returnstock001wb.cumobilenumber = this.f.cumobilenumber.value ? this.f.cumobilenumber.value : null;
+    returnstock001wb.custatus = this.f.custatus.value ? this.f.custatus.value : null;
+    returnstock001wb.cureferenceid = this.f.cureferenceid.value ? this.f.cureferenceid.value : "";
+    returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.f.cuordernumber.value : null;
+    // returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.consumble001mbs.find(x => x.consmno === this.RawMaterialcode.cucode2.consmno)?.slNo : null;
+    returnstock001wb.curejectitems = this.f.curejectitems.value ? this.f.curejectitems.value : null;
+
+    returnstock001wb.cptdate = new Date(this.f.date.value);
+    returnstock001wb.cpttime = this.f.cpttime.value ? this.f.cpttime.value : null;
+    returnstock001wb.cptpaidamount = this.f.cptpaidamount.value ? this.f.cptpaidamount.value : null;
+    returnstock001wb.cptdispatch = this.f.cptdispatch.value ? this.f.cptdispatch.value : "";
+    returnstock001wb.cptvichleno = this.f.cptvichleno.value ? this.f.cptvichleno.value : "";
+    returnstock001wb.cptpersonname = this.f.cptpersonname.value ? this.f.cptpersonname.value : "";
+    returnstock001wb.cptmobilenumber = this.f.cptmobilenumber.value ? this.f.cptmobilenumber.value : null;
+    returnstock001wb.cptstatus = this.f.cptstatus.value ? this.f.cptstatus.value : "";
+    returnstock001wb.cptreferenceid = this.f.cptreferenceid.value ? this.f.cptreferenceid.value : "";
+    returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.f.childpartnumber.value : null;
+    // returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.childPart001mbs.find(x => x.cpartno === this.RawMaterialcode.cptcode2.cpartno)?.slNo : null;
+    returnstock001wb.cptrejectitems = this.f.cptrejectitems.value ? this.f.cptrejectitems.value : null;
+
+
+    returnstock001wb.prtdate = new Date(this.f.date.value);
+    returnstock001wb.prttime = this.f.prttime.value ? this.f.prttime.value : null;
+    returnstock001wb.prtpaidamount = this.f.prtpaidamount.value ? this.f.prtpaidamount.value : null;
+    returnstock001wb.prtdispatch = this.f.prtdispatch.value ? this.f.prtdispatch.value : "";
+    returnstock001wb.prtvichleno = this.f.prtvichleno.value ? this.f.prtvichleno.value : "";
+    returnstock001wb.prtpersonname = this.f.prtpersonname.value ? this.f.prtpersonname.value : "";
+    returnstock001wb.prtmobilenumber = this.f.prtmobilenumber.value ? this.f.prtmobilenumber.value : null;
+    returnstock001wb.prtstatus = this.f.prtstatus.value ? this.f.prtstatus.value : "";
+    returnstock001wb.prtreferenceid = this.f.prtreferenceid.value ? this.f.prtreferenceid.value : "";
+    returnstock001wb.partnumber = this.f.partnumber.value ? this.f.partnumber.value : null;
+    // returnstock001wb.partnumber = this.f.partnumber.value ? this.part001mbs.find(x => x.partno === this.RawMaterialcode.prtcode2.partno)?.slNo : null
+    returnstock001wb.prtrejectitems = this.f.prtrejectitems.value ? this.f.prtrejectitems.value : null;
+
+
+
+
+
+
+    if (this.slNo) {
+      returnstock001wb.slNo = this.slNo;
+      returnstock001wb.unitslno = this.unitslno;
+      returnstock001wb.insertUser = this.insertUser;
+      returnstock001wb.insertDatetime = this.insertDatetime;
+      returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.updatedDatetime = new Date();
+      this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
+        this.ReturnForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      returnstock001wb.date = new Date();
+      returnstock001wb.cudate = new Date();
+      returnstock001wb.cptdate = new Date();
+      returnstock001wb.prtdate = new Date();
+      returnstock001wb.unitslno = this.user.unitslno;
+      returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.insertDatetime = new Date();
+      console.log("returnstock001wb", returnstock001wb);
+
+      this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
+        this.ReturnForm.reset();
+        this.ReturnForm.patchValue(
+          { date: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+        this.ReturnForm.patchValue(
+          { cudate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+        this.ReturnForm.patchValue(
+          { cptdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+        this.ReturnForm.patchValue(
+          { prtdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+       
+        this.loadData();
+        this.submitted = false;
+        // this.activeModal.close("Yes");
+      });
+
+    }
+
+  }
+  onReset() {
+
+  }
+
+  onChange(event: any) {
+
+    // this.materialInspectionManager.findOne(event.target.value).subscribe(response => {
+    //   this.materialinspection001wb = deserialize<Materialinspection001wb[]>(Materialinspection001wb, response);
+    //   console.log("");
+      
+    // });
+
+    this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
+      this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
+      this.ReturnForm.patchValue({
+        'rejectitems': this.rawmaterialinspection001wb.rejectesum,
+        'curejectitems': this.rawmaterialinspection001wb.curejectesum,
+        'cptrejectitems': this.rawmaterialinspection001wb.cptrejectesum,
+        'prtrejectitems': this.rawmaterialinspection001wb.prtrejectesum,
+      })
+    });
+  }
+
   // --------------Item-Pdf-----------------
 
   itemViewButtonClick(params: any) {
@@ -1954,113 +1891,106 @@ export class ReturnStockComponent implements OnInit {
 
   }
 
-
-  onMaterialmomentsClick(event: any, ReturnForm: any) {
-    let returnstock001wb = new Returnstock001wb();
-    returnstock001wb.date = new Date(this.f.date.value);
-    returnstock001wb.time = this.f.time.value ? this.f.time.value : null;
-    returnstock001wb.paidamount = this.f.paidamount.value ? this.f.paidamount.value : null;
-    returnstock001wb.dispatch = this.f.dispatch.value ? this.f.dispatch.value : "";
-    returnstock001wb.vichleno = this.f.vichleno.value ? this.f.vichleno.value : "";
-    returnstock001wb.personname = this.f.personname.value ? this.f.personname.value : "";
-    returnstock001wb.mobilenumber = this.f.mobilenumber.value ? this.f.mobilenumber.value : null;
-    returnstock001wb.status = this.f.status.value ? this.f.status.value : "";
-    returnstock001wb.referenceid = this.f.referenceid.value ? this.f.referenceid.value : "";
-    returnstock001wb.ordernumber =Number( this.f.ordernumber.value) ? Number(this.f.ordernumber.value) : null;
-    // returnstock001wb.ordernumber = this.f.ordernumber.value ? this.orderitem001mbs.find(x => x.itemcode === this.f.ordernumber.value)?.slNo : null;
-    returnstock001wb.rejectitems = this.f.rejectitems.value ? this.f.rejectitems.value : null;
-
-    returnstock001wb.cudate = this.f.cudate.value ? this.f.cudate.value : "";
-    returnstock001wb.cutime = this.f.cutime.value ? this.f.cutime.value : null;
-    returnstock001wb.cupaidamount = this.f.cupaidamount.value ? this.f.cupaidamount.value : null;
-    returnstock001wb.cudispatch = this.f.cudispatch.value ? this.f.cudispatch.value : "";
-    returnstock001wb.cuvichleno = this.f.cuvichleno.value ? this.f.cuvichleno.value : "";
-    returnstock001wb.cupersonname = this.f.cupersonname.value ? this.f.cupersonname.value : "";
-    returnstock001wb.cumobilenumber = this.f.cumobilenumber.value ? this.f.cumobilenumber.value : null;
-    returnstock001wb.custatus = this.f.custatus.value ? this.f.custatus.value : null;
-    returnstock001wb.cureferenceid = this.f.cureferenceid.value ? this.f.cureferenceid.value : "";
-    returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.f.cuordernumber.value : null;
-    // returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.consumble001mbs.find(x => x.consmno === this.RawMaterialcode.cucode2.consmno)?.slNo : null;
-    returnstock001wb.curejectitems = this.f.curejectitems.value ? this.f.curejectitems.value : null;
-
-    returnstock001wb.cptdate = new Date(this.f.date.value);
-    returnstock001wb.cpttime = this.f.cpttime.value ? this.f.cpttime.value : null;
-    returnstock001wb.cptpaidamount = this.f.cptpaidamount.value ? this.f.cptpaidamount.value : null;
-    returnstock001wb.cptdispatch = this.f.cptdispatch.value ? this.f.cptdispatch.value : "";
-    returnstock001wb.cptvichleno = this.f.cptvichleno.value ? this.f.cptvichleno.value : "";
-    returnstock001wb.cptpersonname = this.f.cptpersonname.value ? this.f.cptpersonname.value : "";
-    returnstock001wb.cptmobilenumber = this.f.cptmobilenumber.value ? this.f.cptmobilenumber.value : null;
-    returnstock001wb.cptstatus = this.f.cptstatus.value ? this.f.cptstatus.value : "";
-    returnstock001wb.cptreferenceid = this.f.cptreferenceid.value ? this.f.cptreferenceid.value : "";
-    returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.f.childpartnumber.value : null;
-    // returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.childPart001mbs.find(x => x.cpartno === this.RawMaterialcode.cptcode2.cpartno)?.slNo : null;
-    returnstock001wb.cptrejectitems = this.f.cptrejectitems.value ? this.f.cptrejectitems.value : null;
-
-
-    returnstock001wb.prtdate = new Date(this.f.date.value);
-    returnstock001wb.prttime = this.f.prttime.value ? this.f.prttime.value : null;
-    returnstock001wb.prtpaidamount = this.f.prtpaidamount.value ? this.f.prtpaidamount.value : null;
-    returnstock001wb.prtdispatch = this.f.prtdispatch.value ? this.f.prtdispatch.value : "";
-    returnstock001wb.prtvichleno = this.f.prtvichleno.value ? this.f.prtvichleno.value : "";
-    returnstock001wb.prtpersonname = this.f.prtpersonname.value ? this.f.prtpersonname.value : "";
-    returnstock001wb.prtmobilenumber = this.f.prtmobilenumber.value ? this.f.prtmobilenumber.value : null;
-    returnstock001wb.prtstatus = this.f.prtstatus.value ? this.f.prtstatus.value : "";
-    returnstock001wb.prtreferenceid = this.f.prtreferenceid.value ? this.f.prtreferenceid.value : "";
-    returnstock001wb.partnumber = this.f.partnumber.value ? this.f.partnumber.value : null;
-    // returnstock001wb.partnumber = this.f.partnumber.value ? this.part001mbs.find(x => x.partno === this.RawMaterialcode.prtcode2.partno)?.slNo : null
-    returnstock001wb.prtrejectitems = this.f.prtrejectitems.value ? this.f.prtrejectitems.value : null;
-
-
-
-
-
-
-    if (this.slNo) {
-      returnstock001wb.slNo = this.slNo;
-      returnstock001wb.unitslno = this.unitslno;
-      returnstock001wb.insertUser = this.insertUser;
-      returnstock001wb.insertDatetime = this.insertDatetime;
-      returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
-      returnstock001wb.updatedDatetime = new Date();
-      this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
-        this.ReturnForm.reset();
-        this.loadData();
-        this.slNo = null;
-        this.submitted = false;
-      });
-    } else {
-      returnstock001wb.date = new Date();
-      returnstock001wb.cudate = new Date();
-      returnstock001wb.cptdate = new Date();
-      returnstock001wb.prtdate = new Date();
-      returnstock001wb.unitslno = this.user.unitslno;
-      returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
-      returnstock001wb.insertDatetime = new Date();
-      this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
-
-
-        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
-        this.ReturnForm.reset();
-        this.loadData();
-        this.submitted = false;
-        // this.activeModal.close("Yes");
-      });
-
-    }
-
-  }
-  onReset() {
-
+// item code
+  onViewItemClick(){
+    this.returnStockManager.itemFullpdfId( this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
   }
 
-  onChange(event: any) {
-    this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
-      this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
-      this.ReturnForm.patchValue({
-        'rejectitems': this.rawmaterialinspection001wb.rejectedQty,
-      })
-    });
+  onGenerateItemPdfReport(){
+    this.returnStockManager.itemFullpdfId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Raw-material-Details" + newDate);
+    })
+  }
+
+  onGenerateItemExcelReport(){
+    this.returnStockManager.itemFullExcelId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Raw-material-Details" + newDate);
+    })
+  }
+
+  // consumable
+  onViewConsumerClick(){
+    this.returnStockManager.consumFullpdfId( this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  onGenerateConsumerPdfReport(){
+    this.returnStockManager.consumFullpdfId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Consumable-Item-Details" + newDate);
+    })
+  }
+
+  onGenerateConsumerExcelReport(){
+    this.returnStockManager.consumFullExcelId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Consumable-Item-Details" + newDate);
+    })
+  }
+
+  // childcode
+  onViewchildcodeClick(){
+    this.returnStockManager.cpartFullpdfId( this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  onGeneratechildcodePdfReport(){
+    this.returnStockManager.cpartFullpdfId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Child-Part-Details" + newDate);
+    })
+  }
+
+  onGeneratechildcodeExcelReport(){
+    this.returnStockManager.cpartFullExcelId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Child-Part-Details" + newDate);
+    })
+  }
+
+  // partcode
+  onViewPrtClick(){
+    this.returnStockManager.partFullpdfId( this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  onGeneratePrtPdfReport(){
+    this.returnStockManager.partFullpdfId( this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Part-Details" + newDate);
+    })
+  }
+
+  onGeneratePrtExcelReport(){
+    this.returnStockManager.partFullExcelId(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "ReturnStock-Part-Details" + newDate);
+    })
+
+
   }
 
 }

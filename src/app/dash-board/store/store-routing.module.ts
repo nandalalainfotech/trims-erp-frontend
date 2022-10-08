@@ -7,6 +7,7 @@ import { MaterialMomentsComponent } from './material-moments/material-moments.co
 import { MaterialReqSlipComponent } from './material-req-slip/material-req-slip.component';
 import { MaterialStockComponent } from './material-stock/material-stock.component';
 import { ReturnStockComponent } from './return-stock/return-stock.component';
+import { StockComponent } from './stock/stock.component';
 import { StoreComponent } from './store.component';
 
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
         component: MaterialMomentsComponent
       },
       {
+        path: "app-stock",
+        component: StockComponent
+      },
+      {
         path: "app-material-stock",
         component: MaterialStockComponent
       },
@@ -41,7 +46,8 @@ const routes: Routes = [
       {
         path: "app-return-stock",
         component: ReturnStockComponent
-      }
+      },
+      
     ]
   }
 ];

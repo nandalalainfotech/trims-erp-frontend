@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { APP_ID, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions } from 'ag-grid-community';
@@ -31,6 +31,7 @@ import { Materialinward001wb } from 'src/app/shared/services/restcontroller/enti
 import { MaterialreceiveditemManager } from 'src/app/shared/services/restcontroller/bizservice/Materialreceiveditem.service';
 import { Materialreceiveditem001wb } from 'src/app/shared/services/restcontroller/entities/Materialreceiveditem001wb';
 import { MaterialMomentsManager } from 'src/app/shared/services/restcontroller/bizservice/Materialmoments.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-material-moments',
@@ -85,6 +86,7 @@ export class MaterialMomentsComponent implements OnInit {
   unitslno: number | any;
   rawmaterialinspection001wbs: Rawmaterialinspection001wb[] = [];
   rawmaterialinspection001wb?: Rawmaterialinspection001wb;
+  rawmaterialinspection: Rawmaterialinspection001wb[] | any;
   orderitem001mbs: Orderitem001mb[] = [];
   orderitem001mb?: Orderitem001mb;
   childPart001mbs: ChildPart001mb[] = [];
@@ -108,7 +110,13 @@ export class MaterialMomentsComponent implements OnInit {
   materialreceiveditem001wbs: Materialreceiveditem001wb[] = [];
   materialreceiveditem001wb?: Materialreceiveditem001wb;
 
-  
+  orderItems: any = [];
+  ConsumerItems: any = [];
+  ChildItems: any = [];
+  partItems: any = [];
+
+
+
 
 
   constructor(private formBuilder: FormBuilder,
@@ -140,27 +148,18 @@ export class MaterialMomentsComponent implements OnInit {
     this.createDataGrid003();
     this.createDataGrid004();
 
-    this.loadData();
+    let allorderItem = this.orderItemSettingManager.allitem(this.user.unitslno);
+    let allchildPart = this.childPartManager.allChildpart(this.user.unitslno);
+    let allconsumble = this.consumbleManager.allconsumble(this.user.unitslno);
+    let allpart = this.partManager.allpart(this.user.unitslno);
+    let allrawmaterial = this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno);
 
-    this.orderItemSettingManager.allitem(this.user.unitslno).subscribe(response => {
-      this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb, response);
-
-    });
-
-    this.childPartManager.allChildpart(this.user.unitslno).subscribe(response => {
-      this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, response);
-    });
-
-    this.consumbleManager.allconsumble(this.user.unitslno).subscribe(response => {
-      this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, response);
-    });
-
-    this.partManager.allpart(this.user.unitslno).subscribe(response => {
-      this.part001mbs = deserialize<Part001mb[]>(Part001mb, response);
-    });
-
-    this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
-      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+    forkJoin([allorderItem, allchildPart, allconsumble, allpart, allrawmaterial]).subscribe((result: any) => {
+      this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb, result[0]);
+      this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, result[1]);
+      this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, result[2]);
+      this.part001mbs = deserialize<Part001mb[]>(Part001mb, result[3]);
+      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, result[4]);
 
       for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
         if (this.rawmaterialinspection001wbs[i].itemcode) {
@@ -177,11 +176,28 @@ export class MaterialMomentsComponent implements OnInit {
         }
         console.log("this.rawmaterialinspection001wbs",this.rawmetriealcodes);
       }
-      
-    });
 
-    this.purchaseorderManager.allpurchaseorder(this.user.unitslno).subscribe(response => {
-      this.orders = deserialize<Purchaseorder001wb[]>(Purchaseorder001wb, response);
+      this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+      this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
+      this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+      this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+      
+      for(let i=0;i<this.rawmaterialinspection001wbs.length; i++) {
+        if (this.rawmaterialinspection001wbs[i].itemcode) {
+          this.orderItems.push(this.rawmaterialinspection001wbs[i])
+        }
+        if (this.rawmaterialinspection001wbs[i].cucode) {
+          this.ConsumerItems.push(this.rawmaterialinspection001wbs[i])
+        }
+        if (this.rawmaterialinspection001wbs[i].cptcode) {
+          this.ChildItems.push(this.rawmaterialinspection001wbs[i])
+        }
+        if (this.rawmaterialinspection001wbs[i].prtcode) {
+          this.partItems.push(this.rawmaterialinspection001wbs[i])
+        }
+      }
+      
+      this.loadData();
     });
 
    
@@ -228,11 +244,12 @@ export class MaterialMomentsComponent implements OnInit {
       this.materialmoments001wbs = deserialize<Materialmoments001wb[]>(Materialmoments001wb, response);
       
       for (let i = 0; i < this.materialmoments001wbs.length; i++) {
-        if (this.materialmoments001wbs[i].consumslno) {
-          this.consumable.push(this.materialmoments001wbs[i])
-        }
+
         if (this.materialmoments001wbs[i].itemslno) {
           this.rawmetrieal.push(this.materialmoments001wbs[i])
+        }
+        if (this.materialmoments001wbs[i].consumslno) {
+          this.consumable.push(this.materialmoments001wbs[i])
         }
         if (this.materialmoments001wbs[i].childslno) {
           this.childpart.push(this.materialmoments001wbs[i])
@@ -289,6 +306,7 @@ export class MaterialMomentsComponent implements OnInit {
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
+        valueGetter: this.setitemcode.bind(this)
       },
       {
         headerName: 'Issued Qty',
@@ -382,6 +400,19 @@ export class MaterialMomentsComponent implements OnInit {
 
     ];
   }
+
+
+
+
+  setitemcode(params: any): string {
+    let item = params.data.itemslno ? this.orderItems.find(x=>x.slNo === params.data.itemslno)?.itemcode2.itemcode:null;
+    return item
+  }
+
+
+
+
+
   createDataGrid002(): void {
     this.gridOptions2 = {
       paginationPageSize: 10,
@@ -406,6 +437,7 @@ export class MaterialMomentsComponent implements OnInit {
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
+        valueGetter: this.setConsumable.bind(this)
       },
       {
         headerName: 'Issued Qty',
@@ -499,6 +531,12 @@ export class MaterialMomentsComponent implements OnInit {
 
     ];
   }
+
+  setConsumable(params: any): string {
+    let consumer = params.data.consumslno ? this.ConsumerItems.find(x=>x.slNo === params.data.consumslno)?.cucode2.consmno:null;
+    return consumer ;
+  }
+
   createDataGrid003(): void {
     this.gridOptions3 = {
       paginationPageSize: 10,
@@ -523,6 +561,7 @@ export class MaterialMomentsComponent implements OnInit {
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
+        valueGetter: this.setChild.bind(this)
       },
       {
         headerName: 'Issued Qty',
@@ -616,6 +655,17 @@ export class MaterialMomentsComponent implements OnInit {
 
     ];
   }
+
+  setChild(params: any): string {
+    let childitem = params.data.childslno ? this.ChildItems.find(x=>x.slNo === params.data.childslno)?.cptcode2.cpartno: null;
+    return childitem ;
+  }
+
+  setpart(params: any): string {
+    let partitem = params.data.prtslno ?  this.partItems.find(x=>x.slNo=== params.data.prtslno)?.prtcode2.partno : null;
+    return partitem;
+  }
+
   createDataGrid004(): void {
     this.gridOptions4 = {
       paginationPageSize: 10,
@@ -635,6 +685,7 @@ export class MaterialMomentsComponent implements OnInit {
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
+        valueGetter: this.setpart.bind(this)
       },
       {
         headerName: 'Issued Qty',

@@ -75,7 +75,7 @@ acceptIcon="fa fa-plus"
             </div>
         </fieldset>
     </div>
-    <div class="tab-pane fade  " id="opt1">
+    <div *ngIf="Returnitems=='Consumable Item'">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">Consumable Items</legend>
             <div class="formData">
@@ -90,13 +90,13 @@ acceptIcon="fa fa-plus"
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="cuname" for="cuname" cssClass="required">Item Name</label>
-                                <input type="cuname" class="form-control" path="cuname" formControlName="cuname" />
+                                <input type="cuname" class="form-control" path="cuname" formControlName="cuname" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="cudescrip" for="cudescrip" cssClass="required">Descripstion</label>
-                                <input OnlyNumber class="form-control" formControlName="cudescrip" />
+                                <input OnlyNumber class="form-control" formControlName="cudescrip" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
@@ -118,7 +118,7 @@ acceptIcon="fa fa-plus"
             </div>
         </fieldset>
     </div>
-    <div class="tab-pane fade  " id="opt2">
+    <div *ngIf="Returnitems=='Child Part'">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">Raw Matrieal</legend>
             <div class="formData">
@@ -133,13 +133,13 @@ acceptIcon="fa fa-plus"
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="cptname" for="cptname" cssClass="required">ChildPar Name</label>
-                                <input type="cptname" class="form-control" path="cptname" formControlName="cptname" />
+                                <input type="cptname" class="form-control" path="cptname" formControlName="cptname" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="cptdescrip" for="cptdescrip" cssClass="required">Descripstion</label>
-                                <input OnlyNumber class="form-control" formControlName="cptdescrip" />
+                                <input OnlyNumber class="form-control" formControlName="cptdescrip" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
@@ -161,7 +161,7 @@ acceptIcon="fa fa-plus"
             </div>
         </fieldset>
     </div>
-    <div class="tab-pane fade  " id="opt3">
+    <div *ngIf="Returnitems=='Part'">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">Part</legend>
             <div class="formData">
@@ -176,13 +176,13 @@ acceptIcon="fa fa-plus"
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="prtname" for="prtname" cssClass="required">Part Name</label>
-                                <input type="prtname" class="form-control" path="prtname" formControlName="prtname" />
+                                <input type="prtname" class="form-control" path="prtname" formControlName="prtname" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
                             <div class="form-group">
                                 <label path="prtdescrip" for="prtdescrip" cssClass="required">Descripstion</label>
-                                <input OnlyNumber class="form-control" formControlName="prtdescrip" />
+                                <input OnlyNumber class="form-control" formControlName="prtdescrip" readonly/>
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3">
