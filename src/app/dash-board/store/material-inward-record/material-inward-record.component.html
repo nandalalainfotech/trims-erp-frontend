@@ -67,12 +67,17 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <div class="form-group">
-                                <label path="purchseSlno" for="purchseSlno" cssClass="required">P.O No</label>
+                                <label path="purchseSlno" for="purchseSlno" cssClass="required">P.O No.</label>
                                 <select class="form-control" path="purchseSlno" formControlName="purchseSlno" (change)="onChangePONumber($event)">
                                     <option value=""> -Select P.O No- </option>
                                     <option *ngFor="let purOrdersNumber of purOrdersNumbers" [value]="purOrdersNumber.slNo">
                                         {{purOrdersNumber.pono}} </option>
                                 </select>
+                                <div *ngIf="submitted && f.purchseSlno.errors" class="invalid-feedback">
+                                    <div *ngIf="f.purchseSlno.errors.required">
+                                        P.O No. is Required
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
@@ -108,11 +113,11 @@
                             <div class="form-group">
                                 <label path="vehicleno" for="vehicleno" cssClass="required">Vehicle No</label>
                                 <input type="text" class="form-control" path="vehicleno" formControlName="vehicleno" />
-                                <!-- <div *ngIf="submitted && f.grm.errors" class="invalid-feedback">
-                                    <div *ngIf="f.grm.errors.required">
-                                        GRN is Required
+                                <div *ngIf="submitted && f.vehicleno.errors" class="invalid-feedback">
+                                    <div *ngIf="f.vehicleno.errors.required">
+                                        Vehicle No is Required
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,11 +129,11 @@
                             <div class="form-group">
                                 <label path="drivername" for="drivername" cssClass="required">Driver Name</label>
                                 <input OnlyLetter type="text" class="form-control" path="drivername" formControlName="drivername" />
-                                <!-- <div *ngIf="submitted && f.grm.errors" class="invalid-feedback">
-                                    <div *ngIf="f.grm.errors.required">
-                                        GRN is Required
+                                <div *ngIf="submitted && f.drivername.errors" class="invalid-feedback">
+                                    <div *ngIf="f.drivername.errors.required">
+                                        Driver Name is Required
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -136,12 +141,13 @@
                         <div class="form-group">
                             <div class="form-group">
                                 <label path="driverno" for="driverno" cssClass="required">Driver Contact No</label>
-                                <input OnlyNumber type="text" class="form-control" path="driverno" formControlName="driverno" />
-                                <!-- <div *ngIf="submitted && f.grm.errors" class="invalid-feedback">
-                                    <div *ngIf="f.grm.errors.required">
-                                        GRN is Required
-                                    </div>
-                                </div> -->
+                                <input OnlyNumber type="text" class="form-control" path="driverno"
+                                    formControlName="driverno" maxlength="10" />
+                                <div *ngIf="submitted && f.driverno.errors" class="invalid-feedback">
+                                    <div *ngIf="f.driverno.errors.required"> Contact No is Required</div>
+                                    <div *ngIf="f.driverno.errors.minlength">Contact Number is invalid</div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,11 +156,11 @@
                             <div class="form-group">
                                 <label path="remark" for="remark" cssClass="required">Remarks</label>
                                 <input type="text" class="form-control" path="remark" formControlName="remark" />
-                                <!-- <div *ngIf="submitted && f.grm.errors" class="invalid-feedback">
-                                    <div *ngIf="f.grm.errors.required">
-                                        GRN is Required
+                                <div *ngIf="submitted && f.remark.errors" class="invalid-feedback">
+                                    <div *ngIf="f.remark.errors.required">
+                                        Remarks is Required
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>

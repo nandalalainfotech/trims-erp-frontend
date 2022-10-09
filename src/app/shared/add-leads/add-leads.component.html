@@ -47,13 +47,13 @@ acceptIcon="fa fa-plus"
               <div class="col-xs-2 col-sm-2">
                 <div class="form-group">
                     <label path="mnumber" for="mnumber" cssClass="required">Moblie Number</label>
-                    <input OnlyNumber class="form-control" path="mnumber" formControlName="mnumber" />
+                    <input OnlyNumber class="form-control" path="mnumber" formControlName="mnumber" maxlength="10" [ngClass]="{'is-invalid': submitted && f.mnumber.errors}"/>
                 </div>
               </div>
               <div class="col-xs-1 col-sm-1">
                 <div class="form-group">
                     <label path="altmnumber" for="altmnumber" cssClass="required">TelePhone</label>
-                    <input OnlyNumber class="form-control" path="altmnumber" formControlName="altmnumber"/>
+                    <input OnlyNumber class="form-control" path="altmnumber" formControlName="altmnumber" maxlength="10" [ngClass]="{'is-invalid': submitted && f.altmnumber.errors}"/>
                 </div>
               </div>
               <div class="col-xs-1 col-sm-1">

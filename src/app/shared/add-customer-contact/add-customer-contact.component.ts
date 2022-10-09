@@ -100,25 +100,10 @@ export class AddCustomerContactComponent implements OnInit {
       department: ['', Validators.required],
       level: ['', Validators.required],
 
-      mnumber: [
-        null,
-        [
-          // Validators.required,
-          // Validators.pattern('^[0-9]*$'),
-          // Validators.minLength(10),
-          // Validators.maxLength(10),
-        ],
-      ],
-      altmnumber: [
-        '',
-        [
-          Validators.required,
-          // Validators.pattern('^[0-9]*$'),
-          // Validators.minLength(10),
-          // Validators.maxLength(10),
-        ],
-      ],
-      mailid: ['', Validators.required],
+     
+      mnumber:['',  [Validators.required,Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]],
+      altmnumber:['',[Validators.required,Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]],
+      mailid: ['', [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     });
   }
   addItem() {

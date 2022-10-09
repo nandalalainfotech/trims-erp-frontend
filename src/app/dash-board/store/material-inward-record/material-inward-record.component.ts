@@ -120,7 +120,7 @@ export class MaterialInwardRecordComponent implements OnInit {
       grn: ['', Validators.required],
       vehicleno: ['', Validators.required],
       drivername: ['', Validators.required],
-      driverno: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      driverno: ['',  [Validators.required,Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]],
       remark: ['', Validators.required],
     })
   }

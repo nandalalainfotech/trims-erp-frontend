@@ -81,14 +81,20 @@ export class CustomerConsigneeMasterComponent implements OnInit {
       address1: ['', Validators.required],
       address2: ['', Validators.required],
       address3: ['', Validators.required],
-      gstIn: ['', Validators.required],
+      // gstIn: ['', Validators.required],
+      gstIn: ['', [Validators.required,
+        Validators.minLength(11), Validators.maxLength(11)]],
+		
       city: ['', Validators.required],
       state: ['', Validators.required],
       country: ['', Validators.required],
-      pinCode: ['', Validators.required],
-      emailId: ['', Validators.required],
-      contactNo: ['', [Validators.required]
-     ],
+      // pinCode: ['', Validators.required],
+      pinCode: ['', [Validators.required,Validators.pattern("^[0-9]*$"),Validators.minLength(6)]],
+      contactNo:['',  [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10)]],
+      // emailId: ['', Validators.required],
+      emailId: ['', [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+    //   contactNo: ['', [Validators.required]
+    //  ],
     })
 
     this.custmerRegManager.allCustmerreg(this.user.unitslno).subscribe(response => {
