@@ -52,11 +52,10 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="gstIn" for="gstIn" cssClass="required">GSTIN</label>
-                            <input type="text" class="form-control" path="gstIn" formControlName="gstIn" [ngClass]="{'is-invalid': submitted && f.gstIn.errors}" />
+                            <input type="text" class="form-control" path="gstIn" formControlName="gstIn" maxlength="11" [ngClass]="{'is-invalid': submitted && f.gstIn.errors}" />
                             <div *ngIf="submitted && f.gstIn.errors" class="invalid-feedback">
-                                <div *ngIf="f.gstIn.errors.required">
-                                    GSTIN is Required
-                                </div>
+                                <div *ngIf="f.gstIn.errors.required"> GSTIN is Required </div>
+                                <div *ngIf="f.gstIn.errors.minlength"> GSTIN is Invalid </div>
                             </div>
                         </div>
                     </div>
@@ -101,11 +100,11 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="pinCode" for="pinCode" cssClass="required">Pin Code</label>
-                            <input OnlyNumber type="text" class="form-control" path="pinCode" formControlName="pinCode" [ngClass]="{'is-invalid': submitted && f.pinCode.errors}" />
+                            <input OnlyNumber type="text" class="form-control" path="pinCode" formControlName="pinCode" maxlength="6" [ngClass]="{'is-invalid': submitted && f.pinCode.errors}" />
                             <div *ngIf="submitted && f.pinCode.errors" class="invalid-feedback">
-                                <div *ngIf="f.pinCode.errors.required">
-                                    Pin Code is Required
-                                </div>
+                                <div *ngIf="f.pinCode.errors.required">Pin Code is Required</div>
+                                <div *ngIf="f.pinCode.errors?.minlength">Pin Code is Invalid</div>
+                                <!-- <div *ngIf="f.pinCode.errors.pattern">  Pin Code is Invalid </div> -->
                             </div>
                         </div>
                     </div>
@@ -118,19 +117,21 @@
                             <label path="emailId" for="emailId" cssClass="required">Email ID</label>
                             <input type="text" class="form-control" path="emailId" formControlName="emailId" [ngClass]="{'is-invalid': submitted && f.emailId.errors}" />
                             <div *ngIf="submitted && f.emailId.errors" class="invalid-feedback">
-                                <div *ngIf="f.emailId.errors.required">
-                                    Email ID is Required
-                                </div>
+                                <div *ngIf="f.emailId.errors.required">Email ID is Required</div>
+                                <div *ngIf="f.emailId.errors.pattern">Email ID is Invalid</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="contactNo" for="contactNo" cssClass="required">Contact No</label>
-                            <input OnlyNumber type="text" class="form-control" path="contactNo" formControlName="contactNo" [ngClass]="{'is-invalid': submitted && f.contactNo.errors}" />
+                            <input OnlyNumber type="text" class="form-control" path="contactNo" formControlName="contactNo" maxlength="10" [ngClass]="{'is-invalid': submitted && f.contactNo.errors}" />
                             <div *ngIf="submitted && f.contactNo.errors" class="invalid-feedback">
                                 <div *ngIf="f.contactNo.errors.required">
                                     Contact No is Required
+                                </div>
+                                <div *ngIf="f.contactNo.errors?.minlength">
+                                    Contact No is Invalid
                                 </div>
                             </div>
                         </div>

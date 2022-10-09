@@ -86,9 +86,8 @@ export class AddLeadsComponent implements OnInit {
             designation: ['', Validators.required],
             department: ['', Validators.required],
             level: ['', Validators.required],
-
-            mnumber:['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-            altmnumber: ['', [Validators.required, Validators.pattern("^[0-9_-]{10,15}")]],
+            mnumber:['',  [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]],
+            altmnumber: ['',  [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]],
             mailid: ['', [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
         });
     }
