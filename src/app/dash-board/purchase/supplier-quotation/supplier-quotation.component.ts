@@ -703,7 +703,6 @@ export class SupplierQuotationComponent implements OnInit {
   }
 
   onEditButtonClick(params: any) {
-    console.log("params", params.data);
     
     if (params.data.status != 'Approved') {
       this.slNo = params.data.slNo;
@@ -813,13 +812,11 @@ export class SupplierQuotationComponent implements OnInit {
     } else if (this.consumableTAmount ? (this.consumableTAmount >= 10000) : false) {
       supplierquotation001wb.status = "Waiting For Request";
     } else if (this.childparTAmount ? (this.childparTAmount >= 10000) : false) {
-      console.log("hi");
 
       supplierquotation001wb.status = "Waiting For Request";
     } else if (this.partTAmount ? (this.partTAmount >= 10000) : false) {
       supplierquotation001wb.status = "Waiting For Request";
     } else {
-      console.log("hi Naresh");
       supplierquotation001wb.status = "Approved";
     }
     if (this.slNo) {

@@ -102,7 +102,6 @@ export class PurchaseReqSlipComponent implements OnInit {
       this.itemcode = params["itemcode"];
       this.itemname = params["itemname"];
       this.descrip = params["descrip"];
-      console.log("qunty",this.poNo);
       
     });
      setTimeout(() => {
@@ -115,7 +114,6 @@ export class PurchaseReqSlipComponent implements OnInit {
       });
     // this.router.paramMap.subscribe((params: ParamMap) => {
     //   this.poNo = params.get('qunty');
-    //   console.log("this.poNo",this.poNo);
       
     // });
 

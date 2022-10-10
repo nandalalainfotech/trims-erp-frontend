@@ -21,7 +21,6 @@ export class PurchasereqslipManager extends BaseService {
     }
 
     purchaseslipupdate(purchasereqslip001wb: Purchasereqslip001wb) {
-        console.log("purchasereqslip001wb===>",purchasereqslip001wb);
         
         return this.putCallService(`${this.PurchasereqslipUrl}` + "/update", {}, purchasereqslip001wb);
     }

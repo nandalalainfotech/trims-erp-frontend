@@ -21,7 +21,6 @@ export class PurchaseorderManager extends BaseService {
     }
 
     purchaseorderupdate(purchaseorder001wb: Purchaseorder001wb) {
-        console.log("purchaseorder001wb==>",purchaseorder001wb);
         
         return this.putCallService(`${this.PurchaseorderUrl}` + "/update", {}, purchaseorder001wb);
     }
