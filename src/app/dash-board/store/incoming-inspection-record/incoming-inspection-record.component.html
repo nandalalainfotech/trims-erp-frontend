@@ -62,7 +62,7 @@
                                         class="invalid-feedback"
                                     >
                                         <div *ngIf="f.scname.errors.required">
-                                            Date is Required
+                                            Supplier Name is Required
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +113,11 @@
                                         path="refno"
                                         formControlName="refno"
                                     />
+                                    <div *ngIf="submitted && f.refno.errors" class="invalid-feedback">
+                                        <div *ngIf="f.refno.errors.required">
+                                           Reference is Required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,6 +213,11 @@
                                 <option *ngFor="let materialinward001wb of materialinward001wbs" [value]="materialinward001wb.slNo">
                                     {{materialinward001wb.grn}} </option>
                             </select>
+                            <div *ngIf="submitted && f.grnumber.errors" class="invalid-feedback">
+                                <div *ngIf="f.grnumber.errors.required">
+                                    Goods Recived No is Required
+                                </div>
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -222,6 +232,11 @@
                                 path="remark"
                                 formControlName="remark"
                             />
+                            <div *ngIf="submitted && f.remark.errors" class="invalid-feedback">
+                                <div *ngIf="f.remark.errors.required">
+                                    Remark is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

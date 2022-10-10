@@ -116,7 +116,7 @@ export class MaterialInwardRecordComponent implements OnInit {
       dcNo: ['', Validators.required],
       invoiceno: ['', Validators.required],
       dcDate: ['', Validators.required],
-      supliername: ['', Validators.required],
+      supliername: [''],
       grn: ['', Validators.required],
       vehicleno: ['', Validators.required],
       drivername: ['', Validators.required],

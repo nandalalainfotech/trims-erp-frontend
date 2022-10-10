@@ -91,12 +91,12 @@ export class IncomingInspectionRecordComponent implements OnInit {
       cdate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
       scname: ['', Validators.required],
       dcno: ['', Validators.required],
-      refno: [''],
+      refno: ['', Validators.required],
       pdate: ['', Validators.required],
       cponumber: ['', Validators.required],
       sponumber: ['', Validators.required],
       grnumber: ['', Validators.required],
-      remark: ['']
+      remark: ['', Validators.required]
     })
 
 
