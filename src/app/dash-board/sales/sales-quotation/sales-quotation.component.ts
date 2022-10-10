@@ -103,14 +103,14 @@ export class SalesQuotationComponent implements OnInit {
     this.loadData();
     this.salesQuotationForm = this.formBuilder.group({
       custemerCode: ['',],
-      custmrSlno: ['',],
+      custmrSlno: ['',Validators.required],
       sInvoice: ['',],
       cDate:  [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      consignee: ['',],
+      consignee: ['',Validators.required],
       date: ['', Validators.required],
       otherRef: ['', Validators.required],
       pono: ['', Validators.required],
-      refno: ['',],
+      refno: ['',Validators.required],
       remarks: ['',],
       statusSlno: ['',],
       dispatchThrough: ['', Validators.required],
@@ -506,7 +506,7 @@ export class SalesQuotationComponent implements OnInit {
           const selectedRows = params.api.getSelectedRows();
           params.api.applyTransaction({ remove: selectedRows });
           this.gridOptions.api.deselectAll();
-          this.calloutService.showSuccess("Sales Invoices Removed Successfully");
+          this.calloutService.showSuccess("Sales Quotation Removed Successfully");
         });
       }
     })
@@ -556,7 +556,7 @@ export class SalesQuotationComponent implements OnInit {
       salesQuotation001wb.updatedUser = this.authManager.getcurrentUser.username;
       salesQuotation001wb.updatedDatetime = new Date();
       this.salesQuotationManager.salesquotationupdate(salesQuotation001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Sales Invoices Updated Successfully");
+        this.calloutService.showSuccess("Sales Quotation Updated Successfully");
         this.salesQuotationForm.reset();
         this.custemeradds=[];
         this.loadData();
@@ -572,7 +572,7 @@ export class SalesQuotationComponent implements OnInit {
       salesQuotation001wb.insertDatetime = new Date();
       
       this.salesQuotationManager.salesquotationsave(salesQuotation001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Sales Invoices Saved Successfully");
+        this.calloutService.showSuccess("Sales Quotation Saved Successfully");
         this.salesQuotationForm.reset();
         this.custemeradds=[];
         this.loadData();
