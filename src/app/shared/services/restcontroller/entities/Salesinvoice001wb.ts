@@ -9,7 +9,7 @@ export class Salesinvoice001wb {
     sInvoice?: string|any;
     date?: Date;
     consignee?: string;
-    cDate?: Date;
+    cDate?: Date |null;
     refno?: string;
     pono?: string;
     remarks?: string | null;
@@ -26,5 +26,5 @@ export class Salesinvoice001wb {
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
     custmrSlno2?:Custemerregistration001mb;
-    custemerSlno2?: Custemer001wb[];
+    custemer001wbs?: Custemer001wb[]|any;
 } 

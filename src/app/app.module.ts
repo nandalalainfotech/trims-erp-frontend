@@ -68,6 +68,8 @@ import { OnlyLetterModule } from './shared/modules/onlyLetter.module';
 import { StatusSettingManager } from './shared/services/restcontroller/bizservice/status-setting.service';
 import { MateriealrequestItemComponent } from './shared/materiealrequest-item/materiealrequest-item.component';
 import { PartItemComponent } from './shared/part-item/part-item.component';
+import { CustomerPoitemManager } from './shared/services/restcontroller/bizservice/customerPoItem.service';
+import { CustemerAddManager } from './shared/services/restcontroller/bizservice/Custemer-wb.service';
 
 
 
@@ -139,7 +141,7 @@ import { PartItemComponent } from './shared/part-item/part-item.component';
 	exports: [PopupComponent, NgbCollapseModule,],
 	providers: [AuthManager, CalloutService, DataSharedService, LoginManager,
 		 BaseService, UserManager, UnitManagerManager,UnitDepartManager,DepartmentsManager,
-		  PersonManager, RoleManager,PurchaseInvoicePayItemManager,StatusSettingManager,
+		  PersonManager, RoleManager,PurchaseInvoicePayItemManager,StatusSettingManager,CustomerPoitemManager,CustemerAddManager,
 		  
 		{ provide: LocationStrategy, useClass: PathLocationStrategy },
 		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

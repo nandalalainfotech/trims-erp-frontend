@@ -330,6 +330,7 @@ export class ChildPartComponent implements OnInit {
   onEditButtonClick(params: any) {
     this.slNo = params.data.slNo;
     this.unitslno = params.data.unitslno;
+    this.specifications = params.data.childpartspecification001wbs;
     this.insertUser = params.data.insertUser;
     this.insertDatetime = params.data.insertDatetime;
     this.childPartForm.patchValue({
@@ -407,7 +408,7 @@ export class ChildPartComponent implements OnInit {
     childPart001mb.location = this.f.location.value ? this.f.location.value : "";
     childPart001mb.leadtime = this.f.leadtime.value ? this.f.leadtime.value : "";
     childPart001mb.mslevel = this.f.mslevel.value ? this.f.mslevel.value : "";
-    childPart001mb.childpartspecification = this.specifications?this.specifications:0;
+    childPart001mb.childpartspecification001wbs = this.specifications?this.specifications:0;
 
 
     if (this.slNo) {

@@ -285,7 +285,7 @@ user?: Login001mb | any;
         headerName: 'Edit',
         cellRenderer: 'iconRenderer',
         width: 100,
-        flex: 1,
+        // flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -297,7 +297,7 @@ user?: Login001mb | any;
         headerName: 'Delete',
         cellRenderer: 'iconRenderer',
         width: 105,
-        flex: 1,
+        // flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -309,7 +309,7 @@ user?: Login001mb | any;
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
-        flex: 1,
+        // flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -337,6 +337,7 @@ user?: Login001mb | any;
   onEditButtonClick(params: any) {
     this.slNo = params.data.slNo;
     this.unitslno = params.data.unitslno;
+    this.specifications = params.data.partspecific001wbs;
     this.insertUser = params.data.insertUser;
     this.insertDatetime = params.data.insertDatetime;
     this.PartForm.patchValue({
@@ -413,8 +414,7 @@ user?: Login001mb | any;
     part001mb.location = this.f.location.value ? this.f.location.value : "";
     part001mb.leadtime = this.f.leadtime.value ? this.f.leadtime.value : "";
     part001mb.mslevel = this.f.mslevel.value ? this.f.mslevel.value : "";
-    part001mb.partspecific =  this.specifications?this.specifications:0;
-
+    part001mb.partspecific001wbs = this.specifications ? this.specifications : 0;
 
 
     if (this.slNo) {

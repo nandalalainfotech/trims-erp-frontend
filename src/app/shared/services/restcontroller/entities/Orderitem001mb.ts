@@ -19,7 +19,7 @@ export class Orderitem001mb {
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
-    Orderitemspecification?: Orderitemspecification001wb[];
+    // Orderitemspecification?: Orderitemspecification001wb[];
     orderitemspecification001wbs?: Orderitemspecification001wb[] | any;
 }
 

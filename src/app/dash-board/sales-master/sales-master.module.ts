@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { SalesMasterRoutingModule } from './sales-master-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +23,7 @@ import { CustomerConsigneeMasterComponent } from './customer-consignee-master/cu
 import { CustomerConsigneeManager } from 'src/app/shared/services/restcontroller/bizservice/customer-consignee.service';
 import { OnlyLetterModule } from 'src/app/shared/modules/onlyLetter.module';
 import { OnlyNumberModule } from 'src/app/shared/modules/onlynumber.module';
+import { CustomerPoMasterManager } from 'src/app/shared/services/restcontroller/bizservice/customerPoMaster.service';
 
 
 @NgModule({
@@ -52,7 +53,9 @@ import { OnlyNumberModule } from 'src/app/shared/modules/onlynumber.module';
   providers: [
   SalesMasterManager,
   CustmerRegManager,
-  CustomerConsigneeManager
+  CustomerConsigneeManager,
+  CustomerPoMasterManager,
+  DatePipe,
   ]
 })
 export class SalesMasterModule { }

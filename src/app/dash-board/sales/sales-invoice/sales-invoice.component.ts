@@ -75,11 +75,11 @@ export class SalesInvoiceComponent implements OnInit {
 
   custemeregs: any
   count: number = 0;
-  custemeradds: any;
+  custemeradds: Custemer001wb[] = [];
   user?: Login001mb | any;
   unitslno: number | any;
-
-
+  partTAmount: any = [];
+  salesPartItem: Custemer001wb[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private authManager: AuthManager,
@@ -127,18 +127,10 @@ export class SalesInvoiceComponent implements OnInit {
     this.custmerRegManager.allCustmerreg(this.user.unitslno).subscribe(response => {
       this.Custemerregs = deserialize<Custemerregistration001mb[]>(Custemerregistration001mb, response);
     });
-
+    
 
     this.customerConsigneeManager.allCustomerConsignee(this.user.unitslno).subscribe(response => {
       this.customerConsignees = deserialize<Customerconsignee001mb[]>(Customerconsignee001mb, response);
-
-      // for(let i=0;i<this.customerConsignees.length;i++){
-
-      //   this.consignees.push(this.customerConsignees[i]);
-      //   console.log("  this.consignees",  this.consignees);
-      // }
-     
-      
     });
 
   }
@@ -155,13 +147,13 @@ export class SalesInvoiceComponent implements OnInit {
       }
     });
     this.salesInvoiceManager.getCount().subscribe(response => {
-      this.count = response[0].row;
+      this.count = response[0].row == 0 ? 1 : parseInt(response[0].row) + 1;
       this.slaesInvocieForm.patchValue({
         pono: String("GST/2708/22-23/") + String(this.count).padStart(4, '0')
       });
     });
     this.salesInvoiceManager.getCount1().subscribe(response => {
-      this.count = response[0].row;
+      this.count = response[0].row == 0 ? 1 : parseInt(response[0].row) + 1;
       this.slaesInvocieForm.patchValue({
         sInvoice: String("ST/22-23/") + String(this.count).padStart(5, '0')
       });
@@ -237,30 +229,19 @@ export class SalesInvoiceComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Audit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onAuditButtonClick.bind(this),
-          label: 'Audit'
-        },
-      },
+      // {
+      //   headerName: 'Edit',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 80,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onEditButtonClick.bind(this),
+      //     label: 'Edit'
+      //   },
+      // },
+      
       {
         headerName: 'Customer Code',
         width: 200,
@@ -311,14 +292,26 @@ export class SalesInvoiceComponent implements OnInit {
 
       {
         headerName: 'Consignee Name',
-        field: "consignee",
+        // field: "consignee",
         width: 200,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
-        // valueGetter: this.setConsigneeNo.bind(this)
+        valueGetter: this.setConsigneeNo.bind(this)
+      },
+     
+      {
+        headerName: 'PO No',
+        field: "pono",
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        // valueGetter: this.setVoucherNo.bind(this)
       },
       {
         headerName: 'Date',
@@ -331,17 +324,6 @@ export class SalesInvoiceComponent implements OnInit {
         valueGetter: (params: any) => {
           return params.data.date ? this.datepipe.transform(params.data.date, 'dd-MM-yyyy') : '';
         }
-      },
-      {
-        headerName: 'PO No',
-        field: "pono",
-        width: 200,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        // valueGetter: this.setVoucherNo.bind(this)
       },
       {
         headerName: 'Reference No',
@@ -395,7 +377,7 @@ export class SalesInvoiceComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'supplier From',
+        headerName: 'Supplier From',
         field: 'supplierFrom',
         width: 200,
         // flex: 1,
@@ -426,6 +408,18 @@ export class SalesInvoiceComponent implements OnInit {
           return params.data.dueOn ? this.datepipe.transform(params.data.dueOn, 'dd-MM-yyyy') : '';
         }
       },
+      {
+        headerName: 'Audit',
+        cellRenderer: 'iconRenderer',
+        width: 80,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onAuditButtonClick.bind(this),
+          label: 'Audit'
+        },
+      },
 
       {
         headerName: 'Delete',
@@ -451,7 +445,9 @@ export class SalesInvoiceComponent implements OnInit {
   }
 
   setConsigneeNo(params: any): string {
-    return params.data.custmrSlno2 ? params.data.custmrSlno2.consignee : null;
+    return params.data.consignee ? this.customerConsignees.find(x => x.slNo == params.data.consignee)?.consignee:"";
+    // return params.data.custmrSlno2 ? params.data.custmrSlno2.consignee : null;
+    
   }
 
   onAuditButtonClick(params: any) {
@@ -466,7 +462,8 @@ export class SalesInvoiceComponent implements OnInit {
     modalRef.result.then((data) => {
       if (data.status == 'Yes') {
         
-        this.custemeradds = data.custemeradds;
+        this.salesPartItem = data.salesPartItem;
+        this.partTAmount = data.partTAmount
         
       }
     })
@@ -475,16 +472,17 @@ export class SalesInvoiceComponent implements OnInit {
   onEditButtonClick(params: any) {
     this.slNo = params.data.slNo;
     this.unitslno = params.data.unitslno;
+    this.custemeradds = params.data.custemer001wbs;
     this.insertUser = params.data.insertUser;
     this.insertDatetime = params.data.insertDatetime;
     this.slaesInvocieForm.patchValue({
       'custmrSlno': params.data.custmrSlno,
-      'consignee': params.data.consignee,
-      'custemerCode': params.data.custemerCode,
       'sInvoice': params.data.sInvoice,
       'cDate': new Date(params.data.cDate),
-      'date': new Date(params.data.date),
+      'custemerCode': params.data.custemerCode,
+      'consignee': params.data.consignee,
       'pono': params.data.pono,
+      'date': new Date(params.data.date),
       'refno': params.data.refno,
       'otherRef': params.data.otherRef,
       'dispatchThrough': params.data.dispatchThrough,
@@ -555,7 +553,7 @@ export class SalesInvoiceComponent implements OnInit {
     salesinvoice001wb.remarks = this.f.remarks.value ? this.f.remarks.value : null;
     salesinvoice001wb.statusSlno = this.f.statusSlno.value ? this.f.statusSlno.value : null;
     salesinvoice001wb.dueOn = new Date(this.f.dueOn.value);
-    salesinvoice001wb.custemerSlno2 = this.custemeradds?this.custemeradds:0;
+    salesinvoice001wb.custemer001wbs = this.salesPartItem?this.salesPartItem:0;
     if (this.slNo) {
       salesinvoice001wb.slNo = this.slNo;
       salesinvoice001wb.unitslno = this.unitslno;
@@ -572,8 +570,8 @@ export class SalesInvoiceComponent implements OnInit {
         this.submitted = false;
       });
     } else {
-      salesinvoice001wb.cDate = new Date();
-      salesinvoice001wb.date = new Date();
+      // salesinvoice001wb.cDate = new Date();
+      // salesinvoice001wb.date = new Date();
       // salesinvoice001wb.dueOn = new Date();
       salesinvoice001wb.unitslno= this.user.unitslno;
       salesinvoice001wb.insertUser = this.authManager.getcurrentUser.username;

@@ -480,7 +480,7 @@ export class ProdPlanComponent implements OnInit {
     salesinvoice001wb.remarks = this.f.remarks.value ? this.f.remarks.value : null;
     salesinvoice001wb.statusSlno = this.f.statusSlno.value ? this.f.statusSlno.value : null;
     salesinvoice001wb.dueOn = new Date(this.f.dueOn.value);
-    salesinvoice001wb.custemerSlno2 = this.custemeradds;
+    // salesinvoice001wb.custemerSlno2 = this.custemeradds;
     if (this.slNo) {
       salesinvoice001wb.slNo = this.slNo;
       salesinvoice001wb.unitslno = this.unitslno;

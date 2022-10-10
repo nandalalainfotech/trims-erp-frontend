@@ -27,5 +27,6 @@ export class Supplierregistration001mb {
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
-    suppliercontacts2?: SupplierContact001wb[];
+    suppliercontact001wbs?: SupplierContact001wb[];
+    
 }

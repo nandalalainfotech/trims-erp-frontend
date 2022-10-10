@@ -1,19 +1,23 @@
+import { Salesinvoice001wb } from "./Salesinvoice001wb";
 import { Salesitem001mb } from "./Salesitemmb";
 
 export class Custemer001wb {
     slNo?: number;
     unitslno?: number;
-    custemerSlno?: number;
-    custemername?: string;
-    prodescrip?: string;
-    qunty?: string;
-    uom?: string;
-    unitrate?: string;
-    totalamount?: number;
+    salespartSlno?: number;
+    prtcode?: number;
+    prtmname?: string;
+    prtdescrip?: string;
+    prtqunty?: string;
+    prtuom?: string;
+    prthsn?: string;
+    prtunitrate?: string;
+    prttotalamount: number | any;
     insertUser?: string;
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
-    custemerSlno2?:Salesitem001mb;
+    
+    salespartSlno2?:Salesinvoice001wb;
 }
  

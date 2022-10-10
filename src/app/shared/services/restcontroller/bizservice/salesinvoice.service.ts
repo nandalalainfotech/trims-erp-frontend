@@ -18,6 +18,7 @@ export class SalesInvoiceManager extends BaseService {
     }
 
     salesinvoicesave(salesinvoice001wb: Salesinvoice001wb) {
+        
         return this.postCallService(`${this.salesinvoicerUrl}` + "/save", {}, salesinvoice001wb);
     }
 

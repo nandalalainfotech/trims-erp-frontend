@@ -8,63 +8,70 @@
                         <div class="row">
                             <div class="col-xs-1 col-sm-1">
                                 <div class="form-group">
-                                    <label path="partCode" for="partCode" cssClass="required">Part Code</label>
-                                    <input class="form-control" path="partCode" formControlName="partCode" />
+                                    <label path="prtcode" for="prtcode" cssClass="required">Part code</label>
+                                    <select class="form-control" path="prtcode" formControlName="prtcode" (change)="onChangePart($event,i)">
+
+                                        <option value="null"> -Select item Code- </option>
+                                        <option *ngFor="let part001mb of part001mbs" [value]="part001mb.slNo">
+                                            {{part001mb.partno}} </option>
+                                    </select>
                                 </div>
                             </div>
-
                             <div class="col-xs-2 col-sm-2">
                                 <div class="form-group">
-                                    <label path="partName" for="partName" cssClass="required">Part Name</label>
-                                    <input OnlyLetter class="form-control" path="partName" formControlName="partName" />
+                                    <label path="prtmname" for="prtmname" cssClass="required">Part name</label>
+                                    <input class="form-control" path="prtmname" formControlName="prtmname" readonly />
                                 </div>
                             </div>
-
                             <div class="col-xs-2 col-sm-2">
                                 <div class="form-group">
-                                    <label path="description" for="description" cssClass="required">Description</label>
-                                    <input class="form-control" path="description" formControlName="description" />
+                                    <label path="prtdescrip" for="prtdescrip" cssClass="required">Description</label>
+                                    <input class="form-control" path="prtdescrip" formControlName="prtdescrip" readonly />
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="prtuom" for="series" cssClass="required" required="true">UOM</label>
+                                    <input class="form-control" formControlName="prtuom" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="prthsn" for="series" cssClass="required" required="true">HSN/SAC</label>
+                                    <input class="form-control" formControlName="prthsn" readonly>
+
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1">
+                                <div class="form-group">
+                                    <label path="prtunitrate" for="series" cssClass="required" required="true">UnitRate</label>
+                                    <input class="form-control" formControlName="prtunitrate" readonly />
+
                                 </div>
                             </div>
 
                             <div class="col-xs-1 col-sm-1">
                                 <div class="form-group">
-                                    <label path="uom" for="series" cssClass="required" required="true">UOM</label>
-                                    <input class="form-control" formControlName="uom" readonly>
+                                    <label path="prtqunty" for="series" cssClass="required" required="true">Quantity</label>
+                                    <input OnlyNumber class="form-control" formControlName="prtqunty" (change)="onChangepartQty($event,i)" />
 
                                 </div>
                             </div>
 
                             <div class="col-xs-1 col-sm-1">
                                 <div class="form-group">
-                                    <label path="unitrate" for="series" cssClass="required" required="true">UnitRate</label>
-                                    <input class="form-control" formControlName="unitrate" readonly />
-
-                                </div>
-                            </div>
-
-                            <div class="col-xs-1 col-sm-1">
-                                <div class="form-group">
-                                    <label path="amount" for="series" cssClass="required" required="true">Quantity</label>
-                                    <input OnlyNumber class="form-control" formControlName="qunty" (change)="onChangeQty($event,i)" />
-
-                                </div>
-                            </div>
-
-                            <div class="col-xs-2 col-sm-2">
-                                <div class="form-group">
-                                    <label path="totalamount" for="series" cssClass="required" required="true">TotalAmount</label>
-                                    <input class="form-control" formControlName="totalamount" readonly />
+                                    <label path="prttotalamount" for="series" cssClass="required" required="true">TotalAmount</label>
+                                    <input class="form-control" formControlName="prttotalamount" readonly />
 
                                 </div>
                             </div>
                             <div class="col-xs-1 col-sm-1" style="left: 80px;top: 20px;">
-                                <button type="button" class="btn btn-primary submit" (click)="addItem()"><i
+                                <button type="button" class="btn btn-primary submit" (click)="addItemprt()"><i
                                         class="fa fa-plus" aria-hidden="true"></i></button>
-                                <button type="button" class="btn btn-warning reset" (click)="removeItem(i)"><i
+                                <button type="button" class="btn btn-warning reset" (click)="removeItemprt(i)"><i
                                         class="fa fa-minus" aria-hidden="true"></i></button>
                             </div>
-
                         </div>
 
                         <div class="row">
@@ -86,7 +93,8 @@
                                 <div class="form-group">
                                     <div class="p-fluid p-grid p-formgrid">
                                         <div class="p-field p-col-12 p-md-5">
-                                            <label path="revisionDate" for="revisionDate" cssClass="required">Revision Date</label>
+                                            <label path="revisionDate" for="revisionDate" cssClass="required">Revision
+                                                Date</label>
                                             <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="revisionDate" inputId="navigators" [showIcon]="true" inputId="icon">
                                             </p-calendar>
 

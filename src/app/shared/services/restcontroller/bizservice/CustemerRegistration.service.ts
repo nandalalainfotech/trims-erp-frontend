@@ -39,12 +39,29 @@ export class CustmerRegManager extends BaseService {
         return this.deleteCallService(`${this.CustmerRegUrl}` + "/delete", data);
     }
 
-    CustmerregPdf() {     
-        return this.getCallService1(`${this.CustmerRegUrl}` + "/pdf")
+    pdfId(id: any,unitslno:any) {
+        let data: any = {};
+        data['id'] = id;
+        data['unitslno']=unitslno;
+        return this.getCallService1(`${this.CustmerRegUrl}` + "/pdfId", data)
     }
-    CustmerregExcel() {
-        console.log("response,controller")
-        return this.getCallService1(`${this.CustmerRegUrl}` + "/excel")
+
+    ExcelId(id: any,unitslno:any) {
+        let data: any = {};
+        data['id'] = id;
+        data['unitslno']=unitslno;
+        return this.getCallService1(`${this.CustmerRegUrl}` + "/excelID", data)
+    }
+
+    customerRegPdf(unitslno:number) {  
+        let data: any = {};
+        data['unitslno'] = unitslno;   
+        return this.getCallService1(`${this.CustmerRegUrl}` + "/pdf",data)
+    }
+    customerRegExcel(unitslno:number) {        
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService1(`${this.CustmerRegUrl}` + "/excel",data)
     }
 
     getCount() {

@@ -1,9 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions } from 'ag-grid-community';
+import * as saveAs from 'file-saver';
 import { deserialize } from 'serializer.ts/Serializer';
 import { AddCustomerContactComponent } from 'src/app/shared/add-customer-contact/add-customer-contact.component';
 import { AuditComponent } from 'src/app/shared/audit/audit.component';
@@ -14,7 +16,6 @@ import { CustmerRegManager } from 'src/app/shared/services/restcontroller/bizser
 import { Custemerregistration001mb } from 'src/app/shared/services/restcontroller/entities/Custemerregistration001mb';
 import { Customercontact001wb } from 'src/app/shared/services/restcontroller/entities/Customercontact001wb';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
-import { SupplierContact001wb } from 'src/app/shared/services/restcontroller/entities/SupplierContact001wb';
 import { CalloutService } from 'src/app/shared/services/services/callout.service';
 import { DataSharedService } from 'src/app/shared/services/services/datashared.service';
 
@@ -53,19 +54,20 @@ export class CustemerRegisterComponent implements OnInit {
     themes: any;
     color: any;
     addPopup: string = "";
-    
+
     custemerregistration001mb: Custemerregistration001mb[] = [];
     custmerReg: Custemerregistration001mb[] = [];
     customercontacts: Customercontact001wb[] = [];
     // customercontacts2?: Customercontact001wb[]=[];
     getCount: any;
     count: number = 0;
-     user?: Login001mb | any;
+    user?: Login001mb | any;
     unitslno: number | any;
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
         private calloutService: CalloutService,
+        private datepipe: DatePipe,
         private dataSharedService: DataSharedService,
         private custmerRegManager: CustmerRegManager,
         private authManager: AuthManager,
@@ -111,7 +113,7 @@ export class CustemerRegisterComponent implements OnInit {
         });
 
         this.custmerRegManager.getCount().subscribe(response => {
-            this.count = response[0].row;
+            this.count = response[0].row == 0 ? 1 : parseInt(response[0].row) + 1;
             this.custemerRegForm.patchValue({
                 custemercode: String("SE/CC/") + String(this.count).padStart(5, '0')
             });
@@ -131,6 +133,42 @@ export class CustemerRegisterComponent implements OnInit {
         this.gridOptions.enableRangeSelection = true;
         this.gridOptions.animateRows = true;
         this.gridOptions.columnDefs = [
+            {
+                headerName: 'View',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                    onClick: this.onViewButtonClick.bind(this),
+                    label: 'View',
+                },
+
+            },
+            {
+                headerName: 'Pdf',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                    onClick: this.onPdfButtonClick.bind(this),
+                    label: 'Pdf',
+                },
+
+            },
+            {
+                headerName: 'Excel',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                    onClick: this.onEXcelButtonClick.bind(this),
+                    label: 'Excel',
+                },
+
+            },
             {
                 headerName: 'Custemer Code',
                 field: 'custemercode',
@@ -308,6 +346,7 @@ export class CustemerRegisterComponent implements OnInit {
     onEditButtonClick(params: any) {
         this.slNo = params.data.slNo;
         this.unitslno = params.data.unitslno;
+        this.customercontacts = params.data.customercontact001wbs;
         this.insertUser = params.data.insertUser;
         this.insertDatetime = params.data.insertDatetime;
         this.custemerRegForm.patchValue({
@@ -386,8 +425,8 @@ export class CustemerRegisterComponent implements OnInit {
         custemerregistration001mb.concern = this.f.concern.value ? this.f.concern.value : "";
         custemerregistration001mb.otherInfo = this.f.otherInfo.value ? this.f.otherInfo.value : "";
         custemerregistration001mb.website = this.f.website.value ? this.f.website.value : "";
-        custemerregistration001mb.customercontacts2 =this.customercontacts;
-        
+        custemerregistration001mb.customercontact001wbs = this.customercontacts;
+
         if (this.slNo) {
             custemerregistration001mb.slNo = this.slNo;
             custemerregistration001mb.unitslno = this.unitslno;
@@ -432,6 +471,57 @@ export class CustemerRegisterComponent implements OnInit {
         this.submitted = false;
         this.custemerRegForm.reset();
     }
+
+    onViewButtonClick(params: any) {
+        this.custmerRegManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        })
+
+    }
+
+    onPdfButtonClick(params: any) {
+        this.custmerRegManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.custemercode + "  " + newDate);
+        })
+
+    }
+    onEXcelButtonClick(params: any) {
+        this.custmerRegManager.ExcelId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.custemercode + "  " + newDate);
+        })
+
+    }
+
+    onViewClick() {
+        this.custmerRegManager.customerRegPdf(this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        })
+    }
+
+    onGeneratePdfReport() {
+        this.custmerRegManager.customerRegPdf(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "Customer-Registration-Details" + " " + newDate);
+        })
+    }
+
+    onGenerateExcelReport() {
+        this.custmerRegManager.customerRegExcel(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "Customer-Registration-Details" + " " + newDate);
+        });
+    }
+
 
 
 }

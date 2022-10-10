@@ -42,6 +42,7 @@ export class ConsumerSpecificationComponent implements OnInit {
   consumerspecification001wbs:Consumerspecification001wb[]=[];
   user?:Login001mb|any;
   unitslno?:number;
+  consumerSpecificSlno:number | any;
   constructor(
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal,
@@ -64,6 +65,24 @@ export class ConsumerSpecificationComponent implements OnInit {
     this.consumerspecificationManager.cosumspecificationall(this.user.unitslno).subscribe(response => {
       this.consumerspecification001wbs = deserialize<Consumerspecification001wb[]>(Consumerspecification001wb, response);
     });
+
+    
+
+    for (let z = 0; z < this.specifications.length; z++) {
+      this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+      if (z < (this.specifications.length) - 1) {
+
+        this.orderspecificationFormArray.push(this.createItem());
+      }
+      this.consumerSpecificSlno = this.specifications[z].consumslno;
+
+      this.slNo = this.specifications[z].slNo;
+      // this.orderspecificationFormArray.controls[z].controls['partslno'].setValue(this.specifications[z].partslno);
+      this.orderspecificationFormArray.controls[z].controls['parameter'].setValue(this.specifications[z].parameter);
+      this.orderspecificationFormArray.controls[z].controls['specification'].setValue(this.specifications[z].specification);
+      this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
+
+    }
 
   }
 
@@ -117,7 +136,11 @@ export class ConsumerSpecificationComponent implements OnInit {
     let consumerspecification001wbs: Consumerspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let consumerspecification001wb = new Consumerspecification001wb();
-      consumerspecification001wb.consumslno = this.f.orderspecificationFormArray.value[i].consumslno ? this.f.orderspecificationFormArray.value[i].consumslno : null;
+      if (this.slNo) {
+        consumerspecification001wb.slNo = this.specifications[i].slNo;
+        consumerspecification001wb.consumslno = this.consumerSpecificSlno ? this.consumerSpecificSlno : null;
+      }
+      consumerspecification001wb.consumslno2 = this.f.orderspecificationFormArray.value[i].consumslno2 ? this.f.orderspecificationFormArray.value[i].consumslno2 : null;
       consumerspecification001wb.parameter = this.f.orderspecificationFormArray.value[i].parameter ? this.f.orderspecificationFormArray.value[i].parameter : "";
       consumerspecification001wb.specification = this.f.orderspecificationFormArray.value[i].specification ? this.f.orderspecificationFormArray.value[i].specification : "";
       consumerspecification001wb.inspecmethod = this.f.orderspecificationFormArray.value[i].inspecmethod ? this.f.orderspecificationFormArray.value[i].inspecmethod : "";
@@ -128,7 +151,6 @@ export class ConsumerSpecificationComponent implements OnInit {
         specifications: consumerspecification001wbs,
       });
     }
-    console.log("specifications",this.specifications);
     
 
   }
