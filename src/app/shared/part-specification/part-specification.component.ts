@@ -63,10 +63,10 @@ export class PartSpecificationComponent implements OnInit {
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
     });
 
-    this.partSpecificManager.partspecificationall(this.user.unitslno).subscribe(response => {
-      this.partspecific001wbs = deserialize<Partspecific001wb[]>(Partspecific001wb, response);
-    });
-
+    // this.partSpecificManager.partspecificationall(this.user.unitslno).subscribe(response => {
+    //   this.partspecific001wbs = deserialize<Partspecific001wb[]>(Partspecific001wb, response);
+    // });
+    if(this.specifications != undefined){
     for (let z = 0; z < this.specifications.length; z++) {
       this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
       if (z < (this.specifications.length) - 1) {
@@ -82,6 +82,7 @@ export class PartSpecificationComponent implements OnInit {
       this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
 
     }
+  }
 
   }
 
@@ -132,6 +133,11 @@ export class PartSpecificationComponent implements OnInit {
   }
 
   onOkClick(event: any, orderspecificationForm: any) {
+    this.markFormGroupTouched(this.orderspecificationForm);
+    this.submitted = true;
+    if (this.orderspecificationForm.invalid) {
+        return;
+    }
     let partspecific001wbs: Partspecific001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let partspecific001wb = new Partspecific001wb();

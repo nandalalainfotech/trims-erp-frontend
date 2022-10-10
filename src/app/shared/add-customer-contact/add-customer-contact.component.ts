@@ -75,6 +75,8 @@ export class AddCustomerContactComponent implements OnInit {
         >(Customercontact001wb, response);
       });
 
+  if(this.customercontacts != undefined){
+
     for (let z = 0; z < this.customercontacts.length; z++) {
       this.customerContactFormArray = this.f['customerContactFormArray'] as FormArray;
       if (z < (this.customercontacts.length) - 1) {
@@ -93,6 +95,8 @@ export class AddCustomerContactComponent implements OnInit {
       this.customerContactFormArray.controls[z].controls['mailid'].setValue(this.customercontacts[z].mailid);
 
     }
+
+  }
 
   }
 
@@ -149,7 +153,11 @@ export class AddCustomerContactComponent implements OnInit {
   }
   onOkClick(event: any, customerContactForm: any) {
 
-
+    this.markFormGroupTouched(this.customerContactForm);
+    this.submitted = true;
+    if (this.customerContactForm.invalid) {
+        return;
+    }
     let customerContact001wbs: Customercontact001wb[] = [];
     for (let i = 0; i < this.customerContactForm.controls.customerContactFormArray.controls.length; i++) {
       let customerContact001wb = new Customercontact001wb();

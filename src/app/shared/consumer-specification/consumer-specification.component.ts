@@ -62,12 +62,12 @@ export class ConsumerSpecificationComponent implements OnInit {
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
     });
 
-    this.consumerspecificationManager.cosumspecificationall(this.user.unitslno).subscribe(response => {
-      this.consumerspecification001wbs = deserialize<Consumerspecification001wb[]>(Consumerspecification001wb, response);
-    });
+    // this.consumerspecificationManager.cosumspecificationall(this.user.unitslno).subscribe(response => {
+    //   this.consumerspecification001wbs = deserialize<Consumerspecification001wb[]>(Consumerspecification001wb, response);
+    // });
 
     
-
+    if(this.specifications != undefined){
     for (let z = 0; z < this.specifications.length; z++) {
       this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
       if (z < (this.specifications.length) - 1) {
@@ -83,7 +83,7 @@ export class ConsumerSpecificationComponent implements OnInit {
       this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
 
     }
-
+  }
   }
 
   get f() { return this.orderspecificationForm.controls; }
@@ -133,6 +133,11 @@ export class ConsumerSpecificationComponent implements OnInit {
   }
 
   onOkClick(event: any, orderspecificationForm: any) {
+    this.markFormGroupTouched(this.orderspecificationForm);
+    this.submitted = true;
+    if (this.orderspecificationForm.invalid) {
+        return;
+    }
     let consumerspecification001wbs: Consumerspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let consumerspecification001wb = new Consumerspecification001wb();

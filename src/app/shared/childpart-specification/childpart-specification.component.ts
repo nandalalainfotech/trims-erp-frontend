@@ -62,11 +62,11 @@ export class ChildpartSpecificationComponent implements OnInit {
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
     });
 
-    this.childPartspecificationManager.cprtspecificationall(this.user.unitslno).subscribe(response => {
-      this.childpartspecification001wbs = deserialize<Childpartspecification001wb[]>(Childpartspecification001wb, response);
-    });
+    // this.childPartspecificationManager.cprtspecificationall(this.user.unitslno).subscribe(response => {
+    //   this.childpartspecification001wbs = deserialize<Childpartspecification001wb[]>(Childpartspecification001wb, response);
+    // });
 
-    
+    if(this.specifications != undefined){
     for (let z = 0; z < this.specifications.length; z++) {
       this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
       if (z < (this.specifications.length) - 1) {
@@ -81,6 +81,7 @@ export class ChildpartSpecificationComponent implements OnInit {
       this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
 
     }
+  }
 
   }
 
@@ -131,6 +132,11 @@ export class ChildpartSpecificationComponent implements OnInit {
   }
 
   onOkClick(event: any, orderspecificationForm: any) {
+    this.markFormGroupTouched(this.orderspecificationForm);
+    this.submitted = true;
+    if (this.orderspecificationForm.invalid) {
+        return;
+    }
     let childpartspecification001wbs: Childpartspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let childpartspecification001wb = new Childpartspecification001wb();
