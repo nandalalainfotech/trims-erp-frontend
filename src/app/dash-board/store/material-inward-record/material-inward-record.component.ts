@@ -111,7 +111,7 @@ export class MaterialInwardRecordComponent implements OnInit {
     });
 
     this.materialInwardForm = this.formBuilder.group({
-      purchseSlno: [''],
+      purchseSlno: ['', Validators.required],
       date: ['', Validators.required],
       dcNo: ['', Validators.required],
       invoiceno: ['', Validators.required],
