@@ -88,6 +88,7 @@ export class CustomerPoComponent implements OnInit {
 
     });
 
+  if(this.purchasereqitem != undefined){
     for (let z = 0; z < this.purchasereqitem.length; z++) {
       this.customerPOFormArray = this.f['customerPOFormArray'] as FormArray;
       if (z < (this.purchasereqitem.length) - 1) {
@@ -113,6 +114,7 @@ export class CustomerPoComponent implements OnInit {
       this.customerPOFormArray.controls[z].controls['gst'].setValue(this.purchasereqitem[z].gst);
 
     }
+  }
 
   }
   get f() {

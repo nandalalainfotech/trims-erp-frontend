@@ -403,7 +403,6 @@ export class CustemerRegisterComponent implements OnInit {
     }
 
     onCustemerRegClick(event: any, custemerRegForm: any) {
-        console.log("custemerRegForm",custemerRegForm);
         
         this.markFormGroupTouched(this.custemerRegForm);
         this.submitted = true;

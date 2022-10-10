@@ -66,7 +66,11 @@ export class AddLeadsComponent implements OnInit {
             contactFormArray: this.formBuilder.array([this.createItem()]),
         });
 
-        this.supplierContactManager.suppliercontactall(this.user.unitslno).subscribe((response) => { this.supplierContact001wbs = deserialize<SupplierContact001wb[]>(SupplierContact001wb, response); });
+        this.supplierContactManager.suppliercontactall(this.user.unitslno).subscribe((response) => {
+             this.supplierContact001wbs = deserialize<SupplierContact001wb[]>(SupplierContact001wb, response);
+             });
+
+    if(this.suppliercontacts != undefined){
 
         for (let z = 0; z < this.suppliercontacts.length; z++) {
             this.contactFormArray = this.f['contactFormArray'] as FormArray;
@@ -86,6 +90,7 @@ export class AddLeadsComponent implements OnInit {
             this.contactFormArray.controls[z].controls['mailid'].setValue(this.suppliercontacts[z].mailid);
 
         }
+    }
 
     }
 

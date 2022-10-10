@@ -42,22 +42,18 @@
               <div class="form-group">
                 <label path="mnumber" for="mnumber" cssClass="required">Contact No1</label>
                 <input OnlyNumber class="form-control" path="mnumber" formControlName="mnumber" maxlength="10"/>
-                <!-- <div *ngIf="row['controls'].mnumber.errors.required">
-                </div> -->
               </div>
             </div>
             <div class="col-xs-1 col-sm-1">
               <div class="form-group">
                 <label path="altmnumber" for="altmnumber" cssClass="required">Contact No2</label>
-                <input OnlyNumber class="form-control" path="altmnumber" formControlName="altmnumber" maxlength="10"
-                  [ngClass]="{'is-invalid': submitted && f.altmnumber.errors}" />
+                <input OnlyNumber class="form-control" path="altmnumber" formControlName="altmnumber" maxlength="10"/>
               </div>
             </div>
             <div class="col-xs-1 col-sm-1">
               <div class="form-group">
                 <label path="mailid" for="mailid" cssClass="required">Mail Id</label>
-                <input class="form-control" path="mailid" formControlName="mailid"
-                  [ngClass]="{'is-invalid': submitted && f.mailid.errors}" />
+                <input class="form-control" path="mailid" formControlName="mailid" />
               </div>
             </div>
             <!-- </div> -->

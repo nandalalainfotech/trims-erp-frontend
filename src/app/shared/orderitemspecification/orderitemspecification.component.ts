@@ -57,7 +57,6 @@ export class OrderitemspecificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("specifications", this.specifications);
     this.user = this.authManager.getcurrentUser;
     this.orderspecificationForm = this.formBuilder.group({
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
@@ -67,7 +66,7 @@ export class OrderitemspecificationComponent implements OnInit {
       this.orderitemspecification001wbs = deserialize<Orderitemspecification001wb[]>(Orderitemspecification001wb, response);
     });
 
-
+if(this.specifications != undefined){
  for (let z = 0; z < this.specifications.length; z++) {
       this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
       if (z < (this.specifications.length) - 1) {
@@ -84,6 +83,7 @@ export class OrderitemspecificationComponent implements OnInit {
     }
 
   }
+}
 
   get f() { return this.orderspecificationForm.controls; }
   get o() { return this.f.orderspecificationFormArray as FormArray; }
@@ -132,6 +132,11 @@ export class OrderitemspecificationComponent implements OnInit {
   }
 
   onOkClick(event: any, orderspecificationForm: any) {
+    this.markFormGroupTouched(this.orderspecificationForm);
+    this.submitted = true;
+    if (this.orderspecificationForm.invalid) {
+        return;
+    }
     let orderitemspecification001wbs: Orderitemspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let orderitemspecification001wb = new Orderitemspecification001wb();
