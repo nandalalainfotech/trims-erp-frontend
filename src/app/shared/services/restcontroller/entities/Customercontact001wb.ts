@@ -1,3 +1,5 @@
+import { Custemerregistration001mb } from "./Custemerregistration001mb";
+
 export class Customercontact001wb {
     slNo?: number;
     unitslno?: number;
@@ -13,4 +15,5 @@ export class Customercontact001wb {
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
+    customerslNo2?: Custemerregistration001mb;
 }

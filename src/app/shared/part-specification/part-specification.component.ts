@@ -42,6 +42,7 @@ export class PartSpecificationComponent implements OnInit {
   partspecific001wbs:Partspecific001wb[]=[];
   user?:Login001mb|any;
   unitslno?:number;
+  partSpecificationSlno:number | any;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -65,6 +66,23 @@ export class PartSpecificationComponent implements OnInit {
     this.partSpecificManager.partspecificationall(this.user.unitslno).subscribe(response => {
       this.partspecific001wbs = deserialize<Partspecific001wb[]>(Partspecific001wb, response);
     });
+
+    for (let z = 0; z < this.specifications.length; z++) {
+      this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+      if (z < (this.specifications.length) - 1) {
+
+        this.orderspecificationFormArray.push(this.createItem());
+      }
+      this.partSpecificationSlno = this.specifications[z].partslno;
+
+      this.slNo = this.specifications[z].slNo;
+      // this.orderspecificationFormArray.controls[z].controls['partslno'].setValue(this.specifications[z].partslno);
+      this.orderspecificationFormArray.controls[z].controls['parameter'].setValue(this.specifications[z].parameter);
+      this.orderspecificationFormArray.controls[z].controls['specification'].setValue(this.specifications[z].specification);
+      this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
+
+    }
+
   }
 
   get f() { return this.orderspecificationForm.controls; }
@@ -117,7 +135,13 @@ export class PartSpecificationComponent implements OnInit {
     let partspecific001wbs: Partspecific001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let partspecific001wb = new Partspecific001wb();
-      partspecific001wb.partslno = this.f.orderspecificationFormArray.value[i].partslno ? this.f.orderspecificationFormArray.value[i].partslno : null;
+
+      if (this.slNo) {
+        partspecific001wb.slNo = this.specifications[i].slNo;
+        partspecific001wb.partslno = this.partSpecificationSlno ? this.partSpecificationSlno : null;
+      }
+
+      partspecific001wb.partslno2 = this.f.orderspecificationFormArray.value[i].partslno2 ? this.f.orderspecificationFormArray.value[i].partslno2 : null;
       partspecific001wb.parameter = this.f.orderspecificationFormArray.value[i].parameter ? this.f.orderspecificationFormArray.value[i].parameter : "";
       partspecific001wb.specification = this.f.orderspecificationFormArray.value[i].specification ? this.f.orderspecificationFormArray.value[i].specification : "";
       partspecific001wb.inspecmethod = this.f.orderspecificationFormArray.value[i].inspecmethod ? this.f.orderspecificationFormArray.value[i].inspecmethod : "";
@@ -128,7 +152,6 @@ export class PartSpecificationComponent implements OnInit {
         specifications: partspecific001wbs,
       });
     }
-    console.log("specifications",this.specifications);
     
 
   }

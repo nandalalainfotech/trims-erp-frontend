@@ -98,7 +98,6 @@ export class SupplierRegFormComponent implements OnInit {
             this.suppliertype001mbs = deserialize<Suppliertype001mb[]>(Suppliertype001mb, response);
 
             for (let i = 0; i < this.suppliertype001mbs.length; i++) {
-                console.log("this.suppliertype001mbs", this.suppliertype001mbs[i].sslno);
                 if (this.suppliertype001mbs[i].sslno == 8) {
                     this.suppliertypeItems.push(this.suppliertype001mbs[i])
                 }
@@ -127,7 +126,7 @@ export class SupplierRegFormComponent implements OnInit {
             branch: ['', Validators.required],
             acNo: ['', Validators.required],
             ifscCode: ['', Validators.required],
-            filename: [''],
+            filename: ['', Validators.required],
         })
 
         this.loadData();
@@ -169,6 +168,42 @@ export class SupplierRegFormComponent implements OnInit {
         this.gridOptions.enableRangeSelection = true;
         this.gridOptions.animateRows = true;
         this.gridOptions.columnDefs = [
+            {
+                headerName: 'View',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                  onClick: this.onViewButtonClick.bind(this),
+                  label: 'View',
+                },
+        
+              },
+              {
+                headerName: 'Pdf',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                  onClick: this.onPdfButtonClick.bind(this),
+                  label: 'Pdf',
+                },
+        
+              },
+              {
+                headerName: 'Excel',
+                cellRenderer: 'iconRenderer',
+                width: 60,
+                suppressSizeToFit: true,
+                cellStyle: { textAlign: 'center' },
+                cellRendererParams: {
+                  onClick: this.onEXcelButtonClick.bind(this),
+                  label: 'Excel',
+                },
+        
+              },
             {
                 headerName: 'Supplier Code',
                 field: 'supplierCode',
@@ -403,8 +438,10 @@ export class SupplierRegFormComponent implements OnInit {
     }
 
     onEditButtonClick(params: any) {
+        console.log("params",params.data)
         this.slNo = params.data.slNo;
         this.unitslno = params.data.unitslno;
+        this.suppliercontacts = params.data.suppliercontact001wbs;
         this.insertUser = params.data.insertUser;
         this.insertDatetime = params.data.insertDatetime;
         this.SupplierRegForm.patchValue({
@@ -426,7 +463,7 @@ export class SupplierRegFormComponent implements OnInit {
             'branch': params.data.branch,
             'acNo': params.data.acNo,
             'ifscCode': params.data.ifscCode,
-            'filename': params.data.filename,
+            // 'filename': params.data.originalfilename,
         });
     }
 
@@ -488,7 +525,6 @@ export class SupplierRegFormComponent implements OnInit {
     }
 
     onSupplierRegClick(event: any, SupplierRegForm: any) {
-        console.log("SupplierRegForm",SupplierRegForm);
         
         this.markFormGroupTouched(this.SupplierRegForm);
         this.submitted = true;
@@ -516,7 +552,7 @@ export class SupplierRegFormComponent implements OnInit {
         supplierreg001mb.acNo = this.f.acNo.value ? this.f.acNo.value : "";
         supplierreg001mb.ifscCode = this.f.ifscCode.value ? this.f.ifscCode.value : "";
         supplierreg001mb.filename = this.f.filename.value ? this.f.filename.value : "";
-        supplierreg001mb.suppliercontacts2 = this.suppliercontacts;
+        supplierreg001mb.suppliercontact001wbs = this.suppliercontacts;
 
         if (this.slNo) {
             supplierreg001mb.slNo = this.slNo;
@@ -565,6 +601,32 @@ export class SupplierRegFormComponent implements OnInit {
         this.submitted = false;
         this.SupplierRegForm.reset();
     }
+
+    onViewButtonClick(params: any) {
+        this.supplierRegManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+          var blob = new Blob([response], { type: 'application/pdf' });
+          var blobURL = URL.createObjectURL(blob);
+          window.open(blobURL);
+        })
+    
+      }
+    
+      onPdfButtonClick(params: any) {
+        this.supplierRegManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+          let date = new Date();
+          let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+          saveAs(response, params.data.supplierCode + "  " + newDate);
+        })
+    
+      }
+      onEXcelButtonClick(params: any) {
+        this.supplierRegManager.ExcelId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+          let date = new Date();
+          let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+          saveAs(response, params.data.supplierCode + "  " + newDate);
+        })
+    
+      }
 
 
     onViewClick() {

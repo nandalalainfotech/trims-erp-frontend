@@ -16,6 +16,8 @@ import { Custemerregistration001mb } from 'src/app/shared/services/restcontrolle
 import { Customerconsignee001mb } from 'src/app/shared/services/restcontroller/entities/Customerconsignee001mb';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
 import { CalloutService } from 'src/app/shared/services/services/callout.service';
+import * as saveAs from 'file-saver';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-customer-consignee-master',
@@ -36,7 +38,7 @@ export class CustomerConsigneeMasterComponent implements OnInit {
   address1: string = "";
   address2: string = "";
   address3: string = "";
-  gstIn: number | any;
+  gstIn: string = "";
   city: string = "";
   state: string = "";
   country: string = "";
@@ -61,6 +63,7 @@ export class CustomerConsigneeMasterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private authManager: AuthManager,
     private calloutService: CalloutService,
+    private datepipe: DatePipe,
     private modalService: NgbModal,
     private custmerRegManager: CustmerRegManager,
     private customerConsigneeManager: CustomerConsigneeManager,) {
@@ -440,4 +443,30 @@ export class CustomerConsigneeMasterComponent implements OnInit {
     this.submitted = false;
     this.customerConsigneeForm.reset();
   }
+
+  
+  onViewClick() {
+    this.customerConsigneeManager.custconsigneePdf(this.user.unitslno).subscribe((response) => {
+        var blob = new Blob([response], { type: 'application/pdf' });
+        var blobURL = URL.createObjectURL(blob);
+        window.open(blobURL);
+    })
+}
+
+onGeneratePdfReport() {
+    this.customerConsigneeManager.custconsigneePdf(this.user.unitslno).subscribe((response) => {      
+        let date = new Date();
+        let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+        saveAs(response, "Customer-Consignee-Details" + " " + newDate);
+    })
+}
+
+onGenerateExcelReport() {
+    this.customerConsigneeManager.custconsigneeExcel(this.user.unitslno).subscribe((response) => {      
+        let date = new Date();
+        let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+        saveAs(response, "Customer-Consignee-Details" + " " + newDate);
+    });
+}
+
 }

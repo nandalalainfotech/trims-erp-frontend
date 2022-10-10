@@ -38,11 +38,11 @@ export class AddCustomerContactComponent implements OnInit {
   insertDatetime: Date | any;
   updatedUser: string | null = '';
   updatedDatetime: Date | any;
-  user?:Login001mb|any;
-  unitslno?:number;
+  user?: Login001mb | any;
+  unitslno?: number;
   customerContact001wbs: Customercontact001wb[] = [];
   customerContact001wb?: Customercontact001wb;
-
+  customercontactSlno: number | any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,6 +74,25 @@ export class AddCustomerContactComponent implements OnInit {
           Customercontact001wb[]
         >(Customercontact001wb, response);
       });
+
+    for (let z = 0; z < this.customercontacts.length; z++) {
+      this.customerContactFormArray = this.f['customerContactFormArray'] as FormArray;
+      if (z < (this.customercontacts.length) - 1) {
+
+        this.customerContactFormArray.push(this.createItem());
+      }
+      this.customercontactSlno = this.customercontacts[z].customerslNo;
+
+      this.slNo = this.customercontacts[z].slNo;
+      this.customerContactFormArray.controls[z].controls['pname'].setValue(this.customercontacts[z].pname);
+      this.customerContactFormArray.controls[z].controls['designation'].setValue(this.customercontacts[z].designation);
+      this.customerContactFormArray.controls[z].controls['department'].setValue(this.customercontacts[z].department);
+      this.customerContactFormArray.controls[z].controls['level'].setValue(this.customercontacts[z].level);
+      this.customerContactFormArray.controls[z].controls['mnumber'].setValue(this.customercontacts[z].mnumber);
+      this.customerContactFormArray.controls[z].controls['altmnumber'].setValue(this.customercontacts[z].altmnumber);
+      this.customerContactFormArray.controls[z].controls['mailid'].setValue(this.customercontacts[z].mailid);
+
+    }
 
   }
 
@@ -132,48 +151,35 @@ export class AddCustomerContactComponent implements OnInit {
 
 
     let customerContact001wbs: Customercontact001wb[] = [];
-    for (
-      let i = 0;
-      i < this.customerContactForm.controls.customerContactFormArray.controls.length;
-      i++
-    ) {
+    for (let i = 0; i < this.customerContactForm.controls.customerContactFormArray.controls.length; i++) {
       let customerContact001wb = new Customercontact001wb();
-      customerContact001wb.customerslNo = this.f.customerContactFormArray.value[i]
-        .customerslNo
-        ? this.f.customerContactFormArray.value[i].customerslNo
-        : '';
-      customerContact001wb.pname = this.f.customerContactFormArray.value[i].pname
-        ? this.f.customerContactFormArray.value[i].pname
-        : '';
-      customerContact001wb.designation = this.f.customerContactFormArray.value[i]
-        .designation
-        ? this.f.customerContactFormArray.value[i].designation
-        : '';
-      customerContact001wb.department = this.f.customerContactFormArray.value[i]
-        .department
-        ? this.f.customerContactFormArray.value[i].department
-        : '';
-      customerContact001wb.level = this.f.customerContactFormArray.value[i].level
-        ? this.f.customerContactFormArray.value[i].level
-        : '';
-      customerContact001wb.mnumber = this.f.customerContactFormArray.value[i]
-        .mnumber
-        ? this.f.customerContactFormArray.value[i].mnumber
-        : '';
-      customerContact001wb.altmnumber = this.f.customerContactFormArray.value[i]
-        .altmnumber
-        ? this.f.customerContactFormArray.value[i].altmnumber
-        : '';
-      customerContact001wb.mailid = this.f.customerContactFormArray.value[i]
-        .mailid
-        ? this.f.customerContactFormArray.value[i].mailid
-        : '';
+
+
+      if (this.slNo) {
+        customerContact001wb.slNo = this.customercontacts[i].slNo;
+        customerContact001wb.customerslNo = this.customercontactSlno ? this.customercontactSlno : null;
+    }
+
+      customerContact001wb.customerslNo2 = this.f.customerContactFormArray.value[i].customerslNo2? this.f.customerContactFormArray.value[i].customerslNo2: '';
+      customerContact001wb.pname = this.f.customerContactFormArray.value[i].pname? this.f.customerContactFormArray.value[i].pname: '';customerContact001wb.designation = this.f.customerContactFormArray.value[i].designation? this.f.customerContactFormArray.value[i].designation: '';
+      customerContact001wb.department = this.f.customerContactFormArray.value[i].department? this.f.customerContactFormArray.value[i].department: '';
+      customerContact001wb.level = this.f.customerContactFormArray.value[i].level? this.f.customerContactFormArray.value[i].level: '';
+      customerContact001wb.mnumber = this.f.customerContactFormArray.value[i].mnumber? this.f.customerContactFormArray.value[i].mnumber: '';
+      customerContact001wb.altmnumber = this.f.customerContactFormArray.value[i].altmnumber? this.f.customerContactFormArray.value[i].altmnumber: '';
+      customerContact001wb.mailid = this.f.customerContactFormArray.value[i].mailid? this.f.customerContactFormArray.value[i].mailid: '';
       customerContact001wbs.push(customerContact001wb);
 
-      this.activeModal.close({
-        status: 'Yes',
-        customercontacts: customerContact001wbs,
-      });
+      if (customerContactForm.status == "VALID") {
+        this.activeModal.close({
+          status: 'Yes',
+          customercontacts: customerContact001wbs,
+        });
+      }
+      else {
+        this.calloutService.showError("Please Select Contact Value!!");
+      }
+
+      
 
 
     }

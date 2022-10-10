@@ -33,7 +33,7 @@ export class ConsigneeDetailsComponent implements OnInit {
   address1: string = "";
   address2: string = "";
   address3: string = "";
-  gstIn: number | any;
+  gstIn: string = "";
   city: string = "";
   state: string = "";
   country: string = "";

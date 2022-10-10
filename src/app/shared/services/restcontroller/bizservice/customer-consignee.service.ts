@@ -39,4 +39,17 @@ export class CustomerConsigneeManager extends BaseService {
         data['id'] = id;
         return this.getCallService(`${this.customerConsigneeUrl}`, data);
     }
+
+    custconsigneePdf(unitslno:number) {  
+        let data: any = {};
+        data['unitslno'] = unitslno;   
+        return this.getCallService1(`${this.customerConsigneeUrl}` + "/pdf",data)
+    }
+    custconsigneeExcel(unitslno:number) {
+        console.log("1--->");
+        
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService1(`${this.customerConsigneeUrl}` + "/excel",data)
+    }
 }

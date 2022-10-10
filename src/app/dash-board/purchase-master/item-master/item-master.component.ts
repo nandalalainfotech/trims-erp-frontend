@@ -307,8 +307,6 @@ export class ItemMasterComponent implements OnInit {
     this.insertUser = params.data.insertUser;
     this.insertDatetime = params.data.insertDatetime;
     this.specifications = params.data.orderitemspecification001wbs;
-    console.log("this.Orderitemspecification", this.specifications
-    );
     this.ItemForm.patchValue({
       'itemcode': params.data.itemcode,
       'itemname': params.data.itemname,
@@ -392,7 +390,7 @@ export class ItemMasterComponent implements OnInit {
     orderitem001mb.location = this.f.location.value ? this.f.location.value : "";
     orderitem001mb.leadtime = this.f.leadtime.value ? this.f.leadtime.value : "";
     orderitem001mb.mslevel = this.f.mslevel.value ? this.f.mslevel.value : "";
-    orderitem001mb.Orderitemspecification = this.specifications?this.specifications:0;
+    orderitem001mb.orderitemspecification001wbs = this.specifications?this.specifications:0;
 
     if (this.slNo) {
       orderitem001mb.slNo = this.slNo;
@@ -400,7 +398,7 @@ export class ItemMasterComponent implements OnInit {
       orderitem001mb.insertUser = this.insertUser;
       orderitem001mb.insertDatetime = this.insertDatetime;
       orderitem001mb.updatedUser = this.authManager.getcurrentUser.username;
-      orderitem001mb.Orderitemspecification = this.specifications
+      // orderitem001mb.Orderitemspecification = this.specifications
       orderitem001mb.updatedDatetime = new Date();
       this.orderItemSettingManager.itemUpdate(orderitem001mb).subscribe((response) => {
         this.calloutService.showSuccess("OrderItem Details Updated Successfully");

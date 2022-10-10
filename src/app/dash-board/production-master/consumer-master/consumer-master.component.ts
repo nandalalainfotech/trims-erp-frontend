@@ -133,6 +133,19 @@ export class ConsumerMasterComponent implements OnInit {
     this.gridOptions.columnDefs = [
 
       {
+        headerName: 'Edit',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onEditButtonClick.bind(this),
+          label: 'Edit'
+        },
+      },
+
+      {
         headerName: 'Sl_No',
         field: 'slNo',
         width: 100,
@@ -277,18 +290,7 @@ export class ConsumerMasterComponent implements OnInit {
    
 
 
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 100,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
+      
       {
         headerName: 'Delete',
         cellRenderer: 'iconRenderer',
@@ -324,7 +326,6 @@ export class ConsumerMasterComponent implements OnInit {
     modalRef.result.then((data) => {
       if (data.status == 'Yes') {
         this.specifications = data.specifications;
-        console.log("this.specifications", this.specifications);
 
 
 
@@ -335,6 +336,7 @@ export class ConsumerMasterComponent implements OnInit {
   onEditButtonClick(params: any) {
     this.slNo = params.data.slNo;
     this.unitslno = params.data.unitslno;
+    this.specifications = params.data.consumerspecification001wbs;
     this.insertUser = params.data.insertUser;
     this.insertDatetime = params.data.insertDatetime;
     this.consumableForm.patchValue({
@@ -411,7 +413,7 @@ export class ConsumerMasterComponent implements OnInit {
     consumble001mb.location = this.f.location.value ? this.f.location.value : "";
     consumble001mb.leadtime = this.f.leadtime.value ? this.f.leadtime.value : "";
     consumble001mb.mslevel = this.f.mslevel.value ? this.f.mslevel.value : "";
-    consumble001mb.consumerspecification = this.specifications?this.specifications:0;
+    consumble001mb.consumerspecification001wbs = this.specifications?this.specifications:0;
 
 
     if (this.slNo) {

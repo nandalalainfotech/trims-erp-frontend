@@ -20,7 +20,7 @@ export class Part001mb {
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
-    partspecific ?:Partspecific001wb[] | any;
+    // partspecific?:Partspecific001wb[] | any;
     partspecific001wbs:Partspecific001wb[] | any;
   
 }

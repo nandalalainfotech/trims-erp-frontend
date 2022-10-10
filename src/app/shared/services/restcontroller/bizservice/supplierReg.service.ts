@@ -64,6 +64,7 @@ export class SupplierRegManager extends BaseService {
     }
 
     supplierUpdate(supplierreg001mb: Supplierregistration001mb) {
+        
         return this.putCallService(`${this.SupplierRegUrl}` + "/update", {}, supplierreg001mb);
     }
 
@@ -71,6 +72,20 @@ export class SupplierRegManager extends BaseService {
         let data: any = {};
         data['id'] = id;
         return this.deleteCallService(`${this.SupplierRegUrl}` + "/delete", data);
+    }
+
+    pdfId(id: any,unitslno:any) {
+        let data: any = {};
+        data['id'] = id;
+        data['unitslno']=unitslno;
+        return this.getCallService1(`${this.SupplierRegUrl}` + "/pdfId", data)
+    }
+
+    ExcelId(id: any,unitslno:any) {
+        let data: any = {};
+        data['id'] = id;
+        data['unitslno']=unitslno;
+        return this.getCallService1(`${this.SupplierRegUrl}` + "/excelID", data)
     }
 
     suplregPdf(unitslno:number) {  

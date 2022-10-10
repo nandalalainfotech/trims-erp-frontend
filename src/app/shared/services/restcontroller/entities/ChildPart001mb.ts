@@ -20,7 +20,7 @@ export class ChildPart001mb {
     insertDatetime?: Date;
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
-    childpartspecification?: Childpartspecification001wb[];
+    // childpartspecification?: Childpartspecification001wb[];
     childpartspecification001wbs: Childpartspecification001wb[] | any;
 
 }

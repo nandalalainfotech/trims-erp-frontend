@@ -21,7 +21,7 @@ export class Consumble001mb {
     updatedUser?: string | null;
     updatedDatetime?: Date | null;
 
-    consumerspecification: Consumerspecification001wb[] | any;
+    // consumerspecification: Consumerspecification001wb[] | any;
     consumerspecification001wbs:Consumerspecification001wb[] | any;
 }
 

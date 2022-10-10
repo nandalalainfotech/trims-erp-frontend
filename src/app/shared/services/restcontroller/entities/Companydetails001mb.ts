@@ -5,7 +5,7 @@ export class Companydetails001mb {
     address1?: string;
     address2?: string;
     address3?: string;
-    gstIn?: number;
+    gstIn?: string;
     city?: string;
     state?: string;
     country?: string;

@@ -42,6 +42,7 @@ export class ChildpartSpecificationComponent implements OnInit {
   childpartspecification001wb?:Childpartspecification001wb;
   user?:Login001mb|any;
   unitslno?:number;
+  childSpecificSlno:number | any;
   constructor(
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal,
@@ -64,6 +65,22 @@ export class ChildpartSpecificationComponent implements OnInit {
     this.childPartspecificationManager.cprtspecificationall(this.user.unitslno).subscribe(response => {
       this.childpartspecification001wbs = deserialize<Childpartspecification001wb[]>(Childpartspecification001wb, response);
     });
+
+    
+    for (let z = 0; z < this.specifications.length; z++) {
+      this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+      if (z < (this.specifications.length) - 1) {
+
+        this.orderspecificationFormArray.push(this.createItem());
+      }
+      this.childSpecificSlno = this.specifications[z].cprtslno;
+
+      this.slNo = this.specifications[z].slNo;
+      this.orderspecificationFormArray.controls[z].controls['parameter'].setValue(this.specifications[z].parameter);
+      this.orderspecificationFormArray.controls[z].controls['specification'].setValue(this.specifications[z].specification);
+      this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
+
+    }
 
   }
 
@@ -117,7 +134,13 @@ export class ChildpartSpecificationComponent implements OnInit {
     let childpartspecification001wbs: Childpartspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let childpartspecification001wb = new Childpartspecification001wb();
-     childpartspecification001wb.cprtslno = this.f.orderspecificationFormArray.value[i].cprtslno ? this.f.orderspecificationFormArray.value[i].cprtslno : null;
+
+      if (this.slNo) {
+        childpartspecification001wb.slNo = this.specifications[i].slNo;
+        childpartspecification001wb.cprtslno = this.childSpecificSlno ? this.childSpecificSlno : null;
+      }
+
+     childpartspecification001wb.cprtslno2 = this.f.orderspecificationFormArray.value[i].cprtslno2 ? this.f.orderspecificationFormArray.value[i].cprtslno2 : null;
      childpartspecification001wb.parameter = this.f.orderspecificationFormArray.value[i].parameter ? this.f.orderspecificationFormArray.value[i].parameter : "";
      childpartspecification001wb.specification = this.f.orderspecificationFormArray.value[i].specification ? this.f.orderspecificationFormArray.value[i].specification : "";
      childpartspecification001wb.inspecmethod = this.f.orderspecificationFormArray.value[i].inspecmethod ? this.f.orderspecificationFormArray.value[i].inspecmethod : "";

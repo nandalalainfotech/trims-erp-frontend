@@ -40,6 +40,7 @@ export class OrderitemspecificationComponent implements OnInit {
   orderitemspecification001wbs: Orderitemspecification001wb[] = [];
   user?: Login001mb | any;
   unitslno?: number;
+  rawMaterialSlno:number|any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,18 +57,7 @@ export class OrderitemspecificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log("specifications", this.specifications);
-   
-    // for (let i = 0; i < this.specifications.length; i++) {
-    //   // this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
-    //   // this.orderspecificationFormArray.push(this.createItem());
-    //   // this.orderspecificationFormArray.controls
-    //   console.log("orderspecificationFormArray",this.orderspecificationForm);
-      
-
-    // }
-
-
+    console.log("specifications", this.specifications);
     this.user = this.authManager.getcurrentUser;
     this.orderspecificationForm = this.formBuilder.group({
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),
@@ -77,6 +67,21 @@ export class OrderitemspecificationComponent implements OnInit {
       this.orderitemspecification001wbs = deserialize<Orderitemspecification001wb[]>(Orderitemspecification001wb, response);
     });
 
+
+ for (let z = 0; z < this.specifications.length; z++) {
+      this.orderspecificationFormArray = this.f['orderspecificationFormArray'] as FormArray;
+      if (z < (this.specifications.length) - 1) {
+
+        this.orderspecificationFormArray.push(this.createItem());
+      }
+      this.rawMaterialSlno = this.specifications[z].itemslno;
+
+      this.slNo = this.specifications[z].slNo;
+      this.orderspecificationFormArray.controls[z].controls['parameter'].setValue(this.specifications[z].parameter);
+      this.orderspecificationFormArray.controls[z].controls['specification'].setValue(this.specifications[z].specification);
+      this.orderspecificationFormArray.controls[z].controls['inspecmethod'].setValue(this.specifications[z].inspecmethod);
+
+    }
 
   }
 
@@ -130,7 +135,13 @@ export class OrderitemspecificationComponent implements OnInit {
     let orderitemspecification001wbs: Orderitemspecification001wb[] = [];
     for (let i = 0; i < this.orderspecificationForm.controls.orderspecificationFormArray.controls.length; i++) {
       let orderitemspecification001wb = new Orderitemspecification001wb();
-      orderitemspecification001wb.itemslno = this.f.orderspecificationFormArray.value[i].itemslno ? this.f.orderspecificationFormArray.value[i].itemslno : null;
+
+      if (this.slNo) {
+        orderitemspecification001wb.slNo = this.specifications[i].slNo;
+        orderitemspecification001wb.itemslno = this.rawMaterialSlno ? this.rawMaterialSlno : null;
+      }
+
+      orderitemspecification001wb.itemslno2 = this.f.orderspecificationFormArray.value[i].itemslno2 ? this.f.orderspecificationFormArray.value[i].itemslno2 : null;
       orderitemspecification001wb.parameter = this.f.orderspecificationFormArray.value[i].parameter ? this.f.orderspecificationFormArray.value[i].parameter : "";
       orderitemspecification001wb.specification = this.f.orderspecificationFormArray.value[i].specification ? this.f.orderspecificationFormArray.value[i].specification : "";
       orderitemspecification001wb.inspecmethod = this.f.orderspecificationFormArray.value[i].inspecmethod ? this.f.orderspecificationFormArray.value[i].inspecmethod : "";
@@ -141,7 +152,6 @@ export class OrderitemspecificationComponent implements OnInit {
         specifications: orderitemspecification001wbs,
       });
     }
-    console.log("specifications", this.specifications);
 
 
   }
