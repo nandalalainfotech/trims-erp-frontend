@@ -63,7 +63,6 @@ export class SupplierQuotationManager extends BaseService {
     }
 
     SupplierQuotationUpdate(supplierquotation001wb: Supplierquotation001wb) {
-        console.log("supplierquotation001wb", supplierquotation001wb);   
         return this.putCallService(`${this.SupplierQuotationUrl}` + "/update", {}, supplierquotation001wb);
     }
     
