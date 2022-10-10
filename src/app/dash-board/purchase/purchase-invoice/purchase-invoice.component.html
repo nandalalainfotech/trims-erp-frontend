@@ -20,33 +20,17 @@
                                 <option *ngFor="let purchaseorder001wb of purchaseorder001wbs" [value]='purchaseorder001wb.slNo'>
                                     {{purchaseorder001wb.pono}}</option>
                             </select>
-                            <!-- <p-autoComplete 
-                           placeholder="Select a PO NO"
-                            field="prsno"
-                            [dropdown]="true">
-                            <ng-template style="width:200px">
-                                <select class="form-control" path="prsno" formControlName="prsno">
-                                    
-                                </select>
-                            </ng-template>
-                            </p-autoComplete> -->
-
+                            <div *ngIf="submitted && f.poSlno.errors" class="invalid-feedback">
+                                <div *ngIf="f.poSlno.errors.required">
+                                    PO No is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="prsNo" for="series" cssClass="required" required="true">PRS No</label>
                             <input type="text" class="form-control" path="prsNo" formControlName="prsNo" readonly/>
-                            <!-- <p-autoComplete 
-                           placeholder="Select a PRS No"
-                            field="prsno"
-                            [dropdown]="true">
-                            <ng-template style="width:200px">
-                                <select class="form-control" path="prsno" formControlName="prsno">
-                                   
-                                </select>
-                            </ng-template>
-                            </p-autoComplete> -->
 
                         </div>
                     </div>
@@ -54,12 +38,7 @@
                         <div class="form-group">
                             <label path="grnNo" for="series" cssClass="required" required="true">GRS NO</label>
                             <input class="form-control" formControlName="grnNo" readonly>
-                            <!-- <select class="form-control" path="grnNo" formControlName="grnNo" (change)="onChangegrs($event)">
-                                <option value="" hidden> - Select the PO Number - </option>
-                                <option value="null"> - Select the PO Number - </option>
-                                <option *ngFor="let materialinward001wb of materialinward001wbs" [value]='materialinward001wb.slNo'>
-                                    {{materialinward001wb.grn}}</option>
-                            </select> -->
+                           
                         </div>
                     </div>
                 </div>
@@ -80,6 +59,11 @@
                         <div class="form-group">
                             <label path="purchaseInvoice" for="series" cssClass="required" required="true">Purchase Invoice No</label>
                             <input class="form-control" formControlName="purchaseInvoice" />
+                            <div *ngIf="submitted && f.purchaseInvoice.errors" class="invalid-feedback">
+                                <div *ngIf="f.purchaseInvoice.errors.required">
+                                    Purchase Invoice No is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-1 col-sm-1"></div>
@@ -88,14 +72,15 @@
                         <div class="form-group">
                             <div class="p-fluid p-grid p-formgrid">
                                 <div class="p-field p-col-12 p-md-5">
-                                    <label path="date" for="date" cssClass="required">Requried Date</label>
-                                    <!-- <input type='date' class="form-control" formControlName="reqDate" /> -->
+                                    <label path="reqDate" for="date" cssClass="required">Requried Date</label>
                                     <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="reqDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                     </p-calendar>
-                                    <!-- <div *ngIf="submitted && f.reqDate.errors" class="invalid-feedback">
-                                        <div *ngIf="f.reqDate.errors.required">Requried Date is Required</div>
-                                    </div>-->
+                                    <div *ngIf="submitted && f.reqDate.errors" class="invalid-feedback">
+                                        <div *ngIf="f.reqDate.errors.required">Requried Date is Required
+                                        </div>
+                                    </div>
                                 </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -116,12 +101,11 @@
                     <div class="col-xs-3 col-sm-3">
                         <label>File Upload:</label>
                         <input type="file" class="form-control" formControlName="filename" (change)="onFileSelected($event)" />
-                        <span>"Upload the Purchase Invoice"</span>
-                        <!-- <div *ngIf="submitted && f.filename.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.filename.errors" class="invalid-feedback">
                             <div *ngIf="f.filename.errors.required">
                                 File Upload is Required
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
 

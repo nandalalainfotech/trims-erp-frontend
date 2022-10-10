@@ -13,6 +13,11 @@
                                 <option *ngFor="let suppliercode of suppliercodes" [value]='suppliercode.slNo'>
                                     {{suppliercode.supplierSlno2.supplierCode}}</option>
                             </select>
+                            <div *ngIf="submitted && f.suplierSlno.errors" class="invalid-feedback">
+                                <div *ngIf="f.suplierSlno.errors.required">
+                                    Supplier Code is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -20,11 +25,7 @@
                             <div class="form-group">
                                 <label path="suplierName" for="suplierName" cssClass="required">Supplier Name</label>
                                 <input type="text" class="form-control" path="suplierName" formControlName="suplierName" readonly/>
-                                <div *ngIf="submitted && f.suplierName.errors" class="invalid-feedback">
-                                    <div *ngIf="f.suplierName.errors.required">
-                                        SupplierName is Required
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -33,19 +34,8 @@
                             <div class="form-group">
                                 <label path="suplieraddress" for="suplieraddress" cssClass="required">Supplier Details</label>
                                 <input type="text" class="form-control" path="suplieraddress" formControlName="suplieraddress" readonly/>
-                                <!-- <select class="form-control" path="suplieraddress" formControlName="suplieraddress"
-                                    [ngClass]="{'is-invalid': submitted && f.suplieraddress.errors}">
-                                    <option value="" hidden> - Select the Consignee No - </option>
-                                    <option value="null"> - Select the Consignee No - </option>
-                                    <option *ngFor="let supplierquotation001wb of supplierquotation001wbs;" [value]='supplierquotation001wb.slNo'>
-                                        {{supplierquotation001wb.address}}
-                                    </option>
-                                </select> -->
-                                <div *ngIf="submitted && f.suplieraddress.errors" class="invalid-feedback">
-                                    <div *ngIf="f.suplieraddress.errors.required">
-                                        Consignee No is Required
-                                    </div>
-                                </div>
+                               
+                               
                             </div>
                         </div>
                     </div>
@@ -69,12 +59,7 @@
                         <div class="form-group">
                             <label path="prsno" for="series" cssClass="required" required="true">PRS No</label>
                             <input type="text" class="form-control" path="prsno" formControlName="prsno" readonly/>
-                            <!-- <select class="form-control" path="prsno" formControlName="prsno">
-                                <option value="" hidden> - Select the Supplier Code - </option>
-                                <option value="null"> - Select the Supplier code - </option>
-                                <option *ngFor="let suppliercode of suppliercodes" [value]='suppliercode.slNo'>
-                                    {{suppliercode.prsno}}</option>
-                            </select> -->
+                           
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -128,7 +113,7 @@
                             </textarea>
                             <div *ngIf="submitted && f.supplierFrom.errors" class="invalid-feedback">
                                 <div *ngIf="f.supplierFrom.errors.required">
-                                    Supplier is Required
+                                    Supplier (Bill From)is Required
                                 </div>
                             </div>
                         </div>

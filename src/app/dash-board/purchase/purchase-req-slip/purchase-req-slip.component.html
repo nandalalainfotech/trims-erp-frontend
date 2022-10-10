@@ -85,6 +85,11 @@
                                 <option *ngFor="let suppliertypeItem of suppliertypeItems" [value]="suppliertypeItem.name">
                                   {{suppliertypeItem.name}} </option>
                             </select>
+                            <div *ngIf="submitted && f.suppliertype.errors" class="invalid-feedback">
+                                <div *ngIf="f.suppliertype.errors.required">
+                                    Category is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

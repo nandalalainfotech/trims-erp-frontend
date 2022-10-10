@@ -13,6 +13,9 @@
                                 <option *ngFor="let purchaseregslip of purchaseregslips" [value]='purchaseregslip.slNo' >
                                     {{purchaseregslip.prsNo}}</option>
                             </select>
+                            <div *ngIf="submitted && f.prsno.errors" class="invalid-feedback">
+                                <div *ngIf="f.prsno.errors.required">Prs No is Required</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -20,11 +23,6 @@
                             <div class="form-group">
                                 <label path="supliertype" for="supliertype" cssClass="required">Supplier Type</label>
                                 <input type="text" class="form-control" path="supliertype" formControlName="supliertype" readonly/>
-                                <div *ngIf="submitted && f.supliertype.errors" class="invalid-feedback">
-                                    <div *ngIf="f.supliertype.errors.required">
-                                        supliertype is Required
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -37,6 +35,9 @@
                                 <option *ngFor="let suppliername of suppliernames;" [value]='suppliername.slNo'>
                                     {{suppliername.supplierCode}}</option>
                              </select>
+                             <div *ngIf="submitted && f.supplierSlno.errors" class="invalid-feedback">
+                                <div *ngIf="f.supplierSlno.errors.required">Supplier Code is Required</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -44,11 +45,6 @@
                             <div class="form-group">
                                 <label path="supliername" for="supliername" cssClass="required">Supplier Name</label>
                                 <input type="text" class="form-control" path="supliername" formControlName="supliername" readonly/>
-                                <div *ngIf="submitted && f.supliername.errors" class="invalid-feedback">
-                                    <div *ngIf="f.supliername.errors.required">
-                                        Supplier is Required
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -60,11 +56,7 @@
                                 <label path="address" for="address" cssClass="required">Address</label>
                                 <textarea class="form-control" rows="3" cols="1" path="address" formControlName="address" readonly>
                                 </textarea>
-                                <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
-                                    <div *ngIf="f.address.errors.required">
-                                        Address is Required
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -139,6 +131,9 @@
                                 <option *ngFor="let supplierContact001wb of supplierContact001wbs" [value]="supplierContact001wb.slNo">
                                     {{supplierContact001wb.pname}} </option>
                             </select>
+                            <div *ngIf="submitted && f.personName.errors" class="invalid-feedback">
+                                <div *ngIf="f.personName.errors.required">Person Name is Required</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -208,17 +203,6 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label>File Upload:</label>
-                            <input type="file" class="form-control" formControlName="filename" (change)="onFileSelected($event)" /><span>"File type should be Zip folder"</span>
-                            <div *ngIf="submitted && f.mailid.errors" class="invalid-feedback">
-                                <div *ngIf="f.mailid.errors.required">
-                                    File Upload is Required
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="col-xs-3 col-sm-3">
-                        <div class="form-group">
-                            <label>File Upload:</label>
                             <input type="file" class="form-control" formControlName="filename" (change)="onFileSelected($event)" />
                             <div *ngIf="submitted && f.filename.errors" class="invalid-feedback">
                                 <div *ngIf="f.filename.errors.required">
@@ -226,7 +210,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+                   
                 </div>
                 <div class="row">
 
