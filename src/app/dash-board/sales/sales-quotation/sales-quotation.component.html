@@ -16,7 +16,11 @@
                                     {{Custemerreg.custemercode}}
                                 </option> 
                             </select>
-                           
+                            <div *ngIf="submitted && f.custmrSlno.errors" class="invalid-feedback">
+                                <div *ngIf="f.custmrSlno.errors.required">
+                                    Customer Code is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -101,6 +105,11 @@
                         <div class="form-group">
                             <label path="refno" for="series" cssClass="required" required="true">Reference No</label>
                             <input class="form-control" formControlName="refno" />
+                            <div *ngIf="submitted && f.refno.errors" class="invalid-feedback">
+                                <div *ngIf="f.refno.errors.required">
+                                     Reference No. is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">

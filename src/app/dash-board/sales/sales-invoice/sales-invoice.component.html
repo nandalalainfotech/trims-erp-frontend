@@ -17,11 +17,11 @@
                                     {{Custemerreg.custemercode}}
                                 </option> 
                             </select>
-                            <!-- <div *ngIf="submitted && f.custmrSlno.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && f.custmrSlno.errors" class="invalid-feedback">
                                 <div *ngIf="f.custmrSlno.errors.required">
-                                    Invioce To is Required
+                                    Customer Code is Required
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -60,11 +60,11 @@
                         <div class="form-group">
                             <label path="custemerCode" for="custmrSlno" cssClass="required">Customer Name</label>
                             <input class="form-control" formControlName="custemerCode" readonly />
-                            <div *ngIf="submitted && f.custemerCode.errors" class="invalid-feedback">
+                            <!-- <div *ngIf="submitted && f.custemerCode.errors" class="invalid-feedback">
                                 <div *ngIf="f.custemerCode.errors.required">
                                     Customer name is Required
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- <select class="form-control" path="custmrSlno" formControlName="custmrSlno"
                                 [ngClass]="{'is-invalid': submitted && f.custmrSlno.errors}">
                                 <option value="" hidden> - Select the Invioce To - </option>
@@ -131,6 +131,11 @@
                         <div class="form-group">
                             <label path="refno" for="series" cssClass="required" required="true">Reference No</label>
                             <input class="form-control" formControlName="refno" />
+                            <div *ngIf="submitted && f.refno.errors" class="invalid-feedback">
+                                <div *ngIf="f.refno.errors.required">
+                                     Reference No. is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">

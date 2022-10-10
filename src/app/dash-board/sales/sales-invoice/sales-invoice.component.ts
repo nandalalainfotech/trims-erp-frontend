@@ -102,15 +102,15 @@ export class SalesInvoiceComponent implements OnInit {
     this.maxDate.setFullYear(this.maxDate.getFullYear() + 10);
     this.loadData();
     this.slaesInvocieForm = this.formBuilder.group({
-      custemerCode: ['',],
-      custmrSlno: ['',],
+      custemerCode: [''],
+      custmrSlno: ['',Validators.required],
       sInvoice: ['',],
       cDate:  [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      consignee: ['',],
+      consignee: ['', Validators.required],
       date: ['', Validators.required],
       otherRef: ['', Validators.required],
       pono: ['', Validators.required],
-      refno: ['',],
+      refno: ['', Validators.required],
       remarks: ['',],
       statusSlno: ['',],
       dispatchThrough: ['', Validators.required],
