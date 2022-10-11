@@ -46,6 +46,10 @@ export class MaterialMomentsComponent implements OnInit {
   public gridOptions4: GridOptions | any;
 
   materialmomentsForm: FormGroup | any;
+  materialmomentsConsumForm: FormGroup | any;
+  materialmomentsChildForm: FormGroup | any;
+  materialmomentsPartForm: FormGroup | any;
+
   submitted = false;
   minDate = new Date();
   maxDate = new Date();
@@ -54,10 +58,10 @@ export class MaterialMomentsComponent implements OnInit {
   childslno?: number;
   prtslno?: number;
   consumslno?: number;
-  date?: string | null;
-  cudate?: string | null;
-  cptdate?: string | null;
-  prtdate?: string | null;
+  date?: Date | null;
+  cudate?: Date | null;
+  cptdate?: Date | null;
+  prtdate?: Date | null;
   qunty?: number;
   cuqunty?: number;
   cptqunty?: number;
@@ -174,15 +178,14 @@ export class MaterialMomentsComponent implements OnInit {
         if (this.rawmaterialinspection001wbs[i].prtcode) {
           this.Partcodes.push(this.rawmaterialinspection001wbs[i])
         }
-        console.log("this.rawmaterialinspection001wbs",this.rawmetriealcodes);
       }
 
       this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
       this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
       this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
       this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
-      
-      for(let i=0;i<this.rawmaterialinspection001wbs.length; i++) {
+
+      for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
         if (this.rawmaterialinspection001wbs[i].itemcode) {
           this.orderItems.push(this.rawmaterialinspection001wbs[i])
         }
@@ -196,36 +199,59 @@ export class MaterialMomentsComponent implements OnInit {
           this.partItems.push(this.rawmaterialinspection001wbs[i])
         }
       }
-      
+
       this.loadData();
     });
 
-   
+
 
     this.materialmomentsForm = this.formBuilder.group({
       itemslno: ['', Validators.required],
-      childslno: ['', Validators.required],
-      prtslno: ['', Validators.required],
-      consumslno: ['', Validators.required],
-      date: ['', Validators.required],
-      cudate: ['', Validators.required],
-      cptdate:['', Validators.required],
-      prtdate: ['', Validators.required],
+      date: ['',],
+      cudate: ['',],
+      cptdate: [''],
+      prtdate: [''],
       qunty: ['', Validators.required],
-      cuqunty: ['', Validators.required],
-      cptqunty: ['', Validators.required],
-      prtqunty: ['', Validators.required],
       department: ['', Validators.required],
-      cudepartment: ['', Validators.required],
-      prtdepartment: ['', Validators.required],
-      cptdepartment: ['', Validators.required],
       time: ['', Validators.required],
-      cutime: ['', Validators.required],
-      cpttime: ['', Validators.required],
-      prttime: ['', Validators.required],
       shift: ['', Validators.required],
+
+    })
+
+    this.materialmomentsConsumForm = this.formBuilder.group({
+      consumslno: ['', Validators.required],
+      date: ['',],
+      cudate: ['',],
+      cptdate: [''],
+      prtdate: [''],
+      cuqunty: ['', Validators.required],
+      cudepartment: ['', Validators.required],
+      cutime: ['', Validators.required],
       cushift: ['', Validators.required],
+
+    })
+
+    this.materialmomentsChildForm = this.formBuilder.group({
+      childslno: ['', Validators.required],
+      date: ['',],
+      cudate: ['',],
+      cptdate: [''],
+      prtdate: [''],
+      cptqunty: ['', Validators.required],
+      cptdepartment: ['', Validators.required],
+      cpttime: ['', Validators.required],
       cptshift: ['', Validators.required],
+    })
+
+    this.materialmomentsPartForm = this.formBuilder.group({
+      prtslno: ['', Validators.required],
+      date: ['',],
+      cudate: ['',],
+      cptdate: [''],
+      prtdate: [''],
+      prtqunty: ['', Validators.required],
+      prtdepartment: ['', Validators.required],
+      prttime: ['', Validators.required],
       prtshift: ['', Validators.required],
     })
 
@@ -234,15 +260,18 @@ export class MaterialMomentsComponent implements OnInit {
 
 
   get f() { return this.materialmomentsForm.controls }
+  get o() { return this.materialmomentsConsumForm.controls }
+  get p() { return this.materialmomentsChildForm.controls }
+  get q() { return this.materialmomentsPartForm.controls }
 
   loadData() {
-    this.rawmetrieal=[];
-    this.consumable=[];
-    this.childpart=[];
-    this.part=[];
+    this.rawmetrieal = [];
+    this.consumable = [];
+    this.childpart = [];
+    this.part = [];
     this.materialMomentsManager.allMaterial(this.user.unitslno).subscribe(response => {
       this.materialmoments001wbs = deserialize<Materialmoments001wb[]>(Materialmoments001wb, response);
-      
+
       for (let i = 0; i < this.materialmoments001wbs.length; i++) {
 
         if (this.materialmoments001wbs[i].itemslno) {
@@ -280,7 +309,7 @@ export class MaterialMomentsComponent implements OnInit {
       }
     });
   }
- 
+
 
   createDataGrid001(): void {
     this.gridOptions1 = {
@@ -292,7 +321,7 @@ export class MaterialMomentsComponent implements OnInit {
     this.gridOptions1.enableRangeSelection = true;
     this.gridOptions1.animateRows = true;
     this.gridOptions1.columnDefs = [
-     
+
 
 
 
@@ -405,7 +434,7 @@ export class MaterialMomentsComponent implements OnInit {
 
 
   setitemcode(params: any): string {
-    let item = params.data.itemslno ? this.orderItems.find(x=>x.slNo === params.data.itemslno)?.itemcode2.itemcode:null;
+    let item = params.data.itemslno ? this.orderItems.find(x => x.slNo === params.data.itemslno)?.itemcode2.itemcode : null;
     return item
   }
 
@@ -423,7 +452,7 @@ export class MaterialMomentsComponent implements OnInit {
     this.gridOptions2.enableRangeSelection = true;
     this.gridOptions2.animateRows = true;
     this.gridOptions2.columnDefs = [
-     
+
 
 
 
@@ -533,8 +562,8 @@ export class MaterialMomentsComponent implements OnInit {
   }
 
   setConsumable(params: any): string {
-    let consumer = params.data.consumslno ? this.ConsumerItems.find(x=>x.slNo === params.data.consumslno)?.cucode2.consmno:null;
-    return consumer ;
+    let consumer = params.data.consumslno ? this.ConsumerItems.find(x => x.slNo === params.data.consumslno)?.cucode2.consmno : null;
+    return consumer;
   }
 
   createDataGrid003(): void {
@@ -547,7 +576,7 @@ export class MaterialMomentsComponent implements OnInit {
     this.gridOptions3.enableRangeSelection = true;
     this.gridOptions3.animateRows = true;
     this.gridOptions3.columnDefs = [
-     
+
 
 
 
@@ -657,12 +686,12 @@ export class MaterialMomentsComponent implements OnInit {
   }
 
   setChild(params: any): string {
-    let childitem = params.data.childslno ? this.ChildItems.find(x=>x.slNo === params.data.childslno)?.cptcode2.cpartno: null;
-    return childitem ;
+    let childitem = params.data.childslno ? this.ChildItems.find(x => x.slNo === params.data.childslno)?.cptcode2.cpartno : null;
+    return childitem;
   }
 
   setpart(params: any): string {
-    let partitem = params.data.prtslno ?  this.partItems.find(x=>x.slNo=== params.data.prtslno)?.prtcode2.partno : null;
+    let partitem = params.data.prtslno ? this.partItems.find(x => x.slNo === params.data.prtslno)?.prtcode2.partno : null;
     return partitem;
   }
 
@@ -779,8 +808,8 @@ export class MaterialMomentsComponent implements OnInit {
 
     ];
   }
- 
-  
+
+
 
   // setSupplier(params: any): string {
   //   return params.data.supfromSlno2 ? params.data.supfromSlno2.supplierFrom : null;
@@ -844,32 +873,24 @@ export class MaterialMomentsComponent implements OnInit {
   }
 
   onMaterialmomentsClick(event: any, materialmomentsForm: any) {
+    this.markFormGroupTouched(this.materialmomentsForm);
+    this.submitted = true;
+    if (this.materialmomentsForm.invalid) {
+      return;
+    }
 
     let materialmoments001wb = new Materialmoments001wb();
     materialmoments001wb.itemslno = this.f.itemslno.value ? this.f.itemslno.value : null;
-    materialmoments001wb.childslno = this.f.childslno.value ? this.f.childslno.value : null
-    materialmoments001wb.prtslno = this.f.prtslno.value ? this.f.prtslno.value : null
-    materialmoments001wb.consumslno = this.f.consumslno.value ? this.f.consumslno.value : null
     materialmoments001wb.date = new Date(this.f.date.value);
-    materialmoments001wb.cudate = new Date(this.f.cudate.value);
+    materialmoments001wb.cudate = new Date (this.f.cudate.value);
     materialmoments001wb.cptdate = new Date(this.f.cptdate.value);
     materialmoments001wb.prtdate = new Date(this.f.prtdate.value);
     materialmoments001wb.department = this.f.department.value ? this.f.department.value : null;
-    materialmoments001wb.cudepartment = this.f.cudepartment.value ? this.f.cudepartment.value :null;
-    materialmoments001wb.cptdepartment = this.f.cptdepartment.value ? this.f.cptdepartment.value : null;
-    materialmoments001wb.prtdepartment = this.f.prtdepartment.value ? this.f.prtdepartment.value :null;
     materialmoments001wb.qunty = this.f.qunty.value ? this.f.qunty.value : null;
-    materialmoments001wb.cuqunty = this.f.cuqunty.value ? this.f.cuqunty.value : null;
-    materialmoments001wb.cptqunty = this.f.cptqunty.value ? this.f.cptqunty.value : null;
-    materialmoments001wb.prtqunty = this.f.prtqunty.value ? this.f.prtqunty.value : null;
     materialmoments001wb.time = this.f.time.value ? this.f.time.value : null;
-    materialmoments001wb.cutime = this.f.cutime.value ? this.f.cutime.value : null;
-    materialmoments001wb.prttime = this.f.prttime.value ? this.f.prttime.value : null;
-    materialmoments001wb.cpttime = this.f.cpttime.value ? this.f.cpttime.value : null;
     materialmoments001wb.shift = this.f.shift.value ? this.f.shift.value : null;
-    materialmoments001wb.prtshift = this.f.prtshift.value ? this.f.prtshift.value : null;
-    materialmoments001wb.cushift = this.f.cushift.value ? this.f.cushift.value : null;
-    materialmoments001wb.cptshift = this.f.cptshift.value ? this.f.cptshift.value : null;
+
+ 
 
     if (this.slNo) {
       materialmoments001wb.slNo = this.slNo;
@@ -886,14 +907,10 @@ export class MaterialMomentsComponent implements OnInit {
         this.submitted = false;
       });
     } else {
-      materialmoments001wb.date = new Date();
-      materialmoments001wb.cudate = new Date();
-      materialmoments001wb.cptdate = new Date();
-      materialmoments001wb.prtdate = new Date();
       materialmoments001wb.unitslno = this.user.unitslno;
       materialmoments001wb.insertUser = this.authManager.getcurrentUser.username;
       materialmoments001wb.insertDatetime = new Date();
-      this.materialMomentsManager.Materialsave(materialmoments001wb).subscribe((response) => {
+   this.materialMomentsManager.Materialsave(materialmoments001wb).subscribe((response) => {
         this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
         this.materialmomentsForm.reset();
         this.loadData();
@@ -902,9 +919,151 @@ export class MaterialMomentsComponent implements OnInit {
     }
   }
 
+  onMaterialmomentsConsumClick(event:any, materialmomentsConsumForm:any){
+    this.markFormGroupTouched(this.materialmomentsConsumForm);
+    this.submitted = true;
+    if (this.materialmomentsConsumForm.invalid) {
+      return;
+    }
+    let materialmoments001wb = new Materialmoments001wb();
+      
+    materialmoments001wb.consumslno = this.o.consumslno.value ? this.o.consumslno.value : null
+    materialmoments001wb.date = new Date(this.o.date.value);
+    materialmoments001wb.cudate = new Date (this.o.cudate.value);
+    materialmoments001wb.cptdate = new Date(this.o.cptdate.value);
+    materialmoments001wb.prtdate = new Date(this.o.prtdate.value);
+    materialmoments001wb.cudepartment = this.o.cudepartment.value ? this.o.cudepartment.value : null;
+    materialmoments001wb.cuqunty = this.o.cuqunty.value ? this.o.cuqunty.value : null;
+    materialmoments001wb.cutime = this.o.cutime.value ? this.o.cutime.value : null;
+    materialmoments001wb.cushift = this.o.cushift.value ? this.o.cushift.value : null;
+
+    if (this.slNo) {
+      materialmoments001wb.slNo = this.slNo;
+      materialmoments001wb.unitslno = this.unitslno;
+      materialmoments001wb.insertUser = this.insertUser;
+      materialmoments001wb.insertDatetime = this.insertDatetime;
+      materialmoments001wb.updatedUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.updatedDatetime = new Date();
+      this.materialMomentsManager.MaterialUpdate(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
+        this.materialmomentsConsumForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      materialmoments001wb.unitslno = this.user.unitslno;
+      materialmoments001wb.insertUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.insertDatetime = new Date();
+      this.materialMomentsManager.Materialsave(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
+        this.materialmomentsConsumForm.reset();
+        this.loadData();
+        this.submitted = false;
+      });
+    }
+
+  }
+
+  onMaterialmomentsChildClick(event:any, materialmomentsChildForm:any){
+    this.markFormGroupTouched(this.materialmomentsChildForm);
+    this.submitted = true;
+    if (this.materialmomentsChildForm.invalid) {
+      return;
+    }
+    let materialmoments001wb = new Materialmoments001wb();
+    
+    materialmoments001wb.childslno = this.p.childslno.value ? this.p.childslno.value : null
+    materialmoments001wb.date = new Date(this.p.date.value);
+    materialmoments001wb.cudate = new Date (this.p.cudate.value);
+    materialmoments001wb.cptdate = new Date(this.p.cptdate.value);
+    materialmoments001wb.prtdate = new Date(this.p.prtdate.value);
+    materialmoments001wb.cptdepartment = this.p.cptdepartment.value ? this.p.cptdepartment.value : null;
+    materialmoments001wb.cptqunty = this.p.cptqunty.value ? this.p.cptqunty.value : null;
+    materialmoments001wb.cpttime = this.p.cpttime.value ? this.p.cpttime.value : null;
+    materialmoments001wb.cptshift = this.p.cptshift.value ? this.p.cptshift.value : null;
+
+    if (this.slNo) {
+      materialmoments001wb.slNo = this.slNo;
+      materialmoments001wb.unitslno = this.unitslno;
+      materialmoments001wb.insertUser = this.insertUser;
+      materialmoments001wb.insertDatetime = this.insertDatetime;
+      materialmoments001wb.updatedUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.updatedDatetime = new Date();
+      this.materialMomentsManager.MaterialUpdate(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
+        this.materialmomentsChildForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      materialmoments001wb.unitslno = this.user.unitslno;
+      materialmoments001wb.insertUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.insertDatetime = new Date();
+      this.materialMomentsManager.Materialsave(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
+        this.materialmomentsChildForm.reset();
+        this.loadData();
+        this.submitted = false;
+      });
+    }
+
+
+  }
+
+  onMaterialmomentsPartClick(event:any, materialmomentsPartForm:any){
+    this.markFormGroupTouched(this.materialmomentsPartForm);
+    this.submitted = true;
+    if (this.materialmomentsPartForm.invalid) {
+      return;
+    }
+    let materialmoments001wb = new Materialmoments001wb();
+    materialmoments001wb.prtslno = this.q.prtslno.value ? this.q.prtslno.value : null
+    materialmoments001wb.date = new Date(this.q.date.value);
+    materialmoments001wb.cudate = new Date (this.q.cudate.value);
+    materialmoments001wb.cptdate = new Date(this.q.cptdate.value);
+    materialmoments001wb.prtdate = new Date(this.q.prtdate.value);
+    materialmoments001wb.prtdepartment = this.q.prtdepartment.value ? this.q.prtdepartment.value : null;
+    materialmoments001wb.prtqunty = this.q.prtqunty.value ? this.q.prtqunty.value : null;
+    materialmoments001wb.prttime = this.q.prttime.value ? this.q.prttime.value : null;
+    materialmoments001wb.prtshift = this.q.prtshift.value ? this.q.prtshift.value : null;
+
+    if (this.slNo) {
+      materialmoments001wb.slNo = this.slNo;
+      materialmoments001wb.unitslno = this.unitslno;
+      materialmoments001wb.insertUser = this.insertUser;
+      materialmoments001wb.insertDatetime = this.insertDatetime;
+      materialmoments001wb.updatedUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.updatedDatetime = new Date();
+      this.materialMomentsManager.MaterialUpdate(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
+        this.materialmomentsPartForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      materialmoments001wb.unitslno = this.user.unitslno;
+      materialmoments001wb.insertUser = this.authManager.getcurrentUser.username;
+      materialmoments001wb.insertDatetime = new Date();
+      this.materialMomentsManager.Materialsave(materialmoments001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
+        this.materialmomentsPartForm.reset();
+        this.loadData();
+        this.submitted = false;
+      });
+    }
+  
+
+  }
+
   onReset() {
     this.submitted = false;
     this.materialmomentsForm.reset();
+    this.materialmomentsConsumForm.reset();
+    this.materialmomentsChildForm.reset();
+    this.materialmomentsPartForm.reset();
   }
 
 
@@ -918,23 +1077,23 @@ export class MaterialMomentsComponent implements OnInit {
 
   itemPdfReport() {
     this.materialMomentsManager.itemPdf(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
-      saveAs(response, "Material-Moments-Item-Details"+ newdate);
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Material-Moments-Item-Details" + newdate);
     })
   }
 
   itemExcelReport() {
     this.materialMomentsManager.iemExcel(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Material-Moments-Item-Details" + newdate);
     });
   }
 
-// ------------consumablePdf-----------------
+  // ------------consumablePdf-----------------
 
- consumableViewClick() {
+  consumableViewClick() {
     this.materialMomentsManager.consumablePdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
@@ -944,21 +1103,21 @@ export class MaterialMomentsComponent implements OnInit {
 
   consumablePdfReport() {
     this.materialMomentsManager.consumablePdf(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
-      saveAs(response, "Material-Moments-ConsumableItem-Details"+ newdate);
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Material-Moments-ConsumableItem-Details" + newdate);
     })
   }
 
   consumableExcelReport() {
     this.materialMomentsManager.consumableExcel(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Material-Moments-ConsumableItem-Details" + newdate);
     });
   }
 
-// ------Childpart----------------
+  // ------Childpart----------------
 
   childPartViewClick() {
     this.materialMomentsManager.childPartPdf(this.user.unitslno).subscribe((response) => {
@@ -970,16 +1129,16 @@ export class MaterialMomentsComponent implements OnInit {
 
   childPartPdfReport() {
     this.materialMomentsManager.childPartPdf(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
-      saveAs(response, "Material-Moments-ChildPart-Details"+ newdate);
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Material-Moments-ChildPart-Details" + newdate);
     })
   }
 
   childPartExcelReport() {
     this.materialMomentsManager.childPartExcel(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Material-Moments-ChildPart-Details" + newdate);
     });
   }
@@ -996,16 +1155,16 @@ export class MaterialMomentsComponent implements OnInit {
 
   partPdfReport() {
     this.materialMomentsManager.PartPdf(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
-      saveAs(response, "Material-Moments-Part-Details"+ newdate);
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Material-Moments-Part-Details" + newdate);
     })
   }
 
   partExcelReport() {
     this.materialMomentsManager.PartExcel(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
-      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');  
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Material-Moments-Part-Details" + newdate);
     });
   }
