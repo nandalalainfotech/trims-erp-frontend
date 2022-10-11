@@ -5,6 +5,7 @@ import { ActivatedRoute, ParamMap, Route, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions } from 'ag-grid-community';
 import { saveAs } from 'file-saver';
+import { forkJoin } from 'rxjs';
 import { deserialize } from 'serializer.ts/Serializer';
 import { AuditComponent } from 'src/app/shared/audit/audit.component';
 import { ConformationComponent } from 'src/app/shared/conformation/conformation.component';
@@ -613,19 +614,33 @@ export class PurchaseReqSlipComponent implements OnInit {
   }
 
   onSubmitClick() {
-    this.purchaseregslipManager.allpurchaseslip(this.user.unitslno).subscribe(response => {
-      this.purchaseRegs = deserialize<Purchasereqslip001wb[]>(Purchasereqslip001wb, response);
-  
+    let res1 =  this.purchaseregslipManager.allpurchaseslip(this.user.unitslno)
+    forkJoin([res1]).subscribe((result: any) =>{
+      this.purchaseRegs = deserialize<Purchasereqslip001wb[]>(Purchasereqslip001wb, result[0]);
       let purchasereqslip001wb = new Purchasereqslip001wb();
       for(let i=0;i<1;i++){
         purchasereqslip001wb=this.purchaseRegs[i]
         purchasereqslip001wb.status="Request For Approval"
         this.purchaseregslipManager.purchaseslipupdate(purchasereqslip001wb).subscribe((response) => {
           this.calloutService.showInfo(" Send The Request For Approval");
+          this.loadData();
         });
       }
-      this.loadData();
+     
     });
+    // this.purchaseregslipManager.allpurchaseslip(this.user.unitslno).subscribe(response => {
+    //   this.purchaseRegs = deserialize<Purchasereqslip001wb[]>(Purchasereqslip001wb, response);
+  
+    //   let purchasereqslip001wb = new Purchasereqslip001wb();
+    //   for(let i=0;i<1;i++){
+    //     purchasereqslip001wb=this.purchaseRegs[i]
+    //     purchasereqslip001wb.status="Request For Approval"
+    //     this.purchaseregslipManager.purchaseslipupdate(purchasereqslip001wb).subscribe((response) => {
+    //       this.calloutService.showInfo(" Send The Request For Approval");
+    //     });
+    //   }
+    //   this.loadData();
+    // });
    
 
     // this.router.navigate(["/app-dash-board/app-approval/app-approval-request"]);

@@ -19,6 +19,7 @@ import { DataSharedService } from '../services/services/datashared.service';
 })
 export class AddCustomerContactComponent implements OnInit {
   @Input() customercontacts: any;
+  @Input() customercontact: any;
   @Input() custemerRegForm: any;
   customerContactForm: FormGroup | any;
   customerContactFormArray: FormArray | any;
@@ -180,7 +181,7 @@ export class AddCustomerContactComponent implements OnInit {
       if (customerContactForm.status == "VALID") {
         this.activeModal.close({
           status: 'Yes',
-          customercontacts: customerContact001wbs,
+          customercontact: customerContact001wbs,
         });
       }
       else {

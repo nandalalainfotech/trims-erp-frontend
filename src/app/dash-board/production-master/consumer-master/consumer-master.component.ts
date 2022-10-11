@@ -55,7 +55,7 @@ export class ConsumerMasterComponent implements OnInit {
   getCount: any; 
  user?: Login001mb | any;
     unitslno: number | any;
-  specifications:any;
+  specifications:Consumerspecification001wb [] =[];
   consumerspecification: Consumerspecification001wb[] | any;
 
   constructor(
@@ -132,18 +132,6 @@ export class ConsumerMasterComponent implements OnInit {
     this.gridOptions.animateRows = true;
     this.gridOptions.columnDefs = [
 
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 100,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
 
       {
         headerName: 'Sl_No',
@@ -288,6 +276,18 @@ export class ConsumerMasterComponent implements OnInit {
         suppressSizeToFit: true,
       },
    
+      {
+        headerName: 'Edit',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onEditButtonClick.bind(this),
+          label: 'Edit'
+        },
+      },
 
 
       

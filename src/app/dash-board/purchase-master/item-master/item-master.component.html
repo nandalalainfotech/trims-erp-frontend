@@ -139,7 +139,7 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="location" for="location" cssClass="required">Location</label>
-                            <select type="location" class="form-control" path="location" formControlName="location" [ngClass]="{'is-invalid': submitted && f.uom.errors}">
+                            <select type="location" class="form-control" path="location" formControlName="location" [ngClass]="{'is-invalid': submitted && f.location.errors}">
                                 <option value="" hidden> - Select the location- </option>
                                 <option value="null"> - Select the location - </option>
                                 <option >RM 1A </option>
@@ -148,24 +148,44 @@
                                 <option>RM 1D</option>
                                 <option>RM 1E</option>
                             </select>
+                            <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                                <div *ngIf="f.location.errors.required">
+                                    Locationis Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="mslevel" for="mslevel" cssClass="required">M.S.Level</label>
-                            <input OnlyNumber type="text" class="form-control" path="mslevel" formControlName="mslevel">
+                            <input OnlyNumber type="text" class="form-control" path="mslevel" formControlName="mslevel" [ngClass]="{'is-invalid': submitted && f.mslevel.errors}">
+                            <div *ngIf="submitted && f.mslevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.mslevel.errors.required">
+                                    mslevel is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="orderlevel" for="orderlevel" cssClass="required">Re-Oreder Level</label>
-                            <input OnlyNumber type="text" class="form-control" path="orderlevel" formControlName="orderlevel" />
+                            <input OnlyNumber type="text" class="form-control" path="orderlevel" formControlName="orderlevel"  [ngClass]="{'is-invalid': submitted && f.orderlevel.errors}"/>
+                            <div *ngIf="submitted && f.orderlevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.orderlevel.errors.required">
+                                    orderlevel is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="leadtime" for="leadtime" cssClass="required">Lead Time</label>
-                            <input type="text" class="form-control" path="leadtime" formControlName="leadtime">
+                            <input type="text" class="form-control" path="leadtime" formControlName="leadtime" [ngClass]="{'is-invalid': submitted && f.leadtime.errors}">
+                            <div *ngIf="submitted && f.leadtime.errors" class="invalid-feedback">
+                                <div *ngIf="f.leadtime.errors.required">
+                                    leadtime is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

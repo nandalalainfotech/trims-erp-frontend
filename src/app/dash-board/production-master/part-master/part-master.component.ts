@@ -56,7 +56,7 @@ export class PartMasterComponent implements OnInit {
   getCount: any;
 user?: Login001mb | any;
   unitslno: number | any;
-  specifications:any;
+  specifications:Partspecific001wb []=[];
   partspecific ?:Partspecific001wb[] | any;
 
 
@@ -425,7 +425,7 @@ user?: Login001mb | any;
       part001mb.updatedUser = this.authManager.getcurrentUser.username;
       part001mb.updatedDatetime = new Date();
       this.partManager.partUpdate(part001mb).subscribe((response) => {
-        this.calloutService.showSuccess("Production Details Updated Successfully");
+        this.calloutService.showSuccess("Part Details Updated Successfully");
         this.loadData();
         this.PartForm.reset();
         this.specifications=[];
@@ -437,7 +437,7 @@ user?: Login001mb | any;
       part001mb.insertUser = this.authManager.getcurrentUser.username;
       part001mb.insertDatetime = new Date();
       this.partManager.partSave(part001mb).subscribe((response) => {
-        this.calloutService.showSuccess("Production Details Saved Successfully");
+        this.calloutService.showSuccess("Part Details Saved Successfully");
         this.loadData();
         this.specifications=[];
         this.PartForm.reset();

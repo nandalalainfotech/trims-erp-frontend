@@ -17,6 +17,7 @@ import { AuditComponent } from 'src/app/shared/audit/audit.component';
 import { ChildpartSpecificationComponent } from 'src/app/shared/childpart-specification/childpart-specification.component';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
 import { DatePipe } from '@angular/common';
+import { Childpartspecification001wb } from 'src/app/shared/services/restcontroller/entities/childpartsepecific001wb';
 
 @Component({
   selector: 'app-child-part',
@@ -54,9 +55,9 @@ export class ChildPartComponent implements OnInit {
   childPart001mb?: ChildPart001mb;
   count: number = 0;
   getCount: any;
- user?: Login001mb | any;
-    unitslno: number | any;
-  specifications:any;
+  user?: Login001mb | any;
+  unitslno: number | any;
+  specifications: Childpartspecification001wb[]=[];
 
   constructor(
     private router: Router,
@@ -76,7 +77,7 @@ export class ChildPartComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authManager.getcurrentUser;
-    
+
     this.createDataGrid001();
 
     this.loadData()
@@ -101,17 +102,17 @@ export class ChildPartComponent implements OnInit {
 
   loadData() {
     this.childPartManager.allChildpart(this.user.unitslno).subscribe(response => {
-       this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, response);
-    
+      this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, response);
+
       if (this.childPart001mbs.length > 0) {
         this.gridOptions?.api?.setRowData(this.childPart001mbs);
       } else {
         this.gridOptions?.api?.setRowData([]);
       }
-     
+
     });
     this.childPartManager.getCount().subscribe(response => {
-      this.count = response[0].row == 0 ? 1: parseInt(response[0].row) + 1;
+      this.count = response[0].row == 0 ? 1 : parseInt(response[0].row) + 1;
       this.childPartForm.patchValue({
         cpartno: String("CPT") + String(this.count).padStart(4, '0')
       });
@@ -312,7 +313,7 @@ export class ChildPartComponent implements OnInit {
           label: 'Audit'
         },
       },
-     
+
     ];
   }
 
@@ -408,7 +409,7 @@ export class ChildPartComponent implements OnInit {
     childPart001mb.location = this.f.location.value ? this.f.location.value : "";
     childPart001mb.leadtime = this.f.leadtime.value ? this.f.leadtime.value : "";
     childPart001mb.mslevel = this.f.mslevel.value ? this.f.mslevel.value : "";
-    childPart001mb.childpartspecification001wbs = this.specifications?this.specifications:0;
+    childPart001mb.childpartspecification001wbs = this.specifications ? this.specifications : 0;
 
 
     if (this.slNo) {
@@ -419,22 +420,22 @@ export class ChildPartComponent implements OnInit {
       childPart001mb.updatedUser = this.authManager.getcurrentUser.username;
       childPart001mb.updatedDatetime = new Date();
       this.childPartManager.ChildpartUpdate(childPart001mb).subscribe((response) => {
-        this.calloutService.showSuccess("Production Details Updated Successfully");
+        this.calloutService.showSuccess("Child Part Details Updated Successfully");
         this.loadData();
         this.childPartForm.reset();
-        this.specifications=[];
+        this.specifications = [];
         this.slNo = null;
         this.submitted = false;
       });
     } else {
-      childPart001mb.unitslno= this.user.unitslno;
+      childPart001mb.unitslno = this.user.unitslno;
       childPart001mb.insertUser = this.authManager.getcurrentUser.username;
       childPart001mb.insertDatetime = new Date();
       this.childPartManager.ChildpartSave(childPart001mb).subscribe((response) => {
-        this.calloutService.showSuccess("Production Details Saved Successfully");
+        this.calloutService.showSuccess("Child Part Details Saved Successfully");
         this.loadData();
         this.childPartForm.reset();
-        this.specifications=[];
+        this.specifications = [];
         this.submitted = false;
       });
     }
@@ -455,7 +456,7 @@ export class ChildPartComponent implements OnInit {
 
   onGeneratePdfReport() {
     this.childPartManager.ChildpartPdf(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
+      let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Child Part Details" + newDate);
     })
@@ -463,7 +464,7 @@ export class ChildPartComponent implements OnInit {
 
   onGenerateExcelReport() {
     this.childPartManager.ChildpartExcel(this.user.unitslno).subscribe((response) => {
-      let date= new Date();
+      let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "Child Part Details" + newDate);
     });

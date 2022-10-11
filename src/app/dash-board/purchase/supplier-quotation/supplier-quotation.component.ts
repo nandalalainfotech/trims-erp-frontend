@@ -966,9 +966,10 @@ export class SupplierQuotationComponent implements OnInit {
         supplierquotation001wb.status = "Request For Approval"
         this.supplierQuotationManager.SupplierQuotationUpdate(supplierquotation001wb).subscribe(response => {
           this.calloutService.showInfo(" Send The Request For Approval");
+          this.loadData();
         });
       }
-      this.loadData();
+    
     });
 
   }

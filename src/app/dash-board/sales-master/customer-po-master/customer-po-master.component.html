@@ -8,7 +8,7 @@
                     <div class="form-group">
                         <div class="p-fluid p-grid p-formgrid">
                             <div class="p-field p-col-12 p-md-5">
-                                <label path="custemercode" for="custemercode" cssClass="required"> Custemer Code</label>
+                                <label path="custemercode" for="custemercode" cssClass="required"> Customer Code</label>
                                 <!-- <input type="text" class="form-control" path="custemercode" formControlName="custemercode" /> -->
                                 <select class="form-control" path="custemercode" formControlName="custemercode" (change)="onChangePO($event)" [ngClass]="{'is-invalid': submitted && f.custemercode.errors}">
                                     <option value="" hidden> - Select item Code- </option>
@@ -28,11 +28,11 @@
                     <div class="form-group">
                         <div class="p-fluid p-grid p-formgrid">
                             <div class="p-field p-col-12 p-md-5">
-                                <label path="custemername" for="custemername" cssClass="required"> CustemerName</label>
-                                <input type="text" class="form-control" path="custemername" formControlName="custemername" readonly [ngClass]="{'is-invalid': submitted && f.custemername.errors}" />
-                                <div *ngIf="submitted && f.custemername.errors" class="invalid-feedback">
+                                <label path="custemername" for="custemername" cssClass="required"> CustomerName</label>
+                                <input type="text" class="form-control" path="custemername" formControlName="custemername" readonly />
+                                <!-- <div *ngIf="submitted && f.custemername.errors" class="invalid-feedback">
                                     <div *ngIf="f.custemername.errors.required">Custemer Name is Required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <div class="p-fluid p-grid p-formgrid">
                             <div class="p-field p-col-12 p-md-5">
-                                <label path="custemerPONo" for="custemerPONo" cssClass="required"> Custemer PO No.</label>
+                                <label path="custemerPONo" for="custemerPONo" cssClass="required"> Customer PO No.</label>
                                 <input type="text" class="form-control" path="custemerPONo" formControlName="custemerPONo" [ngClass]="{'is-invalid': submitted && f.custemerPONo.errors}" />
                                 <div *ngIf="submitted && f.custemerPONo.errors" class="invalid-feedback">
                                     <div *ngIf="f.custemerPONo.errors.required">Custemer PO No. is Required</div>

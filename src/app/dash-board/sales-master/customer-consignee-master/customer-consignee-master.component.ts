@@ -79,7 +79,7 @@ export class CustomerConsigneeMasterComponent implements OnInit {
 
     this.customerConsigneeForm = this.formBuilder.group({
       consigneeSlno: ['', Validators.required],
-      companyName: ['', Validators.required],
+      companyName: ['', ],
       consignee: ['', Validators.required],
       address1: ['', Validators.required],
       address2: ['', Validators.required],

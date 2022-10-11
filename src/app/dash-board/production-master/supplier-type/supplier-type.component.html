@@ -8,6 +8,11 @@
                         <div class="form-group">
                             <label path="name" for="name" cssClass="required"> Name</label>
                             <input OnlyLetter class="form-control" path="name" formControlName="name" />
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">
+                                    Name is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
@@ -15,6 +20,11 @@
                             <div class="form-group">
                                 <label path="descrip" for="descrip" cssClass="required">Description</label>
                                 <input class="form-control" path="descrip" formControlName="descrip" />
+                                <div *ngIf="submitted && f.descrip.errors" class="invalid-feedback">
+                                    <div *ngIf="f.descrip.errors.required">
+                                        Description is Required
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -24,6 +34,11 @@
                             <div class="form-group">
                                 <label path="order" for="order" cssClass="required">Order</label>
                                 <input OnlyNumber class="form-control" path="order" formControlName="order" />
+                                <div *ngIf="submitted && f.order.errors" class="invalid-feedback">
+                                    <div *ngIf="f.order.errors.required">
+                                        order is Required
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -36,6 +51,11 @@
                                         <option *ngFor="let status001mb of status001mbs" [value]="status001mb.slNo">
                                             {{status001mb.name}} </option>
                                 </select>
+                                <div *ngIf="submitted && f.sslno.errors" class="invalid-feedback">
+                                    <div *ngIf="f.sslno.errors.required">
+                                        Status is Required
+                                    </div>
+                                </div>
 
                         </div>
                     </div>
