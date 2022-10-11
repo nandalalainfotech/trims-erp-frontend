@@ -84,107 +84,129 @@ export class ObservationItemsComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authManager.getcurrentUser;
     this.loadData();
-  
-    if(this.observationitem && this.observationitem.length > 0){
+
+    if (this.observationitem && this.observationitem.length > 0) {
       this.observationForm = this.formBuilder.group({
         observationFormArray: this.formBuilder.array([])
       });
-      for(let observation of this.observationitem){
+      for (let observation of this.observationitem) {
         // this.observationFormArray = this.f['observationFormArray'] as FormArray;
-       
+
         // this.observationFormArray.push(this.createItem(observation));
-         if(this.RawMaterialcode){
-    this.orderItemSettingManager.findOne(this.RawMaterialcode).subscribe(response => {
-      this.orderitem001mb = deserialize<Orderitem001mb>(Orderitem001mb, response);
-      for (let i = 0; i < this.orderitem001mb.orderitemspecification001wbs.length; i++) {
-        this.observationFormArray = this.f['observationFormArray'] as FormArray;
-        if (i < (this.orderitem001mb.orderitemspecification001wbs.length) - 1) {
+
+       
+        // if (this.RawMaterialcode) {
+        //   this.orderItemSettingManager.findOne(this.RawMaterialcode).subscribe(response => {
+        //     this.orderitem001mb = deserialize<Orderitem001mb>(Orderitem001mb, response);
+        //     for (let i = 0; i < this.orderitem001mb.orderitemspecification001wbs.length; i++) {
+        //       this.observationFormArray = this.f['observationFormArray'] as FormArray;
+        //       if (i < (this.orderitem001mb.orderitemspecification001wbs.length) - 1) {
+        //         this.observationFormArray.push(this.createItem(observation));
+        //       }
+
+        //       this.observationFormArray.controls[i].controls['ordernumber'].setValue(this.orderitem001mb.itemcode);
+        //       this.observationFormArray.controls[i].controls['orderparameter'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].parameter);
+        //       this.observationFormArray.controls[i].controls['orderspecification'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].specification);
+        //       this.observationFormArray.controls[i].controls['orderinspection'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].inspecmethod);
+        //     }
+
+
+        //   });
+        // }
+
+        if (this.RawMaterialcode) {
+          this.observationFormArray = this.f['observationFormArray'] as FormArray;
           this.observationFormArray.push(this.createItem(observation));
-        }
-        // console.log("observationFormArray==>",this.observationFormArray.controls[i].controls);
-        
-        this.observationFormArray.controls[i].controls['ordernumber'].setValue(this.orderitem001mb.itemcode);
-        this.observationFormArray.controls[i].controls['orderparameter'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].parameter);
-        this.observationFormArray.controls[i].controls['orderspecification'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].specification);
-        this.observationFormArray.controls[i].controls['orderinspection'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].inspecmethod);
+        };
+
+
+        if (this.Consumablecode) {
+          this.observationFormArray = this.f['observationFormArray'] as FormArray;
+          this.observationFormArray.push(this.createItem(observation));
+        };
+
+        if (this.Childcode) {
+          this.observationFormArray = this.f['observationFormArray'] as FormArray;
+          this.observationFormArray.push(this.createItem(observation));
+        };
+
+        if (this.Partcode) {
+          this.observationFormArray = this.f['observationFormArray'] as FormArray;
+          this.observationFormArray.push(this.createItem(observation));
+        };
+
       }
 
-
-    });
-  }
-        
-      }
-
-    }else{
+    } else {
       this.observationForm = this.formBuilder.group({
         observationFormArray: this.formBuilder.array([this.createItem(new Observationsitems001wb())])
       });
     }
-    if(this.observationitem==undefined){
-    if(this.RawMaterialcode){
-    this.orderItemSettingManager.findOne(this.RawMaterialcode).subscribe(response => {
-      this.orderitem001mb = deserialize<Orderitem001mb>(Orderitem001mb, response);
-      for (let i = 0; i < this.orderitem001mb.orderitemspecification001wbs.length; i++) {
-        this.observationFormArray = this.f['observationFormArray'] as FormArray;
-        if (i < (this.orderitem001mb.orderitemspecification001wbs.length) - 1) {
-          this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
-        }
-        this.observationFormArray.controls[i].controls['ordernumber'].setValue(this.orderitem001mb.itemcode);
-        this.observationFormArray.controls[i].controls['orderparameter'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].parameter);
-        this.observationFormArray.controls[i].controls['orderspecification'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].specification);
-        this.observationFormArray.controls[i].controls['orderinspection'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].inspecmethod);
-      }
+    if (this.observationitem == undefined) {
+      if (this.RawMaterialcode) {
+        this.orderItemSettingManager.findOne(this.RawMaterialcode).subscribe(response => {
+          this.orderitem001mb = deserialize<Orderitem001mb>(Orderitem001mb, response);
+          for (let i = 0; i < this.orderitem001mb.orderitemspecification001wbs.length; i++) {
+            this.observationFormArray = this.f['observationFormArray'] as FormArray;
+            if (i < (this.orderitem001mb.orderitemspecification001wbs.length) - 1) {
+              this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
+            }
+            this.observationFormArray.controls[i].controls['ordernumber'].setValue(this.orderitem001mb.itemcode);
+            this.observationFormArray.controls[i].controls['orderparameter'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].parameter);
+            this.observationFormArray.controls[i].controls['orderspecification'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].specification);
+            this.observationFormArray.controls[i].controls['orderinspection'].setValue(this.orderitem001mb.orderitemspecification001wbs[i].inspecmethod);
+          }
 
 
-    });
-  }
-if(this.Consumablecode){
-    this.consumbleManager.findOne(this.Consumablecode).subscribe(response => {
-      this.consumble001mb = deserialize<Consumble001mb>(Consumble001mb, response);
-      for (let i = 0; i < this.consumble001mb.consumerspecification001wbs.length; i++) {
-        this.observationFormArray = this.f['observationFormArray'] as FormArray;
-        if (i < (this.consumble001mb.consumerspecification001wbs.length) - 1) {
-          this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
-        }
-        this.observationFormArray.controls[i].controls['consumnumber'].setValue(this.consumble001mb.consmno);
-        this.observationFormArray.controls[i].controls['consumparameter'].setValue(this.consumble001mb.consumerspecification001wbs[i].parameter);
-        this.observationFormArray.controls[i].controls['consumspecification'].setValue(this.consumble001mb.consumerspecification001wbs[i].specification);
-        this.observationFormArray.controls[i].controls['consuminspection'].setValue(this.consumble001mb.consumerspecification001wbs[i].inspecmethod);
+        });
       }
-    });
-  }
-  if(this.Childcode){
-    this.childPartManager.findOne(this.Childcode).subscribe(response => {
-      this.childPart001mb = deserialize<ChildPart001mb>(ChildPart001mb, response);
-      for (let i = 0; i < this.childPart001mb.childpartspecification001wbs.length; i++) {
-        this.observationFormArray = this.f['observationFormArray'] as FormArray;
-        if (i < (this.childPart001mb.childpartspecification001wbs.length) - 1) {
-          this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
-        }
-        this.observationFormArray.controls[i].controls['childnumber'].setValue(this.childPart001mb.cpartno);
-        this.observationFormArray.controls[i].controls['childparameter'].setValue(this.childPart001mb.childpartspecification001wbs[i].parameter);
-        this.observationFormArray.controls[i].controls['childspecification'].setValue(this.childPart001mb.childpartspecification001wbs[i].specification);
-        this.observationFormArray.controls[i].controls['childinspection'].setValue(this.childPart001mb.childpartspecification001wbs[i].inspecmethod);
+      if (this.Consumablecode) {
+        this.consumbleManager.findOne(this.Consumablecode).subscribe(response => {
+          this.consumble001mb = deserialize<Consumble001mb>(Consumble001mb, response);
+          for (let i = 0; i < this.consumble001mb.consumerspecification001wbs.length; i++) {
+            this.observationFormArray = this.f['observationFormArray'] as FormArray;
+            if (i < (this.consumble001mb.consumerspecification001wbs.length) - 1) {
+              this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
+            }
+            this.observationFormArray.controls[i].controls['consumnumber'].setValue(this.consumble001mb.consmno);
+            this.observationFormArray.controls[i].controls['consumparameter'].setValue(this.consumble001mb.consumerspecification001wbs[i].parameter);
+            this.observationFormArray.controls[i].controls['consumspecification'].setValue(this.consumble001mb.consumerspecification001wbs[i].specification);
+            this.observationFormArray.controls[i].controls['consuminspection'].setValue(this.consumble001mb.consumerspecification001wbs[i].inspecmethod);
+          }
+        });
       }
-    });
-  }
-  if(this.Partcode){
-    this.partManager.findOne(this.Partcode).subscribe(response => {
-      this.part001mb = deserialize<Part001mb>(Part001mb, response);
-      for (let i = 0; i < this.part001mb.partspecific001wbs.length; i++) {
-        this.observationFormArray = this.f['observationFormArray'] as FormArray;
-        if (i < (this.part001mb.partspecific001wbs.length) - 1) {
-          this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
-        }
-        this.observationFormArray.controls[i].controls['partnumber'].setValue(this.part001mb.partno);
-        this.observationFormArray.controls[i].controls['partparameter'].setValue(this.part001mb.partspecific001wbs[i].parameter);
-        this.observationFormArray.controls[i].controls['partspecification'].setValue(this.part001mb.partspecific001wbs[i].specification);
-        this.observationFormArray.controls[i].controls['partinspection'].setValue(this.part001mb.partspecific001wbs[i].inspecmethod);
+      if (this.Childcode) {
+        this.childPartManager.findOne(this.Childcode).subscribe(response => {
+          this.childPart001mb = deserialize<ChildPart001mb>(ChildPart001mb, response);
+          for (let i = 0; i < this.childPart001mb.childpartspecification001wbs.length; i++) {
+            this.observationFormArray = this.f['observationFormArray'] as FormArray;
+            if (i < (this.childPart001mb.childpartspecification001wbs.length) - 1) {
+              this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
+            }
+            this.observationFormArray.controls[i].controls['childnumber'].setValue(this.childPart001mb.cpartno);
+            this.observationFormArray.controls[i].controls['childparameter'].setValue(this.childPart001mb.childpartspecification001wbs[i].parameter);
+            this.observationFormArray.controls[i].controls['childspecification'].setValue(this.childPart001mb.childpartspecification001wbs[i].specification);
+            this.observationFormArray.controls[i].controls['childinspection'].setValue(this.childPart001mb.childpartspecification001wbs[i].inspecmethod);
+          }
+        });
       }
-    });
+      if (this.Partcode) {
+        this.partManager.findOne(this.Partcode).subscribe(response => {
+          this.part001mb = deserialize<Part001mb>(Part001mb, response);
+          for (let i = 0; i < this.part001mb.partspecific001wbs.length; i++) {
+            this.observationFormArray = this.f['observationFormArray'] as FormArray;
+            if (i < (this.part001mb.partspecific001wbs.length) - 1) {
+              this.observationFormArray.push(this.createItem(new Observationsitems001wb()));
+            }
+            this.observationFormArray.controls[i].controls['partnumber'].setValue(this.part001mb.partno);
+            this.observationFormArray.controls[i].controls['partparameter'].setValue(this.part001mb.partspecific001wbs[i].parameter);
+            this.observationFormArray.controls[i].controls['partspecification'].setValue(this.part001mb.partspecific001wbs[i].specification);
+            this.observationFormArray.controls[i].controls['partinspection'].setValue(this.part001mb.partspecific001wbs[i].inspecmethod);
+          }
+        });
+      }
+    }
   }
-  }
-}
   loadData() {
     this.observationsitemsManager.allobservation(this.user.unitslno).subscribe(response => {
       this.observationsitems001wbs = deserialize<Observationsitems001wb[]>(Observationsitems001wb, response);
@@ -203,74 +225,74 @@ if(this.Consumablecode){
   get f() { return this.observationForm.controls; }
   get o() { return this.f.observationFormArray as FormArray; }
 
- 
 
-  createItem(observation:Observationsitems001wb) {
-    if(this.incoming == "Raw") {
+
+  createItem(observation: Observationsitems001wb) {
+    if (this.incoming == "Raw") {
       return this.formBuilder.group({
-        ordernumber: [observation.ordernumber ? observation.ordernumber:null , Validators.required],
-        orderparameter: [observation.orderparameter ? observation.orderparameter:null ,  Validators.required],
-        orderspecification: [observation.orderspecification ? observation.orderspecification:null , Validators.required],
-        orderinspection: [observation.orderinspection ? observation.orderinspection:null , Validators.required],
-        orderobservartion: [observation.orderobservartion ? observation.orderobservartion:null, Validators.required],
-      orderobservartion1: [observation.orderobservartion1 ? observation.orderobservartion1:null , Validators.required],
-      orderobservartion2: [observation.orderobservartion2 ? observation.orderobservartion2:null , Validators.required],
-      orderobservartion3: [observation.orderobservartion3 ? observation.orderobservartion3:null , Validators.required],
-      orderobservartion4: [observation.orderobservartion4 ? observation.orderobservartion4:null , Validators.required],
-      orderobservartion5: [observation.orderobservartion5 ? observation.orderobservartion5:null , Validators.required],
-      orderobservartion6: [observation.orderobservartion6 ? observation.orderobservartion6:null , Validators.required],
-      orderobservartion7: [observation.orderobservartion7 ? observation.orderobservartion7:null , Validators.required],
-      orderobservartion8: [observation.orderobservartion8 ? observation.orderobservartion8:null , Validators.required],
-      orderobservartion9: [observation.orderobservartion9 ? observation.orderobservartion9:null , Validators.required],
+        ordernumber: [observation.ordernumber ? observation.ordernumber : null, Validators.required],
+        orderparameter: [observation.orderparameter ? observation.orderparameter : null, Validators.required],
+        orderspecification: [observation.orderspecification ? observation.orderspecification : null, Validators.required],
+        orderinspection: [observation.orderinspection ? observation.orderinspection : null, Validators.required],
+        orderobservartion: [observation.orderobservartion ? observation.orderobservartion : null, Validators.required],
+        orderobservartion1: [observation.orderobservartion1 ? observation.orderobservartion1 : null, Validators.required],
+        orderobservartion2: [observation.orderobservartion2 ? observation.orderobservartion2 : null, Validators.required],
+        orderobservartion3: [observation.orderobservartion3 ? observation.orderobservartion3 : null, Validators.required],
+        orderobservartion4: [observation.orderobservartion4 ? observation.orderobservartion4 : null, Validators.required],
+        orderobservartion5: [observation.orderobservartion5 ? observation.orderobservartion5 : null, Validators.required],
+        orderobservartion6: [observation.orderobservartion6 ? observation.orderobservartion6 : null, Validators.required],
+        orderobservartion7: [observation.orderobservartion7 ? observation.orderobservartion7 : null, Validators.required],
+        orderobservartion8: [observation.orderobservartion8 ? observation.orderobservartion8 : null, Validators.required],
+        orderobservartion9: [observation.orderobservartion9 ? observation.orderobservartion9 : null, Validators.required],
 
 
-      observationFormArray: new FormArray([]),
+        observationFormArray: new FormArray([]),
       });
 
     }
 
-    else if(this.incoming == "Consumable Item") {
+    else if (this.incoming == "Consumable Item") {
 
       return this.formBuilder.group({
 
-        consumnumber: [observation.consumnumber ? observation.consumnumber:null , Validators.required],
-        consumparameter: [observation.consumparameter ? observation.consumparameter:null , Validators.required],
-      consumspecification: [observation.consumspecification ? observation.consumspecification:null , Validators.required],
-      consuminspection: [observation.consuminspection ? observation.consuminspection:null ,  Validators.required],
-      consumobservartion: [observation.consumobservartion ? observation.consumobservartion:null , Validators.required],
-      consumobservartion1: [observation.consumobservartion1 ? observation.consumobservartion1:null , Validators.required],
-      consumobservartion2: [observation.consumobservartion2 ? observation.consumobservartion2:null , Validators.required],
-      consumobservartion3: [observation.consumobservartion3 ? observation.consumobservartion3:null , Validators.required],
-      consumobservartion4: [observation.consumobservartion4 ? observation.consumobservartion4:null , Validators.required],
-      consumobservartion5: [observation.consumobservartion5 ? observation.consumobservartion5:null , Validators.required],
-      consumobservartion6: [observation.consumobservartion6 ? observation.consumobservartion6:null , Validators.required],
-      consumobservartion7: [observation.consumobservartion7 ? observation.consumobservartion7:null , Validators.required],
-      consumobservartion8: [observation.consumobservartion8 ? observation.consumobservartion8:null , Validators.required],
-      consumobservartion9: [observation.consumobservartion9 ? observation.consumobservartion9:null , Validators.required],
+        consumnumber: [observation.consumnumber ? observation.consumnumber : null, Validators.required],
+        consumparameter: [observation.consumparameter ? observation.consumparameter : null, Validators.required],
+        consumspecification: [observation.consumspecification ? observation.consumspecification : null, Validators.required],
+        consuminspection: [observation.consuminspection ? observation.consuminspection : null, Validators.required],
+        consumobservartion: [observation.consumobservartion ? observation.consumobservartion : null, Validators.required],
+        consumobservartion1: [observation.consumobservartion1 ? observation.consumobservartion1 : null, Validators.required],
+        consumobservartion2: [observation.consumobservartion2 ? observation.consumobservartion2 : null, Validators.required],
+        consumobservartion3: [observation.consumobservartion3 ? observation.consumobservartion3 : null, Validators.required],
+        consumobservartion4: [observation.consumobservartion4 ? observation.consumobservartion4 : null, Validators.required],
+        consumobservartion5: [observation.consumobservartion5 ? observation.consumobservartion5 : null, Validators.required],
+        consumobservartion6: [observation.consumobservartion6 ? observation.consumobservartion6 : null, Validators.required],
+        consumobservartion7: [observation.consumobservartion7 ? observation.consumobservartion7 : null, Validators.required],
+        consumobservartion8: [observation.consumobservartion8 ? observation.consumobservartion8 : null, Validators.required],
+        consumobservartion9: [observation.consumobservartion9 ? observation.consumobservartion9 : null, Validators.required],
 
-      observationFormArray: new FormArray([]),
-       });
+        observationFormArray: new FormArray([]),
+      });
 
     }
 
-    else if(this.incoming == "Child Part") {
+    else if (this.incoming == "Child Part") {
 
       return this.formBuilder.group({
 
-        childnumber: [observation.childnumber ? observation.childnumber:null , Validators.required],
-        childparameter: [observation.childparameter ? observation.childparameter:null , Validators.required],
-        childspecification: [observation.childspecification ? observation.childspecification:null , Validators.required],
-        childinspection: [observation.childinspection ? observation.childinspection:null , Validators.required],
-        childobservartion: [observation.childobservartion ? observation.childobservartion:null , Validators.required],
-        childobservartion1: [observation.childobservartion1 ? observation.childobservartion1:null , Validators.required],
-        childobservartion2: [observation.childobservartion2 ? observation.childobservartion2:null , Validators.required],
-        childobservartion3: [observation.childobservartion3 ? observation.childobservartion3:null , Validators.required],
-        childobservartion4: [observation.childobservartion4 ? observation.childobservartion4:null , Validators.required],
-        childobservartion5: [observation.childobservartion5 ? observation.childobservartion5:null , Validators.required],
-        childobservartion6: [observation.childobservartion6 ? observation.childobservartion6:null , Validators.required],
-        childobservartion7: [observation.childobservartion7 ? observation.childobservartion7:null , Validators.required],
-        childobservartion8: [observation.childobservartion8 ? observation.childobservartion8:null , Validators.required],
-        childobservartion9: [observation.childobservartion9 ? observation.childobservartion9:null , Validators.required],
+        childnumber: [observation.childnumber ? observation.childnumber : null, Validators.required],
+        childparameter: [observation.childparameter ? observation.childparameter : null, Validators.required],
+        childspecification: [observation.childspecification ? observation.childspecification : null, Validators.required],
+        childinspection: [observation.childinspection ? observation.childinspection : null, Validators.required],
+        childobservartion: [observation.childobservartion ? observation.childobservartion : null, Validators.required],
+        childobservartion1: [observation.childobservartion1 ? observation.childobservartion1 : null, Validators.required],
+        childobservartion2: [observation.childobservartion2 ? observation.childobservartion2 : null, Validators.required],
+        childobservartion3: [observation.childobservartion3 ? observation.childobservartion3 : null, Validators.required],
+        childobservartion4: [observation.childobservartion4 ? observation.childobservartion4 : null, Validators.required],
+        childobservartion5: [observation.childobservartion5 ? observation.childobservartion5 : null, Validators.required],
+        childobservartion6: [observation.childobservartion6 ? observation.childobservartion6 : null, Validators.required],
+        childobservartion7: [observation.childobservartion7 ? observation.childobservartion7 : null, Validators.required],
+        childobservartion8: [observation.childobservartion8 ? observation.childobservartion8 : null, Validators.required],
+        childobservartion9: [observation.childobservartion9 ? observation.childobservartion9 : null, Validators.required],
         observationFormArray: new FormArray([]),
       });
 
@@ -281,32 +303,32 @@ if(this.Consumablecode){
 
       return this.formBuilder.group({
 
-        partparameter: [observation.partparameter ? observation.partparameter:null , Validators.required],
-        partnumber: [observation.partnumber ? observation.partnumber:null , Validators.required],
-        partspecification: [observation.partspecification ? observation.partspecification:null , Validators.required],
-        partinspection: [observation.partinspection ? observation.partinspection:null , Validators.required],
-  
-        partobservartion: [observation.partobservartion ? observation.partobservartion:null , Validators.required],
-        partobservartion1: [observation.partobservartion1 ? observation.partobservartion1:null , Validators.required],
-        partobservartion2: [observation.partobservartion2 ? observation.partobservartion2:null , Validators.required],
-        partobservartion3: [observation.partobservartion3 ? observation.partobservartion3:null , Validators.required],
-        partobservartion4: [observation.partobservartion4 ? observation.partobservartion4:null , Validators.required],
-        partobservartion5: [observation.partobservartion5 ? observation.partobservartion5:null , Validators.required],
-        partobservartion6: [observation.partobservartion6 ? observation.partobservartion6:null , Validators.required],
-        partobservartion7: [observation.partobservartion7 ? observation.partobservartion7:null , Validators.required],
-        partobservartion8: [observation.partobservartion8 ? observation.partobservartion8:null , Validators.required],
-        partobservartion9: [observation.partobservartion9 ? observation.partobservartion9:null , Validators.required],
+        partparameter: [observation.partparameter ? observation.partparameter : null, Validators.required],
+        partnumber: [observation.partnumber ? observation.partnumber : null, Validators.required],
+        partspecification: [observation.partspecification ? observation.partspecification : null, Validators.required],
+        partinspection: [observation.partinspection ? observation.partinspection : null, Validators.required],
+
+        partobservartion: [observation.partobservartion ? observation.partobservartion : null, Validators.required],
+        partobservartion1: [observation.partobservartion1 ? observation.partobservartion1 : null, Validators.required],
+        partobservartion2: [observation.partobservartion2 ? observation.partobservartion2 : null, Validators.required],
+        partobservartion3: [observation.partobservartion3 ? observation.partobservartion3 : null, Validators.required],
+        partobservartion4: [observation.partobservartion4 ? observation.partobservartion4 : null, Validators.required],
+        partobservartion5: [observation.partobservartion5 ? observation.partobservartion5 : null, Validators.required],
+        partobservartion6: [observation.partobservartion6 ? observation.partobservartion6 : null, Validators.required],
+        partobservartion7: [observation.partobservartion7 ? observation.partobservartion7 : null, Validators.required],
+        partobservartion8: [observation.partobservartion8 ? observation.partobservartion8 : null, Validators.required],
+        partobservartion9: [observation.partobservartion9 ? observation.partobservartion9 : null, Validators.required],
         observationFormArray: new FormArray([]),
       });
 
     }
-    
+
 
     // return this.formBuilder.group({
     //   observationslno: [observation.observationslno ? observation.observationslno :null ,Validators.required],
     //   consumnumber: [observation.consumnumber ? observation.consumnumber:null , Validators.required],
-      
-     
+
+
     //   orderparameter: [observation.orderparameter ? observation.orderparameter:null ,  Validators.required],
     //   orderspecification: [observation.orderspecification ? observation.orderspecification:null , Validators.required],
     //   orderinspection: [observation.orderinspection ? observation.orderinspection:null , Validators.required],
@@ -391,10 +413,10 @@ if(this.Consumablecode){
         this.markFormGroupTouched(control);
       }
     });
-  }     
+  }
 
 
-  
+
   onOkClick(event: any, observationFormArray: any) {
     this.markFormGroupTouched(this.observationFormArray);
     this.submitted = true;
@@ -465,25 +487,28 @@ if(this.Consumablecode){
       observationsitems001wb.partobservartion7 = this.f.observationFormArray.value[i].partobservartion7 ? this.f.observationFormArray.value[i].partobservartion7 : "";
       observationsitems001wb.partobservartion8 = this.f.observationFormArray.value[i].partobservartion8 ? this.f.observationFormArray.value[i].partobservartion8 : "";
       observationsitems001wb.partobservartion9 = this.f.observationFormArray.value[i].partobservartion9 ? this.f.observationFormArray.value[i].partobservartion9 : "";
-  
+
       observationsitems001wbs.push(observationsitems001wb);
-     
-      
-
-      this.activeModal.close({
-        status: "Yes",
-        observationitem: observationsitems001wbs,
-      });
-    
-      
-    }
-
    
-      
 
+
+      // this.activeModal.close({
+      //   status: "Yes",
+      //   observationitem: observationsitems001wbs,
+      // });
+
+
+    }
     this.activeModal.close({
       status: "Yes",
+      observationitem: observationsitems001wbs,
     });
+
+
+
+    // this.activeModal.close({
+    //   status: "Yes",
+    // });
   }
 
   onCancelClick() {
