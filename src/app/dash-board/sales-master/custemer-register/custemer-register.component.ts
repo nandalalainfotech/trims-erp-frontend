@@ -425,7 +425,7 @@ export class CustemerRegisterComponent implements OnInit {
         custemerregistration001mb.concern = this.f.concern.value ? this.f.concern.value : "";
         custemerregistration001mb.otherInfo = this.f.otherInfo.value ? this.f.otherInfo.value : "";
         custemerregistration001mb.website = this.f.website.value ? this.f.website.value : "";
-        custemerregistration001mb.customercontact001wbs = this.customercontact;
+        custemerregistration001mb.customercontact001wbs = this.customercontacts;
 
         if (this.slNo) {
             custemerregistration001mb.slNo = this.slNo;
@@ -456,13 +456,13 @@ export class CustemerRegisterComponent implements OnInit {
 
     onAddbuttonClick() {
         const modalRef = this.modalService.open(AddCustomerContactComponent, { windowClass: 'my-class' });
-        modalRef.componentInstance.customercontact = this.customercontact;
+        modalRef.componentInstance.customercontacts = this.customercontacts;
 
 
         modalRef.componentInstance.custemerRegForm = this.custemerRegForm;
         modalRef.result.then((data) => {
           if (data.status == 'Yes') {
-            this.customercontact = data.customercontact;
+            this.customercontacts = data.customercontacts;
     
           }
         })
