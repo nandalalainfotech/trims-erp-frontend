@@ -58,6 +58,7 @@ export class CustemerRegisterComponent implements OnInit {
     custemerregistration001mb: Custemerregistration001mb[] = [];
     custmerReg: Custemerregistration001mb[] = [];
     customercontacts: Customercontact001wb[] = [];
+    customercontact: Customercontact001wb[] = [];
     // customercontacts2?: Customercontact001wb[]=[];
     getCount: any;
     count: number = 0;
@@ -424,7 +425,7 @@ export class CustemerRegisterComponent implements OnInit {
         custemerregistration001mb.concern = this.f.concern.value ? this.f.concern.value : "";
         custemerregistration001mb.otherInfo = this.f.otherInfo.value ? this.f.otherInfo.value : "";
         custemerregistration001mb.website = this.f.website.value ? this.f.website.value : "";
-        custemerregistration001mb.customercontact001wbs = this.customercontacts;
+        custemerregistration001mb.customercontact001wbs = this.customercontact;
 
         if (this.slNo) {
             custemerregistration001mb.slNo = this.slNo;
@@ -434,7 +435,7 @@ export class CustemerRegisterComponent implements OnInit {
             custemerregistration001mb.updatedUser = this.authManager.getcurrentUser.username;
             custemerregistration001mb.updatedDatetime = new Date();
             this.custmerRegManager.CustmerregUpdate(custemerregistration001mb).subscribe((response) => {
-                this.calloutService.showSuccess("Supplier Registration Details Updated Successfully");
+                this.calloutService.showSuccess("Customer Registration Details Updated Successfully");
                 this.loadData();
                 this.custemerRegForm.reset();
                 this.slNo = null;
@@ -445,7 +446,7 @@ export class CustemerRegisterComponent implements OnInit {
             custemerregistration001mb.insertUser = this.authManager.getcurrentUser.username;
             custemerregistration001mb.insertDatetime = new Date();
             this.custmerRegManager.CustmerregSave(custemerregistration001mb).subscribe((response) => {
-                this.calloutService.showSuccess("Supplier Registration Details Approved Successfully");
+                this.calloutService.showSuccess("Customer Registration Details Approved Successfully");
                 this.loadData();
                 this.custemerRegForm.reset();
                 this.submitted = false;
@@ -455,13 +456,13 @@ export class CustemerRegisterComponent implements OnInit {
 
     onAddbuttonClick() {
         const modalRef = this.modalService.open(AddCustomerContactComponent, { windowClass: 'my-class' });
-        modalRef.componentInstance.customercontacts = this.customercontacts;
+        modalRef.componentInstance.customercontact = this.customercontact;
 
 
         modalRef.componentInstance.custemerRegForm = this.custemerRegForm;
         modalRef.result.then((data) => {
           if (data.status == 'Yes') {
-            this.customercontacts = data.customercontacts;
+            this.customercontact = data.customercontact;
     
           }
         })

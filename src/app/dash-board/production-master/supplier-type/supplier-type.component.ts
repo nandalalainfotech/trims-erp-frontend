@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions } from 'ag-grid-community';
@@ -71,10 +71,10 @@ export class SupplierTypeComponent implements OnInit {
     this.loadData()
 
     this.supplierTypeForm = this.formBuilder.group({
-      sslno: [''], 
-      name: [''],
-      descrip: [''],
-      order: [''] 
+      sslno: ['', Validators.required], 
+      name: ['', Validators.required],
+      descrip: ['', Validators.required],
+      order: ['', Validators.required] 
     })
 
 

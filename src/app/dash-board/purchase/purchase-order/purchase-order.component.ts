@@ -760,6 +760,7 @@ export class PurchaseOrderComponent implements OnInit {
           purchaseorder001wb.status = "Request For Approval"
           this.purchaseorderManager.purchaseorderupdate(purchaseorder001wb).subscribe((response) => {
             this.calloutService.showInfo(" Send The Request For Approval");
+            this.loadData();
           });
         }
         else{
@@ -767,7 +768,7 @@ export class PurchaseOrderComponent implements OnInit {
         }
        
       }
-      this.loadData();
+     
     });
 
   }

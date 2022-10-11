@@ -26,10 +26,10 @@
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="companyName" for="companyName" cssClass="required">Company Name</label>
-                            <input readonly type="text" class="form-control" path="companyName" formControlName="companyName" [ngClass]="{'is-invalid': submitted && f.companyName.errors}" />
-                            <div *ngIf="submitted && f.companyName.errors" class="invalid-feedback">
+                            <input readonly type="text" class="form-control" path="companyName" formControlName="companyName" />
+                            <!-- <div *ngIf="submitted && f.companyName.errors" class="invalid-feedback">
                                 <div *ngIf="f.companyName.errors.required"> Company Name is Required</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 

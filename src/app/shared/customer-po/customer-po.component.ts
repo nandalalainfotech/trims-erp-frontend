@@ -140,7 +140,21 @@ export class CustomerPoComponent implements OnInit {
       gst: ['', Validators.required],
     });
   }
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
   onOkClick(event: any, customerPOForm: any) {
+
+    this.markFormGroupTouched(this.customerPOForm);
+    this.submitted = true;
+    if (this.customerPOForm.invalid) {
+      return;
+    }
     let partTAmount = 0;
 
     let customerPoItem001wbs: CustomerPoItem001wb[] = [];

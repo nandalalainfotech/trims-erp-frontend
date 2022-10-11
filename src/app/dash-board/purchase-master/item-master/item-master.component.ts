@@ -57,7 +57,7 @@ export class ItemMasterComponent implements OnInit {
   count: number = 0;
   user?: Login001mb | any;
   unitslno: number | any;
-  specifications: any;
+  specifications: Orderitemspecification001wb [] =[];
   Orderitemspecification: Orderitemspecification001wb[] | any;
 
   constructor(
@@ -401,7 +401,7 @@ export class ItemMasterComponent implements OnInit {
       // orderitem001mb.Orderitemspecification = this.specifications
       orderitem001mb.updatedDatetime = new Date();
       this.orderItemSettingManager.itemUpdate(orderitem001mb).subscribe((response) => {
-        this.calloutService.showSuccess("OrderItem Details Updated Successfully");
+        this.calloutService.showSuccess("Raw Materieal Details Updated Successfully");
         this.loadData();
         this.ItemForm.reset();
         this.specifications=[];
@@ -413,7 +413,7 @@ export class ItemMasterComponent implements OnInit {
       orderitem001mb.insertUser = this.authManager.getcurrentUser.username;
       orderitem001mb.insertDatetime = new Date();
       this.orderItemSettingManager.itemSave(orderitem001mb).subscribe((response) => {
-        this.calloutService.showSuccess("OrderItem Details Saved Successfully");
+        this.calloutService.showSuccess("Raw Materieal Details Saved Successfully");
         this.loadData();
         this.ItemForm.reset();
         this.specifications=[];

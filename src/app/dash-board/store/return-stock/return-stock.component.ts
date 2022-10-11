@@ -1781,11 +1781,10 @@ export class ReturnStockComponent implements OnInit {
       this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
         this.calloutService.showSuccess("Return Stock Saved Successfully");
         this.ReturnConumForm.reset();
+        this.loadData();
         this.ReturnConumForm.patchValue(
           { cudate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
         );
-
-        this.loadData();
         this.submitted = false;
         // this.activeModal.close("Yes");
       });

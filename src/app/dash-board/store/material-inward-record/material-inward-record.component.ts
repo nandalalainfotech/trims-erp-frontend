@@ -552,9 +552,11 @@ export class MaterialInwardRecordComponent implements OnInit {
       this.materialInwardManager.inwardSave(materialinward001wb).subscribe((response) => {
         this.calloutService.showSuccess("Material Inward Record Saved Successfully");
         this.materialInwardForm.reset();
+        this.materialInwardForm.get();
         this.materialreceiveditem = [];
         this.loadData();
         this.submitted = false;
+        
       });
     }
   }
@@ -565,13 +567,13 @@ export class MaterialInwardRecordComponent implements OnInit {
   }
 
   onDcClick() {
-    console.log("onDcClick");
     this.materialInwardForm.get('invoiceno').disable();
+    this.loadData();
     // this.materialInwardForm.get('invoiceno').disable();
   }
   onInvoiceClick() {
-    console.log("onInvoiceClick");
     this.materialInwardForm.get('dcNo').disable();
+    this.loadData();
   }
 
   onChangePONumber(event: any) {
@@ -709,26 +711,21 @@ export class MaterialInwardRecordComponent implements OnInit {
 
 
   onStatusClick() {
-    // this.materialInwardManager.allinward(this.user.unitslno).subscribe(response => {
-    //   this.material = deserialize<Materialinward001wb[]>(Materialinward001wb, response);
-    //   let materialinward001wb = new Materialinward001wb();
-    //   for (let i = 0; i <1; i++) {
-    //     console.log("i============>>>",i);
-        
-    //     materialinward001wb = this.material[i]
-    //     console.log("materialinward001wb=====================>>>",materialinward001wb);
-        
-    //     materialinward001wb.status = "Request For Inspection"
-    //     this.materialInwardManager.inwardUpdate(materialinward001wb).subscribe((response) => {
-    //       console.log("response",response);
-          
-    //       this.calloutService.showInfo(" Send The Request For Inspection");
-    //     });
-    //   }
-    //   this.loadData();
-    // });
+    this.materialInwardManager.allinward(this.user.unitslno).subscribe(response => {
+      this.material = deserialize<Materialinward001wb[]>(Materialinward001wb, response);
+      let materialinward001wb = new Materialinward001wb();
+      for (let i = 0; i < 1; i++) {
+        materialinward001wb = this.material[i]
+        materialinward001wb.status = "Request For Inspection"
+        this.materialInwardManager.inwardUpdate(materialinward001wb).subscribe((response) => {
+          this.calloutService.showInfo(" Send The Request For Inspection");
+          this.loadData();
+        });
+      }
+    
+    });
 
-    this.router.navigate(["/app-dash-board/app-quality/app-quality-checking"]);
+    // this.router.navigate(["/app-dash-board/app-quality/app-quality-checking"]);
   }
 
 

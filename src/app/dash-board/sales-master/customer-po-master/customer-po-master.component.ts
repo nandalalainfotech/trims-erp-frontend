@@ -74,7 +74,7 @@ export class CustomerPoMasterComponent implements OnInit {
     this.createDataGrid001();
     this.customerPOForm = this.formBuilder.group({
       custemercode: ['', Validators.required],
-      custemername: ['', Validators.required],
+      custemername: [''],
       custemerPONo: ['', Validators.required],
       poDate: ['', Validators.required],
       deliveryDate: ['', Validators.required],

@@ -146,18 +146,33 @@
                                 <option>CI 1D</option>
                                 <option>CI 1E</option>
                             </select>
+                            <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                                <div *ngIf="f.location.errors.required">
+                                    Location is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="mslevel" for="mslevel" cssClass="required">M.S.Level</label>
                             <input OnlyNumber type="text" class="form-control" path="mslevel" formControlName="mslevel">
+                            <div *ngIf="submitted && f.mslevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.mslevel.errors.required">
+                                    M.S.Level is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
                             <label path="orderlevel" for="orderlevel" cssClass="required">Re-Oreder Level</label>
                             <input OnlyNumber type="text" class="form-control" path="orderlevel" formControlName="orderlevel" />
+                            <div *ngIf="submitted && f.orderlevel.errors" class="invalid-feedback">
+                                <div *ngIf="f.orderlevel.errors.required">
+                                    Re-Oreder Level is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -167,6 +182,11 @@
                         <div class="form-group">
                             <label path="leadtime" for="leadtime" cssClass="required">Lead Time</label>
                             <input type="text" class="form-control" path="leadtime" formControlName="leadtime">
+                            <div *ngIf="submitted && f.leadtime.errors" class="invalid-feedback">
+                                <div *ngIf="f.leadtime.errors.required">
+                                    Lead Time is Required
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
