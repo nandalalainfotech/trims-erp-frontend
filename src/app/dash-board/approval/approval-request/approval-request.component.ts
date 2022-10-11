@@ -1120,23 +1120,50 @@ export class ApprovalRequestComponent implements OnInit {
         })
     }
 
-    onViewPurInvoiceClick() {
+    onViewPurInvoiceClick(params: any) {
+        this.purchaseInvoicePayManager.purchasInvoicepdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        })
 
     }
-    onPdfPurInvoiceClick() {
-
+    onPdfPurInvoiceClick(params: any) {
+        this.purchaseInvoicePayManager.purchasInvoicepdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.poSlno2.pono + "  " + newDate);
+        })
     }
-    onEXcelPurInvoiceClick() {
+    onEXcelPurInvoiceClick(params: any) {
+        this.purchaseInvoicePayManager.purchasInvoiceExcelId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.poSlno2.pono + "  " + newDate);
+        })
 
     }
     onViewTotalPurInvoiceClick() {
-
+        this.purchaseInvoicePayManager.purchasInvoicePdf(this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        })
     }
     onGeneratePurInvoicePdfReport() {
-
+        this.purchaseInvoicePayManager.purchasInvoicePdf(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "purchaseInvoice" + newdate);
+        })
     }
     onGeneratePurInvoiceExcelReport() {
-
+        this.purchaseInvoicePayManager.purchasInvoiceExcel(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "purchaseInvoice" + newdate);
+        })
     }
 
     // -----------------------------------------------------------------------------------------
@@ -2129,87 +2156,84 @@ export class ApprovalRequestComponent implements OnInit {
     }
     onGeneratePurchaseReqPdfReport() {
         this.purchaseregslipManager.purchaslipPdf(this.user.unitslno).subscribe((response) => {
-            saveAs(response, 'Purchase Req');
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "purchaseregslip" + newdate);
         });
     }
 
     onGeneratePurchaseReqExcelReport() {
         this.purchaseregslipManager.purchaslipExcel(this.user.unitslno).subscribe((response) => {
-            saveAs(response, 'Purchase Req');
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "purchaseregslip" + newdate);
         });
     }
     onViewPurReqParamsClick(params: any) {
-        this.purchaseregslipManager
-            .pdfId(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var blobURL = URL.createObjectURL(blob);
-                window.open(blobURL);
-            });
+        this.purchaseregslipManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+          })
     }
     onPdfPurReqParamsClick(params: any) {
-        console.log('params', params.data.slNo);
-        this.purchaseregslipManager
-            .pdfId(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'Purchase Req');
-            });
+        this.purchaseregslipManager.pdfId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.prsNo + "  " + newDate);
+          });
     }
     onExcelPurReqParamsClick(params: any) {
-        this.purchaseregslipManager
-            .ExcelId(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'Purchase Req');
-            });
+        this.purchaseregslipManager.ExcelId(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.prsNo + "  " + newDate);
+        });
     }
     //////////////////////////////////////////////////////////////////////////////////////////
     onViewSupplierQuoClick() {
-        this.supplierQuotationManager
-            .supplierQuotationPdf(this.user.unitslno)
-            .subscribe((response) => {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var blobURL = URL.createObjectURL(blob);
-                window.open(blobURL);
-            });
+        this.supplierQuotationManager.supplierQuotationPdf(this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        });
     }
     onGenerateSupplierQuoPdfReport() {
-        this.supplierQuotationManager
-            .supplierQuotationPdf(this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'supplierQuotation');
-            });
+        this.supplierQuotationManager.supplierQuotationPdf(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "supplierQuotation" + newdate);
+        });
     }
 
     onGenerateSupplierQuoExcelReport() {
-        this.supplierQuotationManager
-            .supplierQuotationExcel(this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'supplierQuotation');
-            });
+        this.supplierQuotationManager.supplierQuotationExcel(this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy')
+            saveAs(response, "supplierQuotation" + newdate);
+          })
     }
     onViewSupClick(params: any) {
-        this.supplierQuotationManager
-            .paramsPdf(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var blobURL = URL.createObjectURL(blob);
-                window.open(blobURL);
-            });
+        this.supplierQuotationManager.paramsPdf(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+        })
     }
     onPdfSupClick(params: any) {
-        console.log('params', params.data.slNo);
-        this.supplierQuotationManager
-            .paramsPdf(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'supplierQuotation');
-            });
+        this.supplierQuotationManager.paramsPdf(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.supplierSlno2.supplierCode + "  " + newDate);
+      
+        })
     }
     onExcelSupClick(params: any) {
-        this.supplierQuotationManager
-            .supplierExcel(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'supplierQuotation');
-            });
+        this.supplierQuotationManager.supplierExcel(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.supplierSlno2.supplierCode + "  " + newDate);
+        })
     }
     //////////////////////////////////////////////////////////////////////////////////////////////
     onViewPOrderClick() {
@@ -2217,42 +2241,44 @@ export class ApprovalRequestComponent implements OnInit {
             var blob = new Blob([response], { type: 'application/pdf' });
             var blobURL = URL.createObjectURL(blob);
             window.open(blobURL);
-        });
+          })
     }
 
     onGeneratePOrderPdfReport() {
         this.purchaseorderManager.purchaseorderPdf(this.user.unitslno).subscribe((response) => {
-            saveAs(response, 'Purchase Order');
-        });
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "Purchase Order" + newdate);
+          })
     }
 
     onGeneratePOrderExcelReport() {
         this.purchaseorderManager.purchaseorderExcel(this.user.unitslno).subscribe((response) => {
-            saveAs(response, 'Purchase Order');
-        });
+            let date = new Date();
+            let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, "Purchase Order" + newdate);
+          })
     }
     onViewPurchaseClick(params: any) {
-        this.purchaseorderManager
-            .purchaseParamsPdf(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var blobURL = URL.createObjectURL(blob);
-                window.open(blobURL);
-            });
+        this.purchaseorderManager.purchaseParamsPdf(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var blobURL = URL.createObjectURL(blob);
+            window.open(blobURL);
+          })
     }
     onPdfPurchaseClick(params: any) {
-        this.purchaseorderManager
-            .purchaseParamsPdf(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'Purchase Order');
-            });
+        this.purchaseorderManager.purchaseParamsPdf(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.pono + "  " + newDate);
+          })
     }
     onExcelPurchaseClick(params: any) {
-        this.purchaseorderManager
-            .purchaseordersingleExcel(params.data.slNo, this.user.unitslno)
-            .subscribe((response) => {
-                saveAs(response, 'Purchase Order');
-            });
+        this.purchaseorderManager.purchaseordersingleExcel(params.data.slNo, this.user.unitslno).subscribe((response) => {
+            let date = new Date();
+            let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+            saveAs(response, params.data.pono + "  " + newDate);
+          })
     }
 
     onViewSalesClick() {

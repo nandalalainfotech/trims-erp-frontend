@@ -90,251 +90,86 @@ export class RawMaterialComponent implements OnInit {
             rawMaterialFormArray: this.formBuilder.array([this.createItem()]),
         });
 
-        this.orderItemSettingManager
-            .allitem(this.user.unitslno)
-            .subscribe((response) => {
-                this.orderitem001mbs = deserialize<Orderitem001mb[]>(
-                    Orderitem001mb,
-                    response
-                );
-            });
-
-        this.childPartManager
-            .allChildpart(this.user.unitslno)
-            .subscribe((response) => {
-                this.childPart001mbs = deserialize<ChildPart001mb[]>(
-                    ChildPart001mb,
-                    response
-                );
-            });
-
-        this.consumbleManager
-            .allconsumble(this.user.unitslno)
-            .subscribe((response) => {
-                this.consumble001mbs = deserialize<Consumble001mb[]>(
-                    Consumble001mb,
-                    response
-                );
-            });
-
-        this.partManager.allpart(this.user.unitslno).subscribe((response) => {
-            this.part001mbs = deserialize<Part001mb[]>(Part001mb, response);
+        this.orderItemSettingManager.allitem(this.user.unitslno).subscribe((response) => {
+        this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb,response);
         });
 
-        this.materialInwardManager
-            .findOne(this.grsNumber)
-            .subscribe((response) => {
-                this.materialinward001wb = deserialize<Materialinward001wb>(
-                    Materialinward001wb,
-                    response
-                );
-                for (
-                    let i = 0;
-                    i <
-                    this.materialinward001wb.materialreceiveditem001wbs.length;
-                    i++
-                ) {
-                    this.rawMaterialFormArray = this.f[
-                        'rawMaterialFormArray'
-                    ] as FormArray;
-                    if (
-                        i <
-                        this.materialinward001wb.materialreceiveditem001wbs
-                            .length -
-                            1
-                    ) {
-                        this.rawMaterialFormArray.push(this.createItem());
-                    }
+        this.childPartManager.allChildpart(this.user.unitslno).subscribe((response) => {
+        this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb,response);
+        });
 
-                    setTimeout(() => {
-                        if (
-                            this.materialinward001wb.materialreceiveditem001wbs[
-                                i
-                            ].itemcode
-                        ) {
-                            for (let orderItems of this.orderitem001mbs) {
-                                if (
-                                    orderItems.slNo ==
-                                    this.materialinward001wb
-                                        .materialreceiveditem001wbs[i].itemcode
-                                ) {
-                                    this.rawMaterialFormArray.controls[
-                                        i
-                                    ].controls['itemcode'].setValue(
-                                        orderItems.itemcode
-                                    );
-                                    break;
-                                }
-                            }
-                        } else {
-                            this.rawMaterialFormArray.controls[i].controls[
-                                'itemcode'
-                            ].setValue(null);
-                        }
-                    }, 100);
+        this.consumbleManager.allconsumble(this.user.unitslno).subscribe((response) => {
+        this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb,response);
+        });
 
-                    setTimeout(() => {
-                        if (
-                            this.materialinward001wb.materialreceiveditem001wbs[
-                                i
-                            ].cucode
-                        ) {
-                            for (let consumbleItems of this.consumble001mbs) {
-                                if (
-                                    consumbleItems.slNo ==
-                                    this.materialinward001wb
-                                        .materialreceiveditem001wbs[i].cucode
-                                ) {
-                                    this.rawMaterialFormArray.controls[
-                                        i
-                                    ].controls['cucode'].setValue(
-                                        consumbleItems.consmno
-                                    );
-                                    break;
-                                }
-                            }
-                        } else {
-                            this.rawMaterialFormArray.controls[i].controls[
-                                'cucode'
-                            ].setValue(null);
-                        }
-                    }, 100);
+        this.partManager.allpart(this.user.unitslno).subscribe((response) => {
+        this.part001mbs = deserialize<Part001mb[]>(Part001mb, response);
+        });
 
-                    setTimeout(() => {
-                        if (
-                            this.materialinward001wb.materialreceiveditem001wbs[
-                                i
-                            ].cptcode
-                        ) {
-                            for (let childPartItems of this.childPart001mbs) {
-                                if (
-                                    childPartItems.slNo ==
-                                    this.materialinward001wb
-                                        .materialreceiveditem001wbs[i].cptcode
-                                ) {
-                                    this.rawMaterialFormArray.controls[
-                                        i
-                                    ].controls['cptcode'].setValue(
-                                        childPartItems.cpartno
-                                    );
-                                    break;
-                                }
-                            }
-                        } else {
-                            this.rawMaterialFormArray.controls[i].controls[
-                                'cptcode'
-                            ].setValue(null);
-                        }
-                    }, 100);
+        this.materialInwardManager.findOne(this.grsNumber).subscribe((response) => {
+        this.materialinward001wb = deserialize<Materialinward001wb>(Materialinward001wb,response);
+            for (let i = 0;i <this.materialinward001wb.materialreceiveditem001wbs.length;i++) {
+                this.rawMaterialFormArray = this.f['rawMaterialFormArray'] as FormArray;
+                if (i <this.materialinward001wb.materialreceiveditem001wbs.length -1) {
+                    this.rawMaterialFormArray.push(this.createItem());
+                }
 
-                    setTimeout(() => {
-                        if (
-                            this.materialinward001wb.materialreceiveditem001wbs[
-                                i
-                            ].prtcode
-                        ) {
-                            for (let partItems of this.part001mbs) {
-                                if (
-                                    partItems.slNo ==
-                                    this.materialinward001wb
-                                        .materialreceiveditem001wbs[i].prtcode
-                                ) {
-                                    this.rawMaterialFormArray.controls[
-                                        i
-                                    ].controls['prtcode'].setValue(
-                                        partItems.partno
-                                    );
-                                    break;
-                                }
-                            }
-                        } else {
-                            this.rawMaterialFormArray.controls[i].controls[
-                                'prtcode'
-                            ].setValue(null);
-                        }
-                    }, 100);
+        setTimeout(() => {
+            if (this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
+                for (let orderItems of this.orderitem001mbs) {
+                if (orderItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
+                this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(orderItems.itemcode);
+                break;
+            }
+            }}
+            else {
+                this.rawMaterialFormArray.controls[i].controls[ 'itemcode'].setValue(null);}}, 100);
 
-                    // this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemcode ? this.orderitem001mbs.find(x=>x.slNo === this.materialinward001wb.materialreceiveditem001wbs[i].itemcode)?.itemcode:null);
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'itemname'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .itemname
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'descrip'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .descrip
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'qunty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .qunty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cuqunty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cuqunty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptqunty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptqunty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtqunty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtqunty
-                    );
+        setTimeout(() => {
+            if (this.materialinward001wb.materialreceiveditem001wbs[ i].cucode) {
+                for (let consumbleItems of this.consumble001mbs) {
+                if (consumbleItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cucode) {
+                this.rawMaterialFormArray.controls[i].controls['cucode'].setValue( consumbleItems.consmno);
+                break;
+            }
+            }}
+             else {
+                this.rawMaterialFormArray.controls[i].controls['cucode' ].setValue(null);} }, 100);
 
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'receivedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .receivedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'acceptedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .acceptedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'rejectedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .rejectedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'outstanding'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .outstanding
-                    );
+        setTimeout(() => {if (this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
+            for (let childPartItems of this.childPart001mbs) {if (
+                childPartItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
+                this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(childPartItems.cpartno);
+                break;
+            }
+            }}
+            else {
+                this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(null);}}, 100);
 
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cureceivedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cureceivedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cuacceptedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cuacceptedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'curejectedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .curejectedQty
-                    );
+        setTimeout(() => {if ( this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
+            for (let partItems of this.part001mbs) {if (
+            partItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
+            this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(partItems.partno);
+            break;
+        }
+        }} 
+        else {
+            this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(null);}}, 100);
+
+        // this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemcode ? this.orderitem001mbs.find(x=>x.slNo === this.materialinward001wb.materialreceiveditem001wbs[i].itemcode)?.itemcode:null);
+        this.rawMaterialFormArray.controls[i].controls['itemname'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemname);
+        this.rawMaterialFormArray.controls[i].controls['descrip'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].descrip);
+        this.rawMaterialFormArray.controls[i].controls['qunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].qunty);
+        this.rawMaterialFormArray.controls[i].controls['cuqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuqunty);
+        this.rawMaterialFormArray.controls[i].controls['cptqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cptqunty);
+        this.rawMaterialFormArray.controls[i].controls['prtqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].prtqunty);
+        this.rawMaterialFormArray.controls[i].controls['receivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].receivedQty);
+        this.rawMaterialFormArray.controls[i].controls['acceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].acceptedQty);
+        this.rawMaterialFormArray.controls[i].controls['rejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].rejectedQty);
+        this.rawMaterialFormArray.controls[i].controls['outstanding'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].outstanding);
+        this.rawMaterialFormArray.controls[i].controls['cureceivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cureceivedQty);
+        this.rawMaterialFormArray.controls[i].controls['cuacceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuacceptedQty);
+        this.rawMaterialFormArray.controls[i].controls['curejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].curejectedQty);
                     this.rawMaterialFormArray.controls[i].controls[
                         'cuoutstanding'
                     ].setValue(

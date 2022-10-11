@@ -924,7 +924,9 @@ export class SupplierQuotationComponent implements OnInit {
 
   onGenerateExcelReport() {
     this.supplierQuotationManager.supplierQuotationExcel(this.user.unitslno).subscribe((response) => {
-      saveAs(response, "supplierQuotation");
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy')
+      saveAs(response, "supplierQuotation" + newdate);
     })
   }
 
