@@ -269,31 +269,31 @@ export class MaterialStockComponent implements OnInit {
         //   return null;
         // },
       },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
+      // {
+      //   headerName: 'Edit',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 80,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onEditButtonClick.bind(this),
+      //     label: 'Edit'
+      //   },
+      // },
 
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
+      // {
+      //   headerName: 'Delete',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 85,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onDeleteButtonClick.bind(this),
+      //     label: 'Delete'
+      //   },
+      // },
       {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
@@ -598,30 +598,30 @@ export class MaterialStockComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
       },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
+      // {
+      //   headerName: 'Edit',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 80,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onEditButtonClick.bind(this),
+      //     label: 'Edit'
+      //   },
+      // },
+      // {
+      //   headerName: 'Delete',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 85,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onDeleteButtonClick.bind(this),
+      //     label: 'Delete'
+      //   },
+      // },
       {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
@@ -748,30 +748,30 @@ export class MaterialStockComponent implements OnInit {
         // },
       },
       
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
+      // {
+      //   headerName: 'Edit',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 80,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onEditButtonClick.bind(this),
+      //     label: 'Edit'
+      //   },
+      // },
+      // {
+      //   headerName: 'Delete',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 85,
+      //   // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onDeleteButtonClick.bind(this),
+      //     label: 'Delete'
+      //   },
+      // },
       {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',

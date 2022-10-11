@@ -274,27 +274,27 @@ export class AddQuotationComponent implements OnInit {
       }
 
 
-      for (let z = 0; z < this.supplierItems.length; z++) {
-        this.supplierQuotationFormArray = this.f['supplierQuotationFormArray'] as FormArray;
-        if (z > (this.supplierItems.length)-1) {
-          this.supplierQuotationFormArray.push(this.createItem());
+      // for (let z = 0; z < this.supplierItems.length; z++) {
+      //   this.supplierQuotationFormArray = this.f['supplierQuotationFormArray'] as FormArray;
+      //   if (z > (this.supplierItems.length)-1) {
+      //     this.supplierQuotationFormArray.push(this.createItem());
           
-        }
-        this.suplieitemSlno = this.supplierItems[z].suplierslno;
+      //   }
+      //   this.suplieitemSlno = this.supplierItems[z].suplierslno;
         
-        this.supplierQuotationFormArray.controls[z].controls['unitrate'].setValue(this.supplierItems[z].unitrate);
-        this.supplierQuotationFormArray.controls[z].controls['qunty'].setValue(this.supplierItems[z].qunty);
+      //   this.supplierQuotationFormArray.controls[z].controls['unitrate'].setValue(this.supplierItems[z].unitrate);
+      //   this.supplierQuotationFormArray.controls[z].controls['qunty'].setValue(this.supplierItems[z].qunty);
   
-        this.supplierQuotationFormArray.controls[z].controls['cunitrate'].setValue(this.supplierItems[z].cunitrate);
-        this.supplierQuotationFormArray.controls[z].controls['cuqunty'].setValue(this.supplierItems[z].cuqunty);
+      //   this.supplierQuotationFormArray.controls[z].controls['cunitrate'].setValue(this.supplierItems[z].cunitrate);
+      //   this.supplierQuotationFormArray.controls[z].controls['cuqunty'].setValue(this.supplierItems[z].cuqunty);
   
-        this.supplierQuotationFormArray.controls[z].controls['cptunitrate'].setValue(this.supplierItems[z].cptunitrate);
-        this.supplierQuotationFormArray.controls[z].controls['cptqunty'].setValue(this.supplierItems[z].cptqunty);
+      //   this.supplierQuotationFormArray.controls[z].controls['cptunitrate'].setValue(this.supplierItems[z].cptunitrate);
+      //   this.supplierQuotationFormArray.controls[z].controls['cptqunty'].setValue(this.supplierItems[z].cptqunty);
   
-        this.supplierQuotationFormArray.controls[z].controls['prtunitrate'].setValue(this.supplierItems[z].prtunitrate);
-        this.supplierQuotationFormArray.controls[z].controls['prtqunty'].setValue(this.supplierItems[z].prtqunty);
+      //   this.supplierQuotationFormArray.controls[z].controls['prtunitrate'].setValue(this.supplierItems[z].prtunitrate);
+      //   this.supplierQuotationFormArray.controls[z].controls['prtqunty'].setValue(this.supplierItems[z].prtqunty);
       
-      }
+      // }
 
     });
 

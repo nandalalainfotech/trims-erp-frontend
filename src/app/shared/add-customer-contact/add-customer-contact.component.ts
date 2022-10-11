@@ -190,7 +190,7 @@ export class AddCustomerContactComponent implements OnInit {
       if (customerContactForm.status == "VALID") {
         this.activeModal.close({
           status: 'Yes',
-          customercontact: customerContact001wbs,
+          customercontacts: customerContact001wbs,
         });
       }
       else {
