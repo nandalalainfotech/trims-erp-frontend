@@ -358,7 +358,6 @@ export class ApprovalRequestComponent implements OnInit {
     rowClicked(params: any) {
         params.node.setData({
             ...params.data,
-            status: true,
         });
     }
 
