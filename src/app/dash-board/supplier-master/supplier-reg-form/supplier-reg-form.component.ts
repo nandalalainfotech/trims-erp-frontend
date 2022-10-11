@@ -470,8 +470,8 @@ export class SupplierRegFormComponent implements OnInit {
     onAddbuttonClick(object: any) {
         const modalRef = this.modalService.open(AddLeadsComponent, { windowClass: 'my-class' });
         modalRef.componentInstance.suppliercontacts = this.suppliercontacts;
-
         modalRef.componentInstance.SupplierRegForm = this.SupplierRegForm;
+        
         modalRef.result.then((data) => {
             if (data.status == 'Yes') {
                 this.suppliercontacts = data.suppliercontacts;

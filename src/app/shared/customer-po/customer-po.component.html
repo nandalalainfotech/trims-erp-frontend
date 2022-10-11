@@ -67,9 +67,9 @@
                                 </div>
                             </div>
                             <div class="col-xs-1 col-sm-1" style="left: 80px;top: 20px;">
-                                <button type="button" class="btn btn-primary submit" (click)="addItemprt()"><i
+                                <button type="button" class="btn btn-primary submit" [disabled]="buttonDisabled" (click)="addItemprt()"><i
                                         class="fa fa-plus" aria-hidden="true"></i></button>
-                                <button type="button" class="btn btn-warning reset" (click)="removeItemprt(i)"><i
+                                <button type="button" class="btn btn-warning reset" [disabled]="buttonDisabled" (click)="removeItemprt(i)"><i
                                         class="fa fa-minus" aria-hidden="true"></i></button>
                             </div>
                         </div>

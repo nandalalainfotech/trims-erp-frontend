@@ -38,11 +38,11 @@
                     <div class="form-group">
                         <label path="address" for="address" cssClass="required">Max Score</label>
                         <input OnlyNumber type="text" class="form-control" path="max" formControlName="max" value="10" maxlength="2" />
-                        <!-- <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
-                            <div *ngIf="f.address.errors.required">
-                                Address Details Required
+                        <div *ngIf="submitted && f.max.errors" class="invalid-feedback">
+                            <div *ngIf="f.max.errors.required">
+                                Max Score is Required
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-3 col-sm-5">

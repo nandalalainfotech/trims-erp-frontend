@@ -46,14 +46,14 @@ export class CustomerPoComponent implements OnInit {
   insertDatetime?: Date;
   updatedUser: string = "";
   updatedDatetime?: Date | null;
-
   part001mbs: Part001mb[] = [];
   customerPoItem001wbs: CustomerPoItem001wb[] = [];
   part001mb?: Part001mb;
   user?: Login001mb | any;
-
   customerpoItemSlno: number | any;
   arrayslno: any = [];
+  buttonDisabled?: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal,
@@ -73,6 +73,14 @@ export class CustomerPoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    if(this.purchasereqitem.length > 0) {            
+      this.buttonDisabled = true;
+  }
+  else {
+      this.buttonDisabled = false;
+  }
+
     this.user = this.authManager.getcurrentUser;
     this.customerPOForm = this.formBuilder.group({
       customerPOFormArray: this.formBuilder.array([this.createItem()]),

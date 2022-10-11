@@ -60,7 +60,7 @@ export class AssessmentCriteriaComponent implements OnInit {
     this.AssessCriteriaForm = this.formBuilder.group({
       criteria: ['', Validators.required],
       details: ['', Validators.required],
-      max: [''],
+      max: ['', Validators.required],
       status: ['', Validators.required],
     })
 

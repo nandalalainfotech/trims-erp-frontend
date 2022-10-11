@@ -58,9 +58,9 @@
             </div>
             <!-- </div> -->
             <div class="col-xs-1 col-sm-1" style="left: 60px;top: 20px;">
-              <button type="button" class="btn btn-primary submit" (click)="addItem()"><i class="fa fa-plus"
+              <button type="button" class="btn btn-primary submit" [disabled]="buttonDisabled" (click)="addItem()"><i class="fa fa-plus"
                   aria-hidden="true"></i></button>
-              <button type="button" class="btn btn-warning reset" (click)="removeItem(i)"><i class="fa fa-minus"
+              <button type="button" class="btn btn-warning reset" [disabled]="buttonDisabled" (click)="removeItem(i)"><i class="fa fa-minus"
                   aria-hidden="true"></i></button>
             </div>
           </div>
