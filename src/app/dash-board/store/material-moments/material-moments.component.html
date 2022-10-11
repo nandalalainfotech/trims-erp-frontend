@@ -2,7 +2,7 @@
     <fieldset class="scheduler-border">
 
         <ul class="nav nav-tabs">
-            <li>
+            <li class="active">
                 <a data-target="#opt" data-toggle="tab"><span class="scheduler-border">Raw Material</span></a
               >
             </li>
@@ -23,7 +23,7 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade  " id="opt">
+            <div class="tab-pane active  " id="opt">
                 <div class="formData">
                     <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
                         <div class="row">
@@ -60,11 +60,11 @@
                                             <label path="date" for="date" cssClass="required"> Date</label>
                                             <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="date" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                             </p-calendar>
-                                            <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                                            <!-- <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
                                                 <div *ngIf="f.date.errors.required">
                                                     D.C Date is Required
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
             </div>
             <div class="tab-pane fade  " id="opt1">
                 <div class="formData">
-                    <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                    <form [formGroup]="materialmomentsConsumForm" (ngSubmit)="onMaterialmomentsConsumClick($event, materialmomentsConsumForm)">
                         <div class="row">
                             <div class="col-xs-3 col-sm-3">
                                 <div class="form-group">
@@ -178,11 +178,11 @@
                                             <label path="cudate" for="cudate" cssClass="required"> Date</label>
                                             <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="cudate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                             </p-calendar>
-                                            <div *ngIf="submitted && f.cudate.errors" class="invalid-feedback">
+                                            <!-- <div *ngIf="submitted && f.cudate.errors" class="invalid-feedback">
                                                 <div *ngIf="f.cudate.errors.required">
                                                     D.C Date is Required
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -260,7 +260,7 @@
             </div>
             <div class="tab-pane fade  " id="opt2">
                 <div class="formData">
-                     <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                     <form [formGroup]="materialmomentsChildForm" (ngSubmit)="onMaterialmomentsChildClick($event, materialmomentsChildForm)">
                         <div class="row">
                             <div class="col-xs-3 col-sm-3">
                                 <div class="form-group">
@@ -295,11 +295,11 @@
                                             <label path="cptdate" for="cptdate" cssClass="required">Date</label>
                                             <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="cptdate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                             </p-calendar>
-                                            <div *ngIf="submitted && f.cptdate.errors" class="invalid-feedback">
+                                            <!-- <div *ngIf="submitted && f.cptdate.errors" class="invalid-feedback">
                                                 <div *ngIf="f.cptdate.errors.required">
                                                     D.C Date is Required
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -377,7 +377,7 @@
             </div>
             <div class="tab-pane fade  " id="opt3">
                 <div class="formData">
-                    <form [formGroup]="materialmomentsForm" (ngSubmit)="onMaterialmomentsClick($event, materialmomentsForm)">
+                    <form [formGroup]="materialmomentsPartForm" (ngSubmit)="onMaterialmomentsPartClick($event, materialmomentsPartForm)">
                         <div class="row">
                             <div class="col-xs-3 col-sm-3">
                                 <div class="form-group">
@@ -412,11 +412,11 @@
                                             <label path="prtdate" for="prtdate" cssClass="required"> Date</label>
                                             <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="prtdate" [minDate]="minDate" [maxDate]="maxDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                             </p-calendar>
-                                            <div *ngIf="submitted && f.prtdate.errors" class="invalid-feedback">
+                                            <!-- <div *ngIf="submitted && f.prtdate.errors" class="invalid-feedback">
                                                 <div *ngIf="f.prtdate.errors.required">
                                                     D.C Date is Required
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

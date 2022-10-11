@@ -44,7 +44,11 @@ export class ReturnStockComponent implements OnInit {
 
   materialStockForm: FormGroup | any;
   rawMaterialForm: FormGroup | any;
+
   ReturnForm: FormGroup | any;
+  ReturnConumForm: FormGroup | any;
+  ReturnChildForm: FormGroup | any;
+  ReturnPartForm: FormGroup | any;
   frameworkComponents: any;
   public gridOptions1: GridOptions | any;
   public gridOptions2: GridOptions | any;
@@ -198,7 +202,7 @@ export class ReturnStockComponent implements OnInit {
     this.createDataGrid008();
 
 
-   
+
 
     this.consumbleManager.allconsumble(this.user.unitslno).subscribe(response => {
       this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, response);
@@ -221,10 +225,10 @@ export class ReturnStockComponent implements OnInit {
     });
 
 
-  
+
     let res1 = this.returnStockManager.allStock(this.user.unitslno);
-    let res2 =   this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno)
-    forkJoin([res1,res2]).subscribe((result: any) => {
+    let res2 = this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno)
+    forkJoin([res1, res2]).subscribe((result: any) => {
       this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, result[0]);
       this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, result[1]);
       for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
@@ -241,59 +245,71 @@ export class ReturnStockComponent implements OnInit {
           this.Partcodes.push(this.rawmaterialinspection001wbs[i])
         }
       }
-  this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
-    this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
-    this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
-    this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
-    this.loadData();
+      this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+      this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
+      this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+      this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+      this.loadData();
     });
 
     this.ReturnForm = this.formBuilder.group({
       date: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      time: ['',],
+      time: ['', Validators.required],
       paidamount: ['', Validators.required],
-      dispatch: [''],
+      dispatch: ['', Validators.required],
       vichleno: ['', Validators.required],
-      personname: [''],
+      personname: ['', Validators.required],
       mobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      status: [''],
-      referenceid: ['',],
-      ordernumber: [''],
-      rejectitems: [''],
-      cudate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      cutime: ['',],
-      cupaidamount: ['', Validators.required],
-      cudispatch: [''],
-      cuvichleno: ['', Validators.required],
-      cupersonname: [''],
-      cumobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      custatus: [''],
-      cureferenceid: ['',],
-      cuordernumber: [''],
-      curejectitems: [''],
-      cptdate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      cpttime: ['',],
-      cptpaidamount: ['', Validators.required],
-      cptdispatch: [''],
-      cptvichleno: ['', Validators.required],
-      cptpersonname: [''],
-      cptmobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      cptstatus: [''],
-      cptreferenceid: ['',],
-      childpartnumber: ["",],
-      cptrejectitems: [""],
-      prtdate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      prttime: ['',],
-      prtpaidamount: ['', Validators.required],
-      prtdispatch: [''],
-      prtvichleno: ['', Validators.required],
-      prtpersonname: [''],
-      prtmobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      prtstatus: [''],
-      prtreferenceid: ['',],
-      partnumber: ['',],
-      prtrejectitems: ['',],
+      status: ['', Validators.required],
+      referenceid: ['', Validators.required],
+      ordernumber: ['', Validators.required],
+      rejectitems: ['', Validators.required],
 
+    })
+    
+
+    this.ReturnConumForm = this.formBuilder.group({
+      cudate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
+      cutime: ['', Validators.required],
+      cupaidamount: ['', Validators.required],
+      cudispatch: ['', Validators.required],
+      cuvichleno: ['', Validators.required],
+      cupersonname: ['', Validators.required],
+      cumobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      custatus: ['', Validators.required],
+      cureferenceid: ['', Validators.required],
+      cuordernumber: ['', Validators.required],
+      curejectitems: ['', Validators.required],
+    })
+
+    this.ReturnChildForm = this.formBuilder.group({
+
+      cptdate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
+      cpttime: ['', Validators.required],
+      cptpaidamount: ['', Validators.required],
+      cptdispatch: ['', Validators.required],
+      cptvichleno: ['', Validators.required],
+      cptpersonname: ['', Validators.required],
+      cptmobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      cptstatus: ['', Validators.required],
+      cptreferenceid: ['', Validators.required],
+      childpartnumber: ['', Validators.required],
+      cptrejectitems: ['', Validators.required],
+    })
+
+    this.ReturnPartForm = this.formBuilder.group({
+
+      prtdate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
+      prttime: ['', Validators.required],
+      prtpaidamount: ['', Validators.required],
+      prtdispatch: ['', Validators.required],
+      prtvichleno: ['', Validators.required],
+      prtpersonname: ['', Validators.required],
+      prtmobilenumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      prtstatus: ['', Validators.required],
+      prtreferenceid: ['', Validators.required],
+      partnumber: ['', Validators.required],
+      prtrejectitems: ['', Validators.required],
     })
 
 
@@ -302,97 +318,100 @@ export class ReturnStockComponent implements OnInit {
   }
 
 
-  get f() { return this.ReturnForm.controls }
+  get f() { return this.ReturnForm.controls}
+  get o(){return this.ReturnConumForm.controls}
+  get p(){return this.ReturnChildForm.controls}
+  get q(){return this.ReturnPartForm.controls}
 
   loadData() {
-    this.rawmetrieal=[];
-    this.consumable=[];
-    this.childpart=[];
-    this.part=[];
+    this.rawmetrieal = [];
+    this.consumable = [];
+    this.childpart = [];
+    this.part = [];
     setTimeout(() => {
-    this.returnStockManager.allStock(this.user.unitslno).subscribe(response => {
-      this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, response);
-      for (let i = 0; i < this.returnstock001wbs.length; i++) {
-        if (this.returnstock001wbs[i].ordernumber) {
-          this.OrderItems.push(this.returnstock001wbs[i],)
+      this.returnStockManager.allStock(this.user.unitslno).subscribe(response => {
+        this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, response);
+        for (let i = 0; i < this.returnstock001wbs.length; i++) {
+          if (this.returnstock001wbs[i].ordernumber) {
+            this.OrderItems.push(this.returnstock001wbs[i],)
+          }
+          if (this.returnstock001wbs[i].cuordernumber) {
+            this.ConsumableItems.push(this.returnstock001wbs[i])
+          }
+          if (this.returnstock001wbs[i].childpartnumber) {
+            this.ChilpartItems.push(this.returnstock001wbs[i])
+          }
+          if (this.returnstock001wbs[i].partnumber) {
+            this.PartItems.push(this.returnstock001wbs[i])
+          }
         }
-        if (this.returnstock001wbs[i].cuordernumber) {
-          this.ConsumableItems.push(this.returnstock001wbs[i])
-        }
-        if (this.returnstock001wbs[i].childpartnumber) {
-          this.ChilpartItems.push(this.returnstock001wbs[i])
-        }
-        if (this.returnstock001wbs[i].partnumber) {
-          this.PartItems.push(this.returnstock001wbs[i])
-        }
-      }
 
-      if (this.OrderItems.length > 0) {
-        this.gridOptions5?.api?.setRowData(this.OrderItems);
-      } else {
-        this.gridOptions5?.api?.setRowData([]);
-      }
-      if (this.ConsumableItems.length > 0) {
-        this.gridOptions6?.api?.setRowData(this.ConsumableItems);
-      } else {
-        this.gridOptions6?.api?.setRowData([]);
-      }
-      if (this.ChilpartItems.length > 0) {
-        this.gridOptions7?.api?.setRowData(this.ChilpartItems);
-      } else {
-        this.gridOptions7?.api?.setRowData([]);
-      }
-      if (this.PartItems.length > 0) {
-        this.gridOptions8?.api?.setRowData(this.PartItems);
-      } else {
-        this.gridOptions8?.api?.setRowData([]);
-      }
-    });
+        if (this.OrderItems.length > 0) {
+          this.gridOptions5?.api?.setRowData(this.OrderItems);
+        } else {
+          this.gridOptions5?.api?.setRowData([]);
+        }
+        if (this.ConsumableItems.length > 0) {
+          this.gridOptions6?.api?.setRowData(this.ConsumableItems);
+        } else {
+          this.gridOptions6?.api?.setRowData([]);
+        }
+        if (this.ChilpartItems.length > 0) {
+          this.gridOptions7?.api?.setRowData(this.ChilpartItems);
+        } else {
+          this.gridOptions7?.api?.setRowData([]);
+        }
+        if (this.PartItems.length > 0) {
+          this.gridOptions8?.api?.setRowData(this.PartItems);
+        } else {
+          this.gridOptions8?.api?.setRowData([]);
+        }
+      });
 
-    this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
-      this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
+      this.rawmaterialinspectionManager.allrawmaterial(this.user.unitslno).subscribe(response => {
+        this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
 
-      for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
-        if (this.rawmaterialinspection001wbs[i].cucode) {
-          this.consumable.push(this.rawmaterialinspection001wbs[i],)
+        for (let i = 0; i < this.rawmaterialinspection001wbs.length; i++) {
+          if (this.rawmaterialinspection001wbs[i].cucode) {
+            this.consumable.push(this.rawmaterialinspection001wbs[i],)
+          }
+          if (this.rawmaterialinspection001wbs[i].itemcode) {
+            this.rawmetrieal.push(this.rawmaterialinspection001wbs[i])
+          }
+          if (this.rawmaterialinspection001wbs[i].cptcode) {
+            this.childpart.push(this.rawmaterialinspection001wbs[i])
+          }
+          if (this.rawmaterialinspection001wbs[i].prtcode) {
+            this.part.push(this.rawmaterialinspection001wbs[i])
+          }
         }
-        if (this.rawmaterialinspection001wbs[i].itemcode) {
-          this.rawmetrieal.push(this.rawmaterialinspection001wbs[i])
-        }
-        if (this.rawmaterialinspection001wbs[i].cptcode) {
-          this.childpart.push(this.rawmaterialinspection001wbs[i])
-        }
-        if (this.rawmaterialinspection001wbs[i].prtcode) {
-          this.part.push(this.rawmaterialinspection001wbs[i])
-        }
-      }
-this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
-      this.consumable = this.consumable.filter((e, i) => this.consumable.findIndex(a => a["cucode"] === e["cucode"]) === i);
-      this.childpart = this.childpart.filter((e, i) => this.childpart.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
-      this.part = this.part.filter((e, i) => this.part.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+        this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+        this.consumable = this.consumable.filter((e, i) => this.consumable.findIndex(a => a["cucode"] === e["cucode"]) === i);
+        this.childpart = this.childpart.filter((e, i) => this.childpart.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+        this.part = this.part.filter((e, i) => this.part.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
 
-      if (this.rawmetrieal.length > 0) {
-        this.gridOptions1?.api?.setRowData(this.rawmetrieal);
-      } else {
-        this.gridOptions1?.api?.setRowData([]);
-      }
-      if (this.consumable.length > 0) {
-        this.gridOptions2?.api?.setRowData(this.consumable);
-      } else {
-        this.gridOptions2?.api?.setRowData([]);
-      }
-      if (this.childpart.length > 0) {
-        this.gridOptions3?.api?.setRowData(this.childpart);
-      } else {
-        this.gridOptions3?.api?.setRowData([]);
-      }
-      if (this.part.length > 0) {
-        this.gridOptions4?.api?.setRowData(this.part);
-      } else {
-        this.gridOptions4?.api?.setRowData([]);
-      }
-    });
-  }, 100);
+        if (this.rawmetrieal.length > 0) {
+          this.gridOptions1?.api?.setRowData(this.rawmetrieal);
+        } else {
+          this.gridOptions1?.api?.setRowData([]);
+        }
+        if (this.consumable.length > 0) {
+          this.gridOptions2?.api?.setRowData(this.consumable);
+        } else {
+          this.gridOptions2?.api?.setRowData([]);
+        }
+        if (this.childpart.length > 0) {
+          this.gridOptions3?.api?.setRowData(this.childpart);
+        } else {
+          this.gridOptions3?.api?.setRowData([]);
+        }
+        if (this.part.length > 0) {
+          this.gridOptions4?.api?.setRowData(this.part);
+        } else {
+          this.gridOptions4?.api?.setRowData([]);
+        }
+      });
+    }, 100);
 
   }
 
@@ -1648,11 +1667,22 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
     })
   }
 
-  
 
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
 
   onMaterialmomentsClick(event: any, ReturnForm: any) {
-
+    this.markFormGroupTouched(this.ReturnForm);
+    this.submitted = true;
+    if (this.ReturnForm.invalid) {
+      return;
+    }
     let returnstock001wb = new Returnstock001wb();
     returnstock001wb.date = new Date(this.f.date.value);
     returnstock001wb.time = this.f.time.value ? this.f.time.value : null;
@@ -1667,50 +1697,6 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
     // returnstock001wb.ordernumber = this.f.ordernumber.value ? this.orderitem001mbs.find(x => x.itemcode === this.f.ordernumber.value)?.slNo : null;
     returnstock001wb.rejectitems = this.f.rejectitems.value ? this.f.rejectitems.value : null;
 
-    returnstock001wb.cudate = this.f.cudate.value ? this.f.cudate.value : "";
-    returnstock001wb.cutime = this.f.cutime.value ? this.f.cutime.value : null;
-    returnstock001wb.cupaidamount = this.f.cupaidamount.value ? this.f.cupaidamount.value : null;
-    returnstock001wb.cudispatch = this.f.cudispatch.value ? this.f.cudispatch.value : "";
-    returnstock001wb.cuvichleno = this.f.cuvichleno.value ? this.f.cuvichleno.value : "";
-    returnstock001wb.cupersonname = this.f.cupersonname.value ? this.f.cupersonname.value : "";
-    returnstock001wb.cumobilenumber = this.f.cumobilenumber.value ? this.f.cumobilenumber.value : null;
-    returnstock001wb.custatus = this.f.custatus.value ? this.f.custatus.value : null;
-    returnstock001wb.cureferenceid = this.f.cureferenceid.value ? this.f.cureferenceid.value : "";
-    returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.f.cuordernumber.value : null;
-    // returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.consumble001mbs.find(x => x.consmno === this.RawMaterialcode.cucode2.consmno)?.slNo : null;
-    returnstock001wb.curejectitems = this.f.curejectitems.value ? this.f.curejectitems.value : null;
-
-    returnstock001wb.cptdate = new Date(this.f.date.value);
-    returnstock001wb.cpttime = this.f.cpttime.value ? this.f.cpttime.value : null;
-    returnstock001wb.cptpaidamount = this.f.cptpaidamount.value ? this.f.cptpaidamount.value : null;
-    returnstock001wb.cptdispatch = this.f.cptdispatch.value ? this.f.cptdispatch.value : "";
-    returnstock001wb.cptvichleno = this.f.cptvichleno.value ? this.f.cptvichleno.value : "";
-    returnstock001wb.cptpersonname = this.f.cptpersonname.value ? this.f.cptpersonname.value : "";
-    returnstock001wb.cptmobilenumber = this.f.cptmobilenumber.value ? this.f.cptmobilenumber.value : null;
-    returnstock001wb.cptstatus = this.f.cptstatus.value ? this.f.cptstatus.value : "";
-    returnstock001wb.cptreferenceid = this.f.cptreferenceid.value ? this.f.cptreferenceid.value : "";
-    returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.f.childpartnumber.value : null;
-    // returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.childPart001mbs.find(x => x.cpartno === this.RawMaterialcode.cptcode2.cpartno)?.slNo : null;
-    returnstock001wb.cptrejectitems = this.f.cptrejectitems.value ? this.f.cptrejectitems.value : null;
-
-
-    returnstock001wb.prtdate = new Date(this.f.date.value);
-    returnstock001wb.prttime = this.f.prttime.value ? this.f.prttime.value : null;
-    returnstock001wb.prtpaidamount = this.f.prtpaidamount.value ? this.f.prtpaidamount.value : null;
-    returnstock001wb.prtdispatch = this.f.prtdispatch.value ? this.f.prtdispatch.value : "";
-    returnstock001wb.prtvichleno = this.f.prtvichleno.value ? this.f.prtvichleno.value : "";
-    returnstock001wb.prtpersonname = this.f.prtpersonname.value ? this.f.prtpersonname.value : "";
-    returnstock001wb.prtmobilenumber = this.f.prtmobilenumber.value ? this.f.prtmobilenumber.value : null;
-    returnstock001wb.prtstatus = this.f.prtstatus.value ? this.f.prtstatus.value : "";
-    returnstock001wb.prtreferenceid = this.f.prtreferenceid.value ? this.f.prtreferenceid.value : "";
-    returnstock001wb.partnumber = this.f.partnumber.value ? this.f.partnumber.value : null;
-    // returnstock001wb.partnumber = this.f.partnumber.value ? this.part001mbs.find(x => x.partno === this.RawMaterialcode.prtcode2.partno)?.slNo : null
-    returnstock001wb.prtrejectitems = this.f.prtrejectitems.value ? this.f.prtrejectitems.value : null;
-
-
-
-
-
 
     if (this.slNo) {
       returnstock001wb.slNo = this.slNo;
@@ -1720,7 +1706,7 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
       returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
       returnstock001wb.updatedDatetime = new Date();
       this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Momentes Record Updated Successfully");
+        this.calloutService.showSuccess("Return Stock Updated Successfully");
         this.ReturnForm.reset();
         this.loadData();
         this.slNo = null;
@@ -1734,24 +1720,12 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
       returnstock001wb.unitslno = this.user.unitslno;
       returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
       returnstock001wb.insertDatetime = new Date();
-      console.log("returnstock001wb", returnstock001wb);
-
       this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Momentes Record Saved Successfully");
+        this.calloutService.showSuccess("Return Stock Saved Successfully");
         this.ReturnForm.reset();
         this.ReturnForm.patchValue(
           { date: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
         );
-        this.ReturnForm.patchValue(
-          { cudate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
-        );
-        this.ReturnForm.patchValue(
-          { cptdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
-        );
-        this.ReturnForm.patchValue(
-          { prtdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
-        );
-       
         this.loadData();
         this.submitted = false;
         // this.activeModal.close("Yes");
@@ -1760,27 +1734,227 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
     }
 
   }
+
+
+  onReturnConsumClick(event: any, ReturnConumForm: any) {
+    this.markFormGroupTouched(this.ReturnConumForm);
+    this.submitted = true;
+    if (this.ReturnConumForm.invalid) {
+      return;
+    }
+    let returnstock001wb = new Returnstock001wb();
+    returnstock001wb.cudate =new Date(this.o.cudate.value);
+    returnstock001wb.cutime = this.o.cutime.value ? this.o.cutime.value : null;
+    returnstock001wb.cupaidamount = this.o.cupaidamount.value ? this.o.cupaidamount.value : null;
+    returnstock001wb.cudispatch = this.o.cudispatch.value ? this.o.cudispatch.value : "";
+    returnstock001wb.cuvichleno = this.o.cuvichleno.value ? this.o.cuvichleno.value : "";
+    returnstock001wb.cupersonname = this.o.cupersonname.value ? this.o.cupersonname.value : "";
+    returnstock001wb.cumobilenumber = this.o.cumobilenumber.value ? this.o.cumobilenumber.value : null;
+    returnstock001wb.custatus = this.o.custatus.value ? this.o.custatus.value : null;
+    returnstock001wb.cureferenceid = this.o.cureferenceid.value ? this.o.cureferenceid.value : "";
+    returnstock001wb.cuordernumber = this.o.cuordernumber.value ? this.o.cuordernumber.value : null;
+    // returnstock001wb.cuordernumber = this.f.cuordernumber.value ? this.consumble001mbs.find(x => x.consmno === this.RawMaterialcode.cucode2.consmno)?.slNo : null;
+    returnstock001wb.curejectitems = this.o.curejectitems.value ? this.o.curejectitems.value : null;
+
+    if (this.slNo) {
+      returnstock001wb.slNo = this.slNo;
+      returnstock001wb.unitslno = this.unitslno;
+      returnstock001wb.insertUser = this.insertUser;
+      returnstock001wb.insertDatetime = this.insertDatetime;
+      returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.updatedDatetime = new Date();
+      this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Updated Successfully");
+        this.ReturnConumForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      returnstock001wb.date = new Date();
+      returnstock001wb.cudate = new Date();
+      returnstock001wb.cptdate = new Date();
+      returnstock001wb.prtdate = new Date();
+      returnstock001wb.unitslno = this.user.unitslno;
+      returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.insertDatetime = new Date();
+      this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Saved Successfully");
+        this.ReturnConumForm.reset();
+        this.ReturnConumForm.patchValue(
+          { cudate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+
+        this.loadData();
+        this.submitted = false;
+        // this.activeModal.close("Yes");
+      });
+
+    }
+
+
+  }
+
+  onReturnChildClick(event: any, ReturnChildForm: any) {
+    this.markFormGroupTouched(this.ReturnChildForm);
+    this.submitted = true;
+    if (this.ReturnChildForm.invalid) {
+      return;
+    }
+    let returnstock001wb = new Returnstock001wb();
+    returnstock001wb.cptdate = new Date(this.p.cptdate.value);
+    returnstock001wb.cpttime = this.p.cpttime.value ? this.p.cpttime.value : null;
+    returnstock001wb.cptpaidamount = this.p.cptpaidamount.value ? this.p.cptpaidamount.value : null;
+    returnstock001wb.cptdispatch = this.p.cptdispatch.value ? this.p.cptdispatch.value : "";
+    returnstock001wb.cptvichleno = this.p.cptvichleno.value ? this.p.cptvichleno.value : "";
+    returnstock001wb.cptpersonname = this.p.cptpersonname.value ? this.p.cptpersonname.value : "";
+    returnstock001wb.cptmobilenumber = this.p.cptmobilenumber.value ? this.p.cptmobilenumber.value : null;
+    returnstock001wb.cptstatus = this.p.cptstatus.value ? this.p.cptstatus.value : "";
+    returnstock001wb.cptreferenceid = this.p.cptreferenceid.value ? this.p.cptreferenceid.value : "";
+    returnstock001wb.childpartnumber = this.p.childpartnumber.value ? this.p.childpartnumber.value : null;
+    // returnstock001wb.childpartnumber = this.f.childpartnumber.value ? this.childPart001mbs.find(x => x.cpartno === this.RawMaterialcode.cptcode2.cpartno)?.slNo : null;
+    returnstock001wb.cptrejectitems = this.p.cptrejectitems.value ? this.p.cptrejectitems.value : null;
+
+    if (this.slNo) {
+      returnstock001wb.slNo = this.slNo;
+      returnstock001wb.unitslno = this.unitslno;
+      returnstock001wb.insertUser = this.insertUser;
+      returnstock001wb.insertDatetime = this.insertDatetime;
+      returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.updatedDatetime = new Date();
+      this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Updated Successfully");
+        this.ReturnChildForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      returnstock001wb.date = new Date();
+      returnstock001wb.cudate = new Date();
+      returnstock001wb.cptdate = new Date();
+      returnstock001wb.prtdate = new Date();
+      returnstock001wb.unitslno = this.user.unitslno;
+      returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.insertDatetime = new Date();
+      this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Saved Successfully");
+        this.ReturnChildForm.reset();
+        this.ReturnChildForm.patchValue(
+          { cptdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+        this.loadData();
+        this.submitted = false;
+        // this.activeModal.close("Yes");
+      });
+
+    }
+
+  }
+
+
+
+  onReturnPartClick(event: any, ReturnPartForm: any) {
+    this.markFormGroupTouched(this.ReturnPartForm);
+    this.submitted = true;
+    if (this.ReturnPartForm.invalid) {
+      return;
+    }
+    let returnstock001wb = new Returnstock001wb();
+
+    returnstock001wb.prtdate = new Date(this.q.prtdate.value);
+    returnstock001wb.prttime = this.q.prttime.value ? this.q.prttime.value : null;
+    returnstock001wb.prtpaidamount = this.q.prtpaidamount.value ? this.q.prtpaidamount.value : null;
+    returnstock001wb.prtdispatch = this.q.prtdispatch.value ? this.q.prtdispatch.value : "";
+    returnstock001wb.prtvichleno = this.q.prtvichleno.value ? this.q.prtvichleno.value : "";
+    returnstock001wb.prtpersonname = this.q.prtpersonname.value ? this.q.prtpersonname.value : "";
+    returnstock001wb.prtmobilenumber = this.q.prtmobilenumber.value ? this.q.prtmobilenumber.value : null;
+    returnstock001wb.prtstatus = this.q.prtstatus.value ? this.q.prtstatus.value : "";
+    returnstock001wb.prtreferenceid = this.q.prtreferenceid.value ? this.q.prtreferenceid.value : "";
+    returnstock001wb.partnumber = this.q.partnumber.value ? this.q.partnumber.value : null;
+    // returnstock001wb.partnumber = this.f.partnumber.value ? this.part001mbs.find(x => x.partno === this.RawMaterialcode.prtcode2.partno)?.slNo : null
+    returnstock001wb.prtrejectitems = this.q.prtrejectitems.value ? this.q.prtrejectitems.value : null;
+
+    if (this.slNo) {
+      returnstock001wb.slNo = this.slNo;
+      returnstock001wb.unitslno = this.unitslno;
+      returnstock001wb.insertUser = this.insertUser;
+      returnstock001wb.insertDatetime = this.insertDatetime;
+      returnstock001wb.updatedUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.updatedDatetime = new Date();
+      this.returnStockManager.StockUpdate(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Updated Successfully");
+        this.ReturnPartForm.reset();
+        this.loadData();
+        this.slNo = null;
+        this.submitted = false;
+      });
+    } else {
+      returnstock001wb.date = new Date();
+      returnstock001wb.cudate = new Date();
+      returnstock001wb.cptdate = new Date();
+      returnstock001wb.prtdate = new Date();
+      returnstock001wb.unitslno = this.user.unitslno;
+      returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
+      returnstock001wb.insertDatetime = new Date();
+
+      this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
+        this.calloutService.showSuccess("Return Stock Saved Successfully");
+        this.ReturnPartForm.reset();
+        this.ReturnPartForm.patchValue(
+          { prtdate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
+        );
+
+        this.loadData();
+        this.submitted = false;
+        // this.activeModal.close("Yes");
+      });
+
+    }
+
+  }
+
   onReset() {
 
   }
 
   onChange(event: any) {
-
-    // this.materialInspectionManager.findOne(event.target.value).subscribe(response => {
-    //   this.materialinspection001wb = deserialize<Materialinspection001wb[]>(Materialinspection001wb, response);
-    //   console.log("");
-      
-    // });
-
     this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
       this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
       this.ReturnForm.patchValue({
         'rejectitems': this.rawmaterialinspection001wb.rejectesum,
+      })
+    });
+  }
+
+  onChangeConsum(event: any) {
+    this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
+      this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
+      this.ReturnConumForm.patchValue({
         'curejectitems': this.rawmaterialinspection001wb.curejectesum,
+      })
+    });
+
+  }
+
+  onChangeChild(event: any) {
+    this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
+      this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
+      this.ReturnChildForm.patchValue({
         'cptrejectitems': this.rawmaterialinspection001wb.cptrejectesum,
+      })
+    });
+
+  }
+
+  onChangePart(event: any) {
+    this.rawmaterialinspectionManager.findOne(event.target.value).subscribe(response => {
+      this.rawmaterialinspection001wb = deserialize<Rawmaterialinspection001wb>(Rawmaterialinspection001wb, response);
+      this.ReturnPartForm.patchValue({
         'prtrejectitems': this.rawmaterialinspection001wb.prtrejectesum,
       })
     });
+
   }
 
   // --------------Item-Pdf-----------------
@@ -1891,25 +2065,25 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
 
   }
 
-// item code
-  onViewItemClick(){
-    this.returnStockManager.itemFullpdfId( this.user.unitslno).subscribe((response) => {
+  // item code
+  onViewItemClick() {
+    this.returnStockManager.itemFullpdfId(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
     })
   }
 
-  onGenerateItemPdfReport(){
-    this.returnStockManager.itemFullpdfId( this.user.unitslno).subscribe((response) => {
+  onGenerateItemPdfReport() {
+    this.returnStockManager.itemFullpdfId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Raw-material-Details" + newDate);
     })
   }
 
-  onGenerateItemExcelReport(){
-    this.returnStockManager.itemFullExcelId( this.user.unitslno).subscribe((response) => {
+  onGenerateItemExcelReport() {
+    this.returnStockManager.itemFullExcelId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Raw-material-Details" + newDate);
@@ -1917,24 +2091,24 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
   }
 
   // consumable
-  onViewConsumerClick(){
-    this.returnStockManager.consumFullpdfId( this.user.unitslno).subscribe((response) => {
+  onViewConsumerClick() {
+    this.returnStockManager.consumFullpdfId(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
     })
   }
 
-  onGenerateConsumerPdfReport(){
-    this.returnStockManager.consumFullpdfId( this.user.unitslno).subscribe((response) => {
+  onGenerateConsumerPdfReport() {
+    this.returnStockManager.consumFullpdfId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Consumable-Item-Details" + newDate);
     })
   }
 
-  onGenerateConsumerExcelReport(){
-    this.returnStockManager.consumFullExcelId( this.user.unitslno).subscribe((response) => {
+  onGenerateConsumerExcelReport() {
+    this.returnStockManager.consumFullExcelId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Consumable-Item-Details" + newDate);
@@ -1942,24 +2116,24 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
   }
 
   // childcode
-  onViewchildcodeClick(){
-    this.returnStockManager.cpartFullpdfId( this.user.unitslno).subscribe((response) => {
+  onViewchildcodeClick() {
+    this.returnStockManager.cpartFullpdfId(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
     })
   }
 
-  onGeneratechildcodePdfReport(){
-    this.returnStockManager.cpartFullpdfId( this.user.unitslno).subscribe((response) => {
+  onGeneratechildcodePdfReport() {
+    this.returnStockManager.cpartFullpdfId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Child-Part-Details" + newDate);
     })
   }
 
-  onGeneratechildcodeExcelReport(){
-    this.returnStockManager.cpartFullExcelId( this.user.unitslno).subscribe((response) => {
+  onGeneratechildcodeExcelReport() {
+    this.returnStockManager.cpartFullExcelId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Child-Part-Details" + newDate);
@@ -1967,23 +2141,23 @@ this.rawmetrieal = this.rawmetrieal.filter((e, i) => this.rawmetrieal.findIndex(
   }
 
   // partcode
-  onViewPrtClick(){
-    this.returnStockManager.partFullpdfId( this.user.unitslno).subscribe((response) => {
+  onViewPrtClick() {
+    this.returnStockManager.partFullpdfId(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
     })
   }
 
-  onGeneratePrtPdfReport(){
-    this.returnStockManager.partFullpdfId( this.user.unitslno).subscribe((response) => {
+  onGeneratePrtPdfReport() {
+    this.returnStockManager.partFullpdfId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
       saveAs(response, "ReturnStock-Part-Details" + newDate);
     })
   }
 
-  onGeneratePrtExcelReport(){
+  onGeneratePrtExcelReport() {
     this.returnStockManager.partFullExcelId(this.user.unitslno).subscribe((response) => {
       let date = new Date();
       let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
