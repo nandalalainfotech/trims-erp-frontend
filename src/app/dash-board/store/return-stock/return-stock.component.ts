@@ -266,7 +266,7 @@ export class ReturnStockComponent implements OnInit {
       rejectitems: ['', Validators.required],
 
     })
-    
+
 
     this.ReturnConumForm = this.formBuilder.group({
       cudate: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
@@ -318,16 +318,20 @@ export class ReturnStockComponent implements OnInit {
   }
 
 
-  get f() { return this.ReturnForm.controls}
-  get o(){return this.ReturnConumForm.controls}
-  get p(){return this.ReturnChildForm.controls}
-  get q(){return this.ReturnPartForm.controls}
+  get f() { return this.ReturnForm.controls }
+  get o() { return this.ReturnConumForm.controls }
+  get p() { return this.ReturnChildForm.controls }
+  get q() { return this.ReturnPartForm.controls }
 
   loadData() {
     this.rawmetrieal = [];
     this.consumable = [];
     this.childpart = [];
     this.part = [];
+    this.OrderItems=[];
+    this.ConsumableItems=[];
+    this.ChilpartItems=[];
+    this.PartItems=[];
     setTimeout(() => {
       this.returnStockManager.allStock(this.user.unitslno).subscribe(response => {
         this.returnstock001wbs = deserialize<Returnstock001wb[]>(Returnstock001wb, response);
@@ -1743,7 +1747,7 @@ export class ReturnStockComponent implements OnInit {
       return;
     }
     let returnstock001wb = new Returnstock001wb();
-    returnstock001wb.cudate =new Date(this.o.cudate.value);
+    returnstock001wb.cudate = new Date(this.o.cudate.value);
     returnstock001wb.cutime = this.o.cutime.value ? this.o.cutime.value : null;
     returnstock001wb.cupaidamount = this.o.cupaidamount.value ? this.o.cupaidamount.value : null;
     returnstock001wb.cudispatch = this.o.cudispatch.value ? this.o.cudispatch.value : "";
@@ -1896,7 +1900,6 @@ export class ReturnStockComponent implements OnInit {
       returnstock001wb.unitslno = this.user.unitslno;
       returnstock001wb.insertUser = this.authManager.getcurrentUser.username;
       returnstock001wb.insertDatetime = new Date();
-
       this.returnStockManager.Stocksave(returnstock001wb).subscribe((response) => {
         this.calloutService.showSuccess("Return Stock Saved Successfully");
         this.ReturnPartForm.reset();
