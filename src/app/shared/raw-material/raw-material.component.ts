@@ -91,182 +91,198 @@ export class RawMaterialComponent implements OnInit {
         });
 
         this.orderItemSettingManager.allitem(this.user.unitslno).subscribe((response) => {
-        this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb,response);
+            this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb, response);
         });
 
         this.childPartManager.allChildpart(this.user.unitslno).subscribe((response) => {
-        this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb,response);
+            this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, response);
         });
 
         this.consumbleManager.allconsumble(this.user.unitslno).subscribe((response) => {
-        this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb,response);
+            this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, response);
         });
 
         this.partManager.allpart(this.user.unitslno).subscribe((response) => {
-        this.part001mbs = deserialize<Part001mb[]>(Part001mb, response);
+            this.part001mbs = deserialize<Part001mb[]>(Part001mb, response);
         });
 
         this.materialInwardManager.findOne(this.grsNumber).subscribe((response) => {
-        this.materialinward001wb = deserialize<Materialinward001wb>(Materialinward001wb,response);
-            for (let i = 0;i <this.materialinward001wb.materialreceiveditem001wbs.length;i++) {
+            this.materialinward001wb = deserialize<Materialinward001wb>(Materialinward001wb, response);
+            for (let i = 0; i < this.materialinward001wb.materialreceiveditem001wbs.length; i++) {
                 this.rawMaterialFormArray = this.f['rawMaterialFormArray'] as FormArray;
-                if (i <this.materialinward001wb.materialreceiveditem001wbs.length -1) {
+                if (i < this.materialinward001wb.materialreceiveditem001wbs.length - 1) {
                     this.rawMaterialFormArray.push(this.createItem());
                 }
 
-        setTimeout(() => {
-            if (this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
-                for (let orderItems of this.orderitem001mbs) {
-                if (orderItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
-                this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(orderItems.itemcode);
-                break;
+                setTimeout(() => {
+                    if (this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
+                        for (let orderItems of this.orderitem001mbs) {
+                            if (orderItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].itemcode) {
+                                this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(orderItems.itemcode);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(null);
+                    }
+                }, 100);
+
+                setTimeout(() => {
+                    if (this.materialinward001wb.materialreceiveditem001wbs[i].cucode) {
+                        for (let consumbleItems of this.consumble001mbs) {
+                            if (consumbleItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cucode) {
+                                this.rawMaterialFormArray.controls[i].controls['cucode'].setValue(consumbleItems.consmno);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        this.rawMaterialFormArray.controls[i].controls['cucode'].setValue(null);
+                    }
+                }, 100);
+
+                setTimeout(() => {
+                    if (this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
+                        for (let childPartItems of this.childPart001mbs) {
+                            if (
+                                childPartItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
+                                this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(childPartItems.cpartno);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(null);
+                    }
+                }, 100);
+
+                setTimeout(() => {
+                    if (this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
+                        for (let partItems of this.part001mbs) {
+                            if (
+                                partItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
+                                this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(partItems.partno);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(null);
+                    }
+                }, 100);
+
+                // this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemcode ? this.orderitem001mbs.find(x=>x.slNo === this.materialinward001wb.materialreceiveditem001wbs[i].itemcode)?.itemcode:null);
+                this.rawMaterialFormArray.controls[i].controls['itemname'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemname);
+                this.rawMaterialFormArray.controls[i].controls['descrip'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].descrip);
+                this.rawMaterialFormArray.controls[i].controls['qunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].qunty);
+                this.rawMaterialFormArray.controls[i].controls['cuqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuqunty);
+                this.rawMaterialFormArray.controls[i].controls['cptqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cptqunty);
+                this.rawMaterialFormArray.controls[i].controls['prtqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].prtqunty);
+                this.rawMaterialFormArray.controls[i].controls['receivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].receivedQty);
+                this.rawMaterialFormArray.controls[i].controls['acceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].acceptedQty);
+                this.rawMaterialFormArray.controls[i].controls['rejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].rejectedQty);
+                this.rawMaterialFormArray.controls[i].controls['outstanding'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].outstanding);
+                this.rawMaterialFormArray.controls[i].controls['cureceivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cureceivedQty);
+                this.rawMaterialFormArray.controls[i].controls['cuacceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuacceptedQty);
+                this.rawMaterialFormArray.controls[i].controls['curejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].curejectedQty);
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cuoutstanding'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cuoutstanding
+                );
+
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptreceivedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptreceivedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptacceptedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptacceptedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptrejectedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptrejectedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptoutstanding'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptoutstanding
+                );
+
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtreceivedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtreceivedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtacceptedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtacceptedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtrejectedQty'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtrejectedQty
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtoutstanding'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtoutstanding
+                );
+
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cuname'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cuname
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cudescrip'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cudescrip
+                );
+
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptname'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptname
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'cptdescrip'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .cptdescrip
+                );
+
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtname'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtmname
+                );
+                this.rawMaterialFormArray.controls[i].controls[
+                    'prtdescrip'
+                ].setValue(
+                    this.materialinward001wb.materialreceiveditem001wbs[i]
+                        .prtdescrip
+                );
             }
-            }}
-            else {
-                this.rawMaterialFormArray.controls[i].controls[ 'itemcode'].setValue(null);}}, 100);
-
-        setTimeout(() => {
-            if (this.materialinward001wb.materialreceiveditem001wbs[ i].cucode) {
-                for (let consumbleItems of this.consumble001mbs) {
-                if (consumbleItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cucode) {
-                this.rawMaterialFormArray.controls[i].controls['cucode'].setValue( consumbleItems.consmno);
-                break;
-            }
-            }}
-             else {
-                this.rawMaterialFormArray.controls[i].controls['cucode' ].setValue(null);} }, 100);
-
-        setTimeout(() => {if (this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
-            for (let childPartItems of this.childPart001mbs) {if (
-                childPartItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].cptcode) {
-                this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(childPartItems.cpartno);
-                break;
-            }
-            }}
-            else {
-                this.rawMaterialFormArray.controls[i].controls['cptcode'].setValue(null);}}, 100);
-
-        setTimeout(() => {if ( this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
-            for (let partItems of this.part001mbs) {if (
-            partItems.slNo == this.materialinward001wb.materialreceiveditem001wbs[i].prtcode) {
-            this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(partItems.partno);
-            break;
-        }
-        }} 
-        else {
-            this.rawMaterialFormArray.controls[i].controls['prtcode'].setValue(null);}}, 100);
-
-        // this.rawMaterialFormArray.controls[i].controls['itemcode'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemcode ? this.orderitem001mbs.find(x=>x.slNo === this.materialinward001wb.materialreceiveditem001wbs[i].itemcode)?.itemcode:null);
-        this.rawMaterialFormArray.controls[i].controls['itemname'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].itemname);
-        this.rawMaterialFormArray.controls[i].controls['descrip'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].descrip);
-        this.rawMaterialFormArray.controls[i].controls['qunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].qunty);
-        this.rawMaterialFormArray.controls[i].controls['cuqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuqunty);
-        this.rawMaterialFormArray.controls[i].controls['cptqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cptqunty);
-        this.rawMaterialFormArray.controls[i].controls['prtqunty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].prtqunty);
-        this.rawMaterialFormArray.controls[i].controls['receivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].receivedQty);
-        this.rawMaterialFormArray.controls[i].controls['acceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].acceptedQty);
-        this.rawMaterialFormArray.controls[i].controls['rejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].rejectedQty);
-        this.rawMaterialFormArray.controls[i].controls['outstanding'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].outstanding);
-        this.rawMaterialFormArray.controls[i].controls['cureceivedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cureceivedQty);
-        this.rawMaterialFormArray.controls[i].controls['cuacceptedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].cuacceptedQty);
-        this.rawMaterialFormArray.controls[i].controls['curejectedQty'].setValue(this.materialinward001wb.materialreceiveditem001wbs[i].curejectedQty);
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cuoutstanding'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cuoutstanding
-                    );
-
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptreceivedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptreceivedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptacceptedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptacceptedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptrejectedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptrejectedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptoutstanding'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptoutstanding
-                    );
-
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtreceivedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtreceivedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtacceptedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtacceptedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtrejectedQty'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtrejectedQty
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtoutstanding'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtoutstanding
-                    );
-
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cuname'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cuname
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cudescrip'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cudescrip
-                    );
-
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptname'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptname
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'cptdescrip'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .cptdescrip
-                    );
-
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtname'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtmname
-                    );
-                    this.rawMaterialFormArray.controls[i].controls[
-                        'prtdescrip'
-                    ].setValue(
-                        this.materialinward001wb.materialreceiveditem001wbs[i]
-                            .prtdescrip
-                    );
-                }
-            });
+        });
     }
 
     get f() {
@@ -340,10 +356,10 @@ export class RawMaterialComponent implements OnInit {
             .findOne(
                 this.f.rawMaterialFormArray.value[index].itemcode
                     ? this.orderitem001mbs.find(
-                          (x) =>
-                              x.itemcode ===
-                              this.f.rawMaterialFormArray.value[index].itemcode
-                      )?.slNo
+                        (x) =>
+                            x.itemcode ===
+                            this.f.rawMaterialFormArray.value[index].itemcode
+                    )?.slNo
                     : null
             )
             .subscribe((response) => {
@@ -377,10 +393,10 @@ export class RawMaterialComponent implements OnInit {
                 modalRef.componentInstance.RawMaterialcode = this.f
                     .rawMaterialFormArray.value[index].itemcode
                     ? this.orderitem001mbs.find(
-                          (x) =>
-                              x.itemcode ===
-                              this.f.rawMaterialFormArray.value[index].itemcode
-                      )?.slNo
+                        (x) =>
+                            x.itemcode ===
+                            this.f.rawMaterialFormArray.value[index].itemcode
+                    )?.slNo
                     : null;
                 modalRef.componentInstance.incoming = incoming;
                 if (this.observationitems && this.observationitems.length > 0) {
@@ -395,39 +411,29 @@ export class RawMaterialComponent implements OnInit {
                     }
                 }
                 modalRef.result.then((data) => {
+
                     if (data.status == 'Yes') {
                         let observation: any = {
                             itemcode:
                                 this.f.rawMaterialFormArray.value[index]
                                     .itemcode,
                             observation: data.observationitem,
-                        };
-                        console.log("this.observationitems.length", this.observationitems.length)
-                        if(this.observationitems.length == 0){
-                          this.observationitems.push(observation);
-                        }else{
-                          console.log("this.observationitems", this.observationitems)
-                        // for (let item of this.observationitems) {
-                        //   console.log("item.itemcode", item.itemcode)
-                        //   console.log("observation.itemcode", observation.itemcode)
-                        //     if (item.itemcode != observation.itemcode) {
-                        //         this.observationitems.push(observation);
-                        //     } else {
-                        //         this.calloutService.showWarning(
-                        //             'Already observation is submitted !'
-                        //         );
-                        //     }
-                        // }
-                        if(this.observationitems.find((x) =>x.itemcode == observation.itemcode)){
-                          this.calloutService.showWarning(
-                                        'Already observation is submitted !'
-                                    );
-                        }else{
-                          this.observationitems.push(observation);
-                        }
-                      }
 
-                      
+                        };
+                        if (this.observationitems.length == 0) {
+                            this.observationitems.push(observation);
+                        } else {
+                            if (this.observationitems.find((x) => x.itemcode == observation.itemcode)) {
+                                this.calloutService.showWarning(
+                                    'Already observation is submitted !'
+                                );
+                            }
+                            else {
+                                this.observationitems.push(observation);
+                            }
+                        }
+
+
                     }
                 });
             });
@@ -441,10 +447,10 @@ export class RawMaterialComponent implements OnInit {
             .findOne(
                 this.f.rawMaterialFormArray.value[index].cucode
                     ? this.consumble001mbs.find(
-                          (x) =>
-                              x.consmno ===
-                              this.f.rawMaterialFormArray.value[index].cucode
-                      )?.slNo
+                        (x) =>
+                            x.consmno ===
+                            this.f.rawMaterialFormArray.value[index].cucode
+                    )?.slNo
                     : null
             )
             .subscribe((response) => {
@@ -478,10 +484,10 @@ export class RawMaterialComponent implements OnInit {
                 modalRef.componentInstance.Consumablecode = this.f
                     .rawMaterialFormArray.value[index].cucode
                     ? this.consumble001mbs.find(
-                          (x) =>
-                              x.consmno ===
-                              this.f.rawMaterialFormArray.value[index].cucode
-                      )?.slNo
+                        (x) =>
+                            x.consmno ===
+                            this.f.rawMaterialFormArray.value[index].cucode
+                    )?.slNo
                     : null;
                 modalRef.componentInstance.incoming = incoming;
                 if (this.observationitems && this.observationitems.length > 0) {
@@ -496,14 +502,29 @@ export class RawMaterialComponent implements OnInit {
                     }
                 }
                 modalRef.result.then((data) => {
+
                     if (data.status == 'Yes') {
                         let observation: any = {
                             cucode: this.f.rawMaterialFormArray.value[index]
                                 .cucode,
                             observation: data.observationitem,
                         };
-                        this.observationitems.push(observation);
+
+                        if (this.observationitems.length == 0) {
+                            this.observationitems.push(observation);
+                        } else {
+                            if (this.observationitems.find((x) => x.cucode == observation.cucode)) {
+                                this.calloutService.showWarning(
+                                    'Already observation is submitted !'
+                                );
+                            }
+                            else {
+                                this.observationitems.push(observation);
+                            }
+                        }
                     }
+
+
                 });
             });
     }
@@ -515,10 +536,10 @@ export class RawMaterialComponent implements OnInit {
             .findOne(
                 this.f.rawMaterialFormArray.value[index].cptcode
                     ? this.childPart001mbs.find(
-                          (x) =>
-                              x.cpartno ===
-                              this.f.rawMaterialFormArray.value[index].cptcode
-                      )?.slNo
+                        (x) =>
+                            x.cpartno ===
+                            this.f.rawMaterialFormArray.value[index].cptcode
+                    )?.slNo
                     : null
             )
             .subscribe((response) => {
@@ -551,10 +572,10 @@ export class RawMaterialComponent implements OnInit {
                 modalRef.componentInstance.Childcode = this.f
                     .rawMaterialFormArray.value[index].cptcode
                     ? this.childPart001mbs.find(
-                          (x) =>
-                              x.cpartno ===
-                              this.f.rawMaterialFormArray.value[index].cptcode
-                      )?.slNo
+                        (x) =>
+                            x.cpartno ===
+                            this.f.rawMaterialFormArray.value[index].cptcode
+                    )?.slNo
                     : null;
                 modalRef.componentInstance.incoming = incoming;
                 if (this.observationitems && this.observationitems.length > 0) {
@@ -576,7 +597,19 @@ export class RawMaterialComponent implements OnInit {
                                     .cptcode,
                             observation: data.observationitem,
                         };
-                        this.observationitems.push(observation);
+
+                        if (this.observationitems.length == 0) {
+                            this.observationitems.push(observation);
+                        } else {
+                            if (this.observationitems.find((x) => x.cptcode == observation.cptcode)) {
+                                this.calloutService.showWarning(
+                                    'Already observation is submitted !'
+                                );
+                            }
+                            else {
+                                this.observationitems.push(observation);
+                            }
+                        }
                     }
                 });
             });
@@ -589,10 +622,10 @@ export class RawMaterialComponent implements OnInit {
             .findOne(
                 this.f.rawMaterialFormArray.value[index].prtcode
                     ? this.part001mbs.find(
-                          (x) =>
-                              x.partno ===
-                              this.f.rawMaterialFormArray.value[index].prtcode
-                      )?.slNo
+                        (x) =>
+                            x.partno ===
+                            this.f.rawMaterialFormArray.value[index].prtcode
+                    )?.slNo
                     : null
             )
             .subscribe((response) => {
@@ -618,10 +651,10 @@ export class RawMaterialComponent implements OnInit {
                 modalRef.componentInstance.Partcode = this.f
                     .rawMaterialFormArray.value[index].prtcode
                     ? this.part001mbs.find(
-                          (x) =>
-                              x.partno ===
-                              this.f.rawMaterialFormArray.value[index].prtcode
-                      )?.slNo
+                        (x) =>
+                            x.partno ===
+                            this.f.rawMaterialFormArray.value[index].prtcode
+                    )?.slNo
                     : null;
                 modalRef.componentInstance.incoming = incoming;
                 if (this.observationitems && this.observationitems.length > 0) {
@@ -643,7 +676,19 @@ export class RawMaterialComponent implements OnInit {
                                     .prtcode,
                             observation: data.observationitem,
                         };
-                        this.observationitems.push(observation);
+
+                        if (this.observationitems.length == 0) {
+                            this.observationitems.push(observation);
+                        } else {
+                            if (this.observationitems.find((x) => x.prtcode == observation.prtcode)) {
+                                this.calloutService.showWarning(
+                                    'Already observation is submitted !'
+                                );
+                            }
+                            else {
+                                this.observationitems.push(observation);
+                            }
+                        }
                     }
                 });
             });
@@ -675,10 +720,10 @@ export class RawMaterialComponent implements OnInit {
             rawmaterialinspection001wb.itemcode = this.f.rawMaterialFormArray
                 .value[i].itemcode
                 ? this.orderitem001mbs.find(
-                      (x) =>
-                          x.itemcode ===
-                          this.f.rawMaterialFormArray.value[i].itemcode
-                  )?.slNo
+                    (x) =>
+                        x.itemcode ===
+                        this.f.rawMaterialFormArray.value[i].itemcode
+                )?.slNo
                 : null;
             rawmaterialinspection001wb.itemname = this.f.rawMaterialFormArray
                 .value[i].itemname
@@ -692,10 +737,10 @@ export class RawMaterialComponent implements OnInit {
             rawmaterialinspection001wb.cucode = this.f.rawMaterialFormArray
                 .value[i].cucode
                 ? this.consumble001mbs.find(
-                      (x) =>
-                          x.consmno ===
-                          this.f.rawMaterialFormArray.value[i].cucode
-                  )?.slNo
+                    (x) =>
+                        x.consmno ===
+                        this.f.rawMaterialFormArray.value[i].cucode
+                )?.slNo
                 : null;
             rawmaterialinspection001wb.cuname = this.f.rawMaterialFormArray
                 .value[i].cuname
@@ -709,10 +754,10 @@ export class RawMaterialComponent implements OnInit {
             rawmaterialinspection001wb.cptcode = this.f.rawMaterialFormArray
                 .value[i].cptcode
                 ? this.childPart001mbs.find(
-                      (x) =>
-                          x.cpartno ===
-                          this.f.rawMaterialFormArray.value[i].cptcode
-                  )?.slNo
+                    (x) =>
+                        x.cpartno ===
+                        this.f.rawMaterialFormArray.value[i].cptcode
+                )?.slNo
                 : null;
             rawmaterialinspection001wb.cptname = this.f.rawMaterialFormArray
                 .value[i].cptname
@@ -726,10 +771,10 @@ export class RawMaterialComponent implements OnInit {
             rawmaterialinspection001wb.prtcode = this.f.rawMaterialFormArray
                 .value[i].prtcode
                 ? this.part001mbs.find(
-                      (x) =>
-                          x.partno ===
-                          this.f.rawMaterialFormArray.value[i].prtcode
-                  )?.slNo
+                    (x) =>
+                        x.partno ===
+                        this.f.rawMaterialFormArray.value[i].prtcode
+                )?.slNo
                 : null;
             rawmaterialinspection001wb.prtname = this.f.rawMaterialFormArray
                 .value[i].prtname
@@ -911,11 +956,11 @@ export class RawMaterialComponent implements OnInit {
                 this.rawMaterialFormArray.controls.length ==
                 this.observationitems.length
             ) {
-                
+
                 rawmaterialinspection001wb.observationsitems001wbs =
                     observationsitems;
             } else {
-               
+
                 this.calloutService.showWarning(
                     'All items with observations should be filled before submit'
                 );
