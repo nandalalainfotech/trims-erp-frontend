@@ -44,6 +44,7 @@ export class AddCustomerContactComponent implements OnInit {
   customerContact001wbs: Customercontact001wb[] = [];
   customerContact001wb?: Customercontact001wb;
   customercontactSlno: number | any;
+  buttonDisabled?: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +64,14 @@ export class AddCustomerContactComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    if(this.customercontacts.length > 0) {            
+      this.buttonDisabled = true;
+     }
+     else {
+      this.buttonDisabled = false;
+    }
+    
     this.user = this.authManager.getcurrentUser;
     this.customerContactForm = this.formBuilder.group({
       customerContactFormArray: this.formBuilder.array([this.createItem()]),

@@ -43,6 +43,7 @@ export class PartSpecificationComponent implements OnInit {
   user?:Login001mb|any;
   unitslno?:number;
   partSpecificationSlno:number | any;
+  buttonDisabled?: boolean = false;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -58,6 +59,14 @@ export class PartSpecificationComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+
+    if(this.specifications.length > 0) {            
+      this.buttonDisabled = true;
+  }
+  else {
+      this.buttonDisabled = false;
+  }
+  
     this.user = this.authManager.getcurrentUser;
     this.orderspecificationForm = this.formBuilder.group({
       orderspecificationFormArray: this.formBuilder.array([this.createItem()]),

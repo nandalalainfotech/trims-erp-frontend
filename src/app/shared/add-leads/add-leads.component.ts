@@ -43,6 +43,7 @@ export class AddLeadsComponent implements OnInit {
     supplierContact001wbs: SupplierContact001wb[] = [];
     supplierContact001wb?: SupplierContact001wb;
     suppliercontactSlno: number | any;
+    buttonDisabled?: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -61,6 +62,16 @@ export class AddLeadsComponent implements OnInit {
     }
 
     ngOnInit() {  
+
+        if(this.suppliercontacts.length > 0) {            
+            this.buttonDisabled = true;
+        }
+        else {
+            this.buttonDisabled = false;
+        }
+       
+       
+        // this.buttonDisabled = false;
         this.user = this.authManager.getcurrentUser;
         this.contactForm = this.formBuilder.group({
             contactFormArray: this.formBuilder.array([this.createItem()]),
@@ -68,9 +79,9 @@ export class AddLeadsComponent implements OnInit {
 
         this.supplierContactManager.suppliercontactall(this.user.unitslno).subscribe((response) => {
              this.supplierContact001wbs = deserialize<SupplierContact001wb[]>(SupplierContact001wb, response);
-             });
+        });
 
-    if(this.suppliercontacts != undefined){
+       if(this.suppliercontacts != undefined){
 
         for (let z = 0; z < this.suppliercontacts.length; z++) {
             this.contactFormArray = this.f['contactFormArray'] as FormArray;
@@ -90,7 +101,7 @@ export class AddLeadsComponent implements OnInit {
             this.contactFormArray.controls[z].controls['mailid'].setValue(this.suppliercontacts[z].mailid);
 
         }
-    }
+       }
 
     }
 
