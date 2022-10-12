@@ -552,7 +552,8 @@ export class MaterialInwardRecordComponent implements OnInit {
       this.materialInwardManager.inwardSave(materialinward001wb).subscribe((response) => {
         this.calloutService.showSuccess("Material Inward Record Saved Successfully");
         this.materialInwardForm.reset();
-        this.materialInwardForm.get();
+        this.materialInwardForm.get('invoiceno').enable();
+        this.materialInwardForm.get('dcNo').enable();
         this.materialreceiveditem = [];
         this.loadData();
         this.submitted = false;
@@ -568,12 +569,11 @@ export class MaterialInwardRecordComponent implements OnInit {
 
   onDcClick() {
     this.materialInwardForm.get('invoiceno').disable();
-    this.loadData();
     // this.materialInwardForm.get('invoiceno').disable();
   }
   onInvoiceClick() {
     this.materialInwardForm.get('dcNo').disable();
-    this.loadData();
+   
   }
 
   onChangePONumber(event: any) {
