@@ -434,7 +434,7 @@ export class MaterialInwardRecordComponent implements OnInit {
   }
 
   onEditButtonClick(params: any) {
-    if (params.data.status != 'Approved') {
+    if (params.data.status != 'Request For Inspection') {
       this.slNo = params.data.slNo;
       this.unitslno = params.data.unitslno;
       this.insertUser = params.data.insertUser;
@@ -455,7 +455,7 @@ export class MaterialInwardRecordComponent implements OnInit {
       });
     }
     else {
-      this.calloutService.showWarning("This Material Inward Record Already Approved. We are not able to approved again");
+      this.calloutService.showWarning("This Material Inward Record Already send The Inspection");
     }
   }
 
@@ -471,7 +471,7 @@ export class MaterialInwardRecordComponent implements OnInit {
   // }
 
   onDeleteButtonClick(params: any) {
-    if (params.data.status != 'Approved') {
+    if (params.data.status != 'Request For Inspection') {
       const modalRef = this.modalService.open(ConformationComponent);
       modalRef.componentInstance.details = "Material Inward Record";
       modalRef.result.then((data) => {
@@ -492,7 +492,7 @@ export class MaterialInwardRecordComponent implements OnInit {
       })
     }
     else {
-      this.calloutService.showWarning("This Material Inward Record Already Approved. We are not able to delete");
+      this.calloutService.showWarning("This Material Inward Record Already send The Inspection");
     }
   }
 

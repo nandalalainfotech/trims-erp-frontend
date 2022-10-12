@@ -371,16 +371,16 @@ export class StockComponent implements OnInit {
     return params.data.itemcode2 ? params.data.itemcode2.itemcode : null;
   }
   setlocation(params: any): string {
-    return params.data.itemcode ? this.orderitem001mbs.find(x => x.slNo === params.data.itemcode)?.location : null;
+    return params.data.itemcode2 ? params.data.itemcode2 .location : null;
   }
   setMSLevel(params: any): string {
-    return params.data.itemcode ? this.orderitem001mbs.find(x => x.slNo === params.data.itemcode)?.mslevel : null;
+    return params.data.itemcode2 ? params.data.itemcode2 .mslevel : null;
   }
   setleadtime(params: any): string {
-    return params.data.itemcode ? this.orderitem001mbs.find(x => x.slNo === params.data.itemcode)?.leadtime : null;
+    return params.data.itemcode2 ? params.data.itemcode2 .leadtime : null;
   }
   setorderlevel(params: any): string {
-    return params.data.itemcode ? this.orderitem001mbs.find(x => x.slNo === params.data.itemcode)?.orderlevel : null;
+    return params.data.itemcode2 ? params.data.itemcode2 .orderlevel : null;
   }
  
 
