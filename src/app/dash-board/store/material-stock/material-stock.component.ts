@@ -86,7 +86,7 @@ export class MaterialStockComponent implements OnInit {
   consumableItems: any = [];
   childpartItems: any = [];
   partItems: any = [];
-  inspections:Materialinspection001wb[]=[];
+  inspections: Materialinspection001wb[] = [];
 
 
   constructor(private formBuilder: FormBuilder,
@@ -124,18 +124,18 @@ export class MaterialStockComponent implements OnInit {
     let res2 = this.childPartManager.allChildpart(this.user.unitslno);
     let res3 = this.partManager.allpart(this.user.unitslno);
     let res4 = this.orderItemSettingManager.allitem(this.user.unitslno);
-    let res5 =  this.materialInspectionManager.materialinspectionfindall(this.user.unitslno);
-    forkJoin([res0, res1, res2, res3, res4,res5]).subscribe((data: any) => {
+    let res5 = this.materialInspectionManager.materialinspectionfindall(this.user.unitslno);
+    forkJoin([res0, res1, res2, res3, res4, res5]).subscribe((data: any) => {
       this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, data[0]);
       this.consumble001mbs = deserialize<Consumble001mb[]>(Consumble001mb, data[1]);
       this.part001mbs = deserialize<Part001mb[]>(Part001mb, data[2]);
       this.childPart001mbs = deserialize<ChildPart001mb[]>(ChildPart001mb, data[3]);
       this.orderitem001mbs = deserialize<Orderitem001mb[]>(Orderitem001mb, data[4]);
       this.inspections = deserialize<Materialinspection001wb[]>(Materialinspection001wb, data[5]);
-      
+
       this.loadData();
     });
-   
+
   }
 
 
@@ -195,7 +195,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Incoming No',
         // field: 'itemcode',
         width: 97,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -208,7 +208,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Item Code',
         field: 'itemcode',
         width: 97,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -221,7 +221,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'item Name',
         field: 'itemname',
         width: 120,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -232,7 +232,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Description',
         field: 'descrip',
         width: 120,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -243,7 +243,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Date',
         // field: 'insertDatetime',
         width: 100,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -255,7 +255,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Qty',
         field: 'acceptedQty',
         width: 120,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -273,7 +273,7 @@ export class MaterialStockComponent implements OnInit {
       //   headerName: 'Edit',
       //   cellRenderer: 'iconRenderer',
       //   width: 80,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -286,7 +286,7 @@ export class MaterialStockComponent implements OnInit {
       //   headerName: 'Delete',
       //   cellRenderer: 'iconRenderer',
       //   width: 85,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -298,7 +298,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
-        // flex: 1,
+        flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -310,12 +310,12 @@ export class MaterialStockComponent implements OnInit {
     ];
   }
 
-  setincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
+  setincomingDate(params: any): string {
+    let datas = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.cdate;
     return datas
   }
-  setincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
+  setincoming(params: any): string {
+    let incoming = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.iirno;
     return incoming
   }
 
@@ -387,7 +387,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Incoming No',
         // field: 'itemcode',
         width: 97,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -400,7 +400,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'consumable Code',
         field: 'cucode',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -411,7 +411,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'consumable Name',
         field: 'cuname',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -421,7 +421,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'consumable Description',
         field: 'cudescrip',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -431,7 +431,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Date',
         field: 'insertDatetime',
         width: 100,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -443,7 +443,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Quantity',
         field: 'cuacceptedQty',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -457,35 +457,35 @@ export class MaterialStockComponent implements OnInit {
         //   return null;
         // },
       },
-      {
-        headerName: 'Edit',
-        cellRenderer: 'iconRenderer',
-        width: 80,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
-        },
-      },
-      {
-        headerName: 'Delete',
-        cellRenderer: 'iconRenderer',
-        width: 85,
-        // flex: 1,
-        suppressSizeToFit: true,
-        cellStyle: { textAlign: 'center' },
-        cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
-        },
-      },
+      // {
+      //   headerName: 'Edit',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 80,
+      // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onEditButtonClick.bind(this),
+      //     label: 'Edit'
+      //   },
+      // },
+      // {
+      //   headerName: 'Delete',
+      //   cellRenderer: 'iconRenderer',
+      //   width: 85,
+      // flex: 1,
+      //   suppressSizeToFit: true,
+      //   cellStyle: { textAlign: 'center' },
+      //   cellRendererParams: {
+      //     onClick: this.onDeleteButtonClick.bind(this),
+      //     label: 'Delete'
+      //   },
+      // },
       {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
-        // flex: 1,
+        flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -497,12 +497,12 @@ export class MaterialStockComponent implements OnInit {
     ];
   }
 
-  setincomingcuDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
+  setincomingcuDate(params: any): string {
+    let datas = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.cdate;
     return datas
   }
-  setcuincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
+  setcuincoming(params: any): string {
+    let incoming = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.iirno;
     return incoming
   }
 
@@ -535,7 +535,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Incoming No',
         // field: 'itemcode',
         width: 97,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -548,7 +548,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Child Part Code',
         field: 'cptcode',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -559,7 +559,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Child Part Name',
         field: 'cptname',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -569,7 +569,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Child Part Description',
         field: 'cptdescrip',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -579,7 +579,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Date',
         field: 'insertDatetime',
         width: 100,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -592,7 +592,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Child Part Quantity',
         field: 'cptacceptedQty',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -602,7 +602,7 @@ export class MaterialStockComponent implements OnInit {
       //   headerName: 'Edit',
       //   cellRenderer: 'iconRenderer',
       //   width: 80,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -614,7 +614,7 @@ export class MaterialStockComponent implements OnInit {
       //   headerName: 'Delete',
       //   cellRenderer: 'iconRenderer',
       //   width: 85,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -626,7 +626,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
-        // flex: 1,
+        flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -639,12 +639,12 @@ export class MaterialStockComponent implements OnInit {
   }
 
 
-  setcptincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
+  setcptincomingDate(params: any): string {
+    let datas = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.cdate;
     return datas
   }
-  setcptincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
+  setcptincoming(params: any): string {
+    let incoming = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.iirno;
     return incoming
   }
 
@@ -677,7 +677,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Incoming No',
         // field: 'itemcode',
         width: 97,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -690,7 +690,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Part Code',
         field: 'prtcode',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -701,7 +701,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Part Name',
         field: 'prtname',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -711,7 +711,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Part Description',
         field: 'prtdescrip',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -721,7 +721,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Accepted Date',
         field: 'insertDatetime',
         width: 100,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -733,7 +733,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Recived Quantity',
         field: 'prtacceptedQty',
         width: 200,
-        // flex: 1,
+        flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
@@ -747,12 +747,12 @@ export class MaterialStockComponent implements OnInit {
         //   return null;
         // },
       },
-      
+
       // {
       //   headerName: 'Edit',
       //   cellRenderer: 'iconRenderer',
       //   width: 80,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -764,7 +764,7 @@ export class MaterialStockComponent implements OnInit {
       //   headerName: 'Delete',
       //   cellRenderer: 'iconRenderer',
       //   width: 85,
-      //   // flex: 1,
+      // flex: 1,
       //   suppressSizeToFit: true,
       //   cellStyle: { textAlign: 'center' },
       //   cellRendererParams: {
@@ -776,7 +776,7 @@ export class MaterialStockComponent implements OnInit {
         headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
-        // flex: 1,
+        flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
@@ -788,12 +788,12 @@ export class MaterialStockComponent implements OnInit {
     ];
   }
 
-  setprtincomingDate(params:any):string{
-    let datas = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.cdate;
+  setprtincomingDate(params: any): string {
+    let datas = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.cdate;
     return datas
   }
-  setprtincoming(params:any):string{
-    let incoming = this.inspections.find(x=>x.slNo == params.data.rawmaterialslno)?.iirno;
+  setprtincoming(params: any): string {
+    let incoming = this.inspections.find(x => x.slNo == params.data.rawmaterialslno)?.iirno;
     return incoming
   }
 
@@ -958,7 +958,7 @@ export class MaterialStockComponent implements OnInit {
       Returnitems = "Raw Material";
     }
     const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
-     modalRef.componentInstance.Returnitems = Returnitems;
+    modalRef.componentInstance.Returnitems = Returnitems;
     modalRef.componentInstance.RawMaterialcode = params.data;
     modalRef.result.then((data) => {
       this.rawmetrieal = [];
