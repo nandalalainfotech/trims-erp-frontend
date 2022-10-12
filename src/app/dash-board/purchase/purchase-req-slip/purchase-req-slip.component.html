@@ -56,11 +56,11 @@
                         <div class="form-group">
                             <div class="p-fluid p-grid p-formgrid">
                                 <div class="p-field p-col-12 p-md-5">
-                                    <label path="date" for="date" cssClass="required">Requried Date</label>
+                                    <label path="date" for="date" cssClass="required">Required Date</label>
                                     <p-calendar [monthNavigator]="true" [yearNavigator]="true" formControlName="reqDate" yearRange="2000:2030" inputId="navigators" [showIcon]="true" inputId="icon">
                                     </p-calendar>
                                     <div *ngIf="submitted && f.reqDate.errors" class="invalid-feedback">
-                                        <div *ngIf="f.reqDate.errors.required">Requried Date is Required</div>
+                                        <div *ngIf="f.reqDate.errors.required">Required Date is Required</div>
                                     </div>
                                 </div>
                             </div>

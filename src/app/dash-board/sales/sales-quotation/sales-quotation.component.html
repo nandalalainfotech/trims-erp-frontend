@@ -160,7 +160,7 @@
                             <textarea class="form-control" rows="3" cols="1" path="termsDelivery" formControlName="termsDelivery" [ngClass]="{'is-invalid': submitted && f.termsDelivery.errors}">
                             </textarea>
                             <div *ngIf="submitted && f.termsDelivery.errors" class="invalid-feedback">
-                                <div *ngIf="f.termsDelivery.errors.required">Price is Required</div>
+                                <div *ngIf="f.termsDelivery.errors.required">Terms Of Delivery is Required</div>
                             </div>
                         </div>
                     </div>
@@ -170,13 +170,13 @@
                     <div class="col-xs-1 col-sm-1"></div>
                     <div class="col-xs-3 col-sm-3">
                         <div class="form-group">
-                            <label path="supplierFrom" for="supplierFrom" cssClass="required">Custemer (Bill
+                            <label path="supplierFrom" for="supplierFrom" cssClass="required">Customer (Bill
                                 From)</label>
                             <textarea class="form-control" rows="3" cols="1" path="supplierFrom" formControlName="supplierFrom" [ngClass]="{'is-invalid': submitted && f.supplierFrom.errors}">
                             </textarea>
                             <div *ngIf="submitted && f.supplierFrom.errors" class="invalid-feedback">
                                 <div *ngIf="f.supplierFrom.errors.required">
-                                    Supplier is Required
+                                    Customer(Bill From) is Required
                                 </div>
                             </div>
                         </div>
