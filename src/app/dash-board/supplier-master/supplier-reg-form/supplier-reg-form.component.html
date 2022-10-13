@@ -242,7 +242,7 @@
                 <div class="col-xs-3 col-sm-3">
                     <div class="form-group">
                         <label path="acNo" for="acNo" cssClass="required">Account Number </label>
-                        <input type="text" class="form-control" path="acNo" formControlName="acNo" />
+                        <input OnlyNumber type="text" class="form-control" path="acNo" formControlName="acNo" />
                         <div *ngIf="submitted && f.acNo.errors" class="invalid-feedback">
                             <div *ngIf="f.acNo.errors.required">
                                 A/C Number is Required
