@@ -33,10 +33,15 @@ export class SupplierTypeManager extends BaseService {
         return this.deleteCallService(`${this.statusUrl}`+"/delete", data);
     }
 
-    suppliertypPdf() {
-        return this.getCallService1(`${this.statusUrl}` + "/pdf")
+    supliertypePdf(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService1(`${this.statusUrl}` + "/pdf", data)
     }
-    suppliertypExcel() {
-        return this.getCallService1(`${this.statusUrl}` + "/excel")
+    
+    supliertypeExcel(unitslno:number) {
+        let data: any = {};
+        data['unitslno'] = unitslno;
+        return this.getCallService1(`${this.statusUrl}` + "/excel", data)
     }
 }

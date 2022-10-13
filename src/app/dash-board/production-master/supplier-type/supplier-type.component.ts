@@ -16,6 +16,8 @@ import { Status001mb } from 'src/app/shared/services/restcontroller/entities/sta
 import { Suppliertype001mb } from 'src/app/shared/services/restcontroller/entities/Suppliertype001mb';
 import { CalloutService } from 'src/app/shared/services/services/callout.service';
 import { DataSharedService } from 'src/app/shared/services/services/datashared.service';
+import * as saveAs from 'file-saver';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-supplier-type',
@@ -50,6 +52,7 @@ export class SupplierTypeComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private calloutService: CalloutService,
+    private datepipe: DatePipe,
     private dataSharedService: DataSharedService,
     private statusSettingManager: StatusSettingManager,
     private supplierTypeManager: SupplierTypeManager,
@@ -302,6 +305,30 @@ export class SupplierTypeComponent implements OnInit {
         this.submitted = false;
       });
     }
+  }
+
+  onViewClick() {
+    this.supplierTypeManager.supliertypePdf(this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  onGeneratePdfReport() {
+    this.supplierTypeManager.supliertypePdf(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Supplier Type Details" + newDate);
+    })
+  }
+
+  onGenerateExcelReport() {
+    this.supplierTypeManager.supliertypeExcel(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newDate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Supplier Type Details" + newDate);
+    });
   }
 
   onReset() {
