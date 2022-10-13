@@ -475,7 +475,7 @@ export class IncomingInspectionRecordComponent implements OnInit {
       materialinspection001wb.unitslno = this.user.unitslno;
       materialinspection001wb.insertUser = this.authManager.getcurrentUser.username;
       materialinspection001wb.insertDatetime = new Date();
-
+      materialinspection001wb.cdate = new Date();
       this.materialInspectionManager.materialinspectionSave(materialinspection001wb).subscribe((response) => {
         this.calloutService.showSuccess("Material Inspection Record Saved Successfully");
         this.materialInspectionForm.reset();
