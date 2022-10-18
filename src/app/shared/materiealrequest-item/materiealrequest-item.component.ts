@@ -34,36 +34,36 @@ export class MateriealrequestItemComponent implements OnInit {
   @Input() Returnitems: any;
   submitted = false;
   slNo?: number;
-  unitslno: number| any;
+  unitslno: number | any;
   materialSlno: number | any;
-  itemcode: number| any;
-  itemname: string| any;
-  qunty: string| any;
-  descrip: string| any;
-  cudescrip: string| any;
-  cptdescrip: string| any;
-  prtdescrip: string| any;
-  cucode: number| any;
-  cuname: string| any;
-  cuqunty: string| any;
+  itemcode: number | any;
+  itemname: string | any;
+  qunty: string | any;
+  descrip: string | any;
+  cudescrip: string | any;
+  cptdescrip: string | any;
+  prtdescrip: string | any;
+  cucode: number | any;
+  cuname: string | any;
+  cuqunty: string | any;
   cptcode: number | any;
   cptname: string = "";
-  cptqunty: string| any;
-  prtcode: number| any;
+  cptqunty: string | any;
+  prtcode: number | any;
   prtname: string = "";
-  prtqunty: string| any;
+  prtqunty: string | any;
   user?: Login001mb | any;
   insertUser?: string;
   insertDatetime?: Date;
   updatedUser?: string | null;
   updatedDatetime?: Date | null;
-  materiealrequestitem001wbs:Materiealrequestitem001wb[]=[];
-  materiealrequestitem001wb?:Materiealrequestitem001wb;
+  materiealrequestitem001wbs: Materiealrequestitem001wb[] = [];
+  materiealrequestitem001wb?: Materiealrequestitem001wb;
 
   constructor(
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal,
-    private router:Router,
+    private router: Router,
     private authManager: AuthManager,
     private calloutService: CalloutService,
     private orderItemSettingManager: OrderItemSettingManager,
@@ -82,79 +82,104 @@ export class MateriealrequestItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("RawMaterialcode", this.RawMaterialcode);
     this.user = this.authManager.getcurrentUser;
-    this.MaterialForm = this.formBuilder.group({
-      itemcode: [this.RawMaterialcode.itemcode],
-      itemname: [this.RawMaterialcode.itemname],
-      descrip: [this.RawMaterialcode.descrip],
-      qunty: ['', Validators.required],
-      cucode: [this.RawMaterialcode.cucode],
-      cuname: [this.RawMaterialcode.cuname],
-      cudescrip: [this.RawMaterialcode.cudescrip],
-      cuqunty: ['', Validators.required],
-      cptcode: [this.RawMaterialcode.cptcode],
-      cptname: [this.RawMaterialcode.cptname],
-      cptdescrip: [this.RawMaterialcode.cptdescrip],
-      cptqunty: ['', Validators.required],
-      prtcode: [this.RawMaterialcode.prtcode],
-      prtname: [this.RawMaterialcode.prtname],
-      prtdescrip: [this.RawMaterialcode.prtdescrip],
-      prtqunty: ['', Validators.required],
+    if (this.Returnitems == 'Child Part') {
+      this.MaterialForm = this.formBuilder.group({
+        cptcode: [this.RawMaterialcode.cptcode ? this.RawMaterialcode.cptcode2.cpartno : null],
+        cptname: [this.RawMaterialcode.cptname],
+        cptdescrip: [this.RawMaterialcode.cptdescrip],
+        cptqunty: ['', Validators.required],
+      })
+    }
+    if (this.Returnitems == 'Raw Material') {
+      this.MaterialForm = this.formBuilder.group({
+        itemcode: [this.RawMaterialcode.itemcode ? this.RawMaterialcode.itemcode2.itemcode : null],
+        itemname: [this.RawMaterialcode.itemname],
+        descrip: [this.RawMaterialcode.descrip],
+        qunty: ['', Validators.required],
+      })
+    }
+    if (this.Returnitems == 'Consumable Item') {
+      this.MaterialForm = this.formBuilder.group({
+        cucode: [this.RawMaterialcode.cucode ? this.RawMaterialcode.cucode2.consmno : null],
+        cuname: [this.RawMaterialcode.cuname],
+        cudescrip: [this.RawMaterialcode.cudescrip],
+        cuqunty: ['', Validators.required],
+      })
+    }
+    if (this.Returnitems == 'Part') {
+      this.MaterialForm = this.formBuilder.group({
+        prtcode: [this.RawMaterialcode.prtcode ? this.RawMaterialcode.prtcode2.partno : null],
+        prtname: [this.RawMaterialcode.prtname],
+        prtdescrip: [this.RawMaterialcode.prtdescrip],
+        prtqunty: ['', Validators.required],
+      })
+    }
 
-    })
     this.loadData();
   }
-  loadData(){
+
+  loadData() {
 
   }
 
 
   get f() { return this.MaterialForm.controls }
 
-  onOkClick(MaterialForm:any, params:any) {
-   
-    
-    let  materiealrequestitem001wb = new Materiealrequestitem001wb();
-    materiealrequestitem001wb.itemcode =  this.f.itemcode.value ?  this.f.itemcode.value : null;
-    materiealrequestitem001wb.itemname =  this.f.itemname.value ?  this.f.itemname.value : "";
-    materiealrequestitem001wb.descrip =  this.f.descrip.value ?  this.f.descrip.value :"";
-    materiealrequestitem001wb.qunty =  this.f.qunty.value ?  this.f.qunty.value : null;
+  
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
 
-    materiealrequestitem001wb.cucode =  this.f.cucode.value ?  this.f.cucode.value : null;
-    materiealrequestitem001wb.cuname =  this.f.cuname.value ?  this.f.cuname.value : "";
-    materiealrequestitem001wb.cudescrip =  this.f.cudescrip.value ?  this.f.cudescrip.value :"";
-    materiealrequestitem001wb.cuqunty =  this.f.cuqunty.value ?  this.f.cuqunty.value : null;
-    materiealrequestitem001wb.cptcode =  this.f.cptcode.value ?  this.f.cptcode.value : null;
-    materiealrequestitem001wb.cptname =  this.f.cptname.value ?  this.f.cptname.value : "";
-    materiealrequestitem001wb.cptdescrip =  this.f.cptdescrip.value ?  this.f.cptdescrip.value : "";
-    materiealrequestitem001wb.cptqunty =  this.f.cptqunty.value ?  this.f.cptqunty.value : null;
-    materiealrequestitem001wb.prtcode =  this.f.prtcode.value ?  this.f.prtcode.value : null;
-    materiealrequestitem001wb.prtname =  this.f.prtname.value ?  this.f.prtname.value : "";
-    materiealrequestitem001wb.prtdescrip =  this.f.prtdescrip.value ?  this.f.prtdescrip.value : "";
-    materiealrequestitem001wb.prtqunty =  this.f.prtqunty.value ?  this.f.prtqunty.value : null;
+  onOkClick(MaterialForm: any, params: any) {
+
+    this.markFormGroupTouched(this.MaterialForm);
+    this.submitted = true;
+    if (this.MaterialForm.invalid) {
+      return;
+    }
+
+    let materiealrequestitem001wb = new Materiealrequestitem001wb();
+    if (this.Returnitems == 'Raw Material') {
+    materiealrequestitem001wb.itemcode = this.f.itemcode.value ? this.f.itemcode.value : null;
+    materiealrequestitem001wb.itemname = this.f.itemname.value ? this.f.itemname.value : "";
+    materiealrequestitem001wb.descrip = this.f.descrip.value ? this.f.descrip.value : "";
+    materiealrequestitem001wb.qunty = this.f.qunty.value ? this.f.qunty.value : null;
+    }
+
+    if (this.Returnitems == 'Consumable Item') {
+    materiealrequestitem001wb.cucode = this.f.cucode.value ? this.f.cucode.value : null;
+    materiealrequestitem001wb.cuname = this.f.cuname.value ? this.f.cuname.value : "";
+    materiealrequestitem001wb.cudescrip = this.f.cudescrip.value ? this.f.cudescrip.value : "";
+    materiealrequestitem001wb.cuqunty = this.f.cuqunty.value ? this.f.cuqunty.value : null;
+    }
+    if (this.Returnitems == 'Child Part') { 
+    materiealrequestitem001wb.cptcode = this.f.cptcode.value ? this.f.cptcode.value : null;
+    materiealrequestitem001wb.cptname = this.f.cptname.value ? this.f.cptname.value : "";
+    materiealrequestitem001wb.cptdescrip = this.f.cptdescrip.value ? this.f.cptdescrip.value : "";
+    materiealrequestitem001wb.cptqunty = this.f.cptqunty.value ? this.f.cptqunty.value : null;
+    }
+    if (this.Returnitems == 'Part') {
+    materiealrequestitem001wb.prtcode = this.f.prtcode.value ? this.f.prtcode.value : null;
+    materiealrequestitem001wb.prtname = this.f.prtname.value ? this.f.prtname.value : "";
+    materiealrequestitem001wb.prtdescrip = this.f.prtdescrip.value ? this.f.prtdescrip.value : "";
+    materiealrequestitem001wb.prtqunty = this.f.prtqunty.value ? this.f.prtqunty.value : null;
+    
+    }
     materiealrequestitem001wb.unitslno = this.user.unitslno;
     materiealrequestitem001wb.insertUser = this.authManager.getcurrentUser.username;
     materiealrequestitem001wb.insertDatetime = new Date();
+
     this.materiealrequestiteManager.materiealrequestsave(materiealrequestitem001wb).subscribe((response) => {
-      this.calloutService.showSuccess("Observation Saved Successfully");
+      this.calloutService.showSuccess("Material Request Saved Successfully");
       this.loadData();
       this.submitted = false;
-     
-      console.log("MaterialForm",params);
-      let navigationExtras: NavigationExtras = {
-        queryParams: {
-          "itemcode": params.value.itemcode,
-            "itemname": params.value.itemname,
-            "descrip": params.value.descrip,
-            "qunty": params.value.qunty,
-          
-         
-        }
-      };
-      this.router.navigate(["/app-dash-board/app-purchase/app-purchase-req-slip"], navigationExtras);
-        // this.router.navigate(["/app-dash-board/app-purchase/app-purchase-req-slip", { "qunty": params.data.qunty}]);
-    
+
     });
 
     this.activeModal.close({

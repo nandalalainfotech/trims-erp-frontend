@@ -15,6 +15,8 @@ import { Spares001mb } from 'src/app/shared/services/restcontroller/entities/spa
 import { CalloutService } from 'src/app/shared/services/services/callout.service';
 import * as saveAs from 'file-saver';
 import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Login001mb';
+import { MateriealrequestiteManager } from 'src/app/shared/services/restcontroller/bizservice/Materiealrequestitem.service';
+import { Materiealrequestitem001wb } from 'src/app/shared/services/restcontroller/entities/Materiealrequestitem001wb';
 
 @Component({
   selector: 'app-material-req-slip',
@@ -24,7 +26,11 @@ import { Login001mb } from 'src/app/shared/services/restcontroller/entities/Logi
 export class MaterialReqSlipComponent implements OnInit {
 
   frameworkComponents: any;
-  public gridOptions: GridOptions | any;
+  public gridOptions1: GridOptions | any;
+  public gridOptions2: GridOptions | any;
+  public gridOptions3: GridOptions | any;
+  public gridOptions4: GridOptions | any;
+
   MaterialReqForm: FormGroup | any;
   submitted = false;
   slNo: number | any;
@@ -47,6 +53,12 @@ export class MaterialReqSlipComponent implements OnInit {
   materialrequisitions: Materialreqslip001wb[] = [];
   user?: Login001mb | any;
     unitslno: number | any;
+    materiealrequestitem001wbs:Materiealrequestitem001wb[]=[];
+    materiealrequestitem001wb?:Materiealrequestitem001wb;
+    OrderItems: Materiealrequestitem001wb[] = [];
+    ConsumableItems: Materiealrequestitem001wb[] = [];
+    ChilpartItems: Materiealrequestitem001wb[] = [];
+    PartItems: Materiealrequestitem001wb[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,7 +67,7 @@ export class MaterialReqSlipComponent implements OnInit {
     private calloutService: CalloutService,
     private modalService: NgbModal,
     private datepipe: DatePipe,
-    private materialReqManager: MaterialRequisitionManager) {
+    private materiealrequestiteManager: MateriealrequestiteManager) {
     this.frameworkComponents = {
       iconRenderer: IconRendererComponent
     }
@@ -67,33 +79,61 @@ export class MaterialReqSlipComponent implements OnInit {
     this.maxDate.setFullYear(this.maxDate.getFullYear() + 10);
 
     this.createDataGrid001();
+    this.createDataGrid002();
+    this.createDataGrid003();
+    this.createDataGrid004();
 
     this.loadData();
 
-    this.MaterialReqForm = this.formBuilder.group({
-      date: [this.datepipe.transform(new Date(), 'dd-MM-yyyy')],
-      mrsNo: ['', Validators.required],
-      requestorName: ['', Validators.required],
-      department: ['', Validators.required],
-      description: ['', Validators.required],
-      qty: ['', Validators.required],
-      remarks: ['', Validators.required],
-      spareSlno: ['', Validators.required],
-    })
 
-    this.sparesettingManager.allsparesetting(this.user.unitslno).subscribe(response => {
-      this.sparesSettings = deserialize<Spares001mb[]>(Spares001mb, response);
-    });
   }
 
 
   loadData() {
-    this.materialReqManager.allmaterialreq(this.user.unitslno).subscribe(response => {
-      this.materialrequisitions = deserialize<Materialreqslip001wb[]>(Materialreqslip001wb, response);
-      if (this.materialrequisitions.length > 0) {
-        this.gridOptions?.api?.setRowData(this.materialrequisitions);
+    this.OrderItems=[];
+    this.ConsumableItems=[];
+    this.ChilpartItems=[];
+    this.PartItems=[];
+    this.materiealrequestiteManager.allmateriealrequest(this.user.unitslno).subscribe(response => {
+      this.materiealrequestitem001wbs = deserialize<Materiealrequestitem001wb[]>(Materiealrequestitem001wb, response);
+     
+      for(let i=0;i<this.materiealrequestitem001wbs.length;i++){
+        if(this.materiealrequestitem001wbs[i].itemcode){
+          this.OrderItems.push(this.materiealrequestitem001wbs[i])
+        }
+        if(this.materiealrequestitem001wbs[i].cucode){
+          this.ConsumableItems.push(this.materiealrequestitem001wbs[i])
+        }
+        if(this.materiealrequestitem001wbs[i].cptcode){
+          this.ChilpartItems.push(this.materiealrequestitem001wbs[i])
+        }
+        if(this.materiealrequestitem001wbs[i].prtcode){
+          this.PartItems.push(this.materiealrequestitem001wbs[i])
+        }
+      }
+      
+      if ( this.OrderItems.length > 0) {
+        this.gridOptions1?.api?.setRowData( this.OrderItems);
       } else {
-        this.gridOptions?.api?.setRowData([]);
+        this.gridOptions1?.api?.setRowData([]);
+      }
+       
+      if ( this.ConsumableItems.length > 0) {
+        this.gridOptions2?.api?.setRowData( this.ConsumableItems);
+      } else {
+        this.gridOptions2?.api?.setRowData([]);
+      }
+       
+      if ( this.ChilpartItems.length > 0) {
+        this.gridOptions3?.api?.setRowData( this.ChilpartItems);
+      } else {
+        this.gridOptions3?.api?.setRowData([]);
+      }
+       
+      if ( this.PartItems.length > 0) {
+        this.gridOptions4?.api?.setRowData( this.PartItems);
+      } else {
+        this.gridOptions4?.api?.setRowData([]);
       }
     });
   }
@@ -101,18 +141,18 @@ export class MaterialReqSlipComponent implements OnInit {
   get f() { return this.MaterialReqForm.controls }
 
   createDataGrid001(): void {
-    this.gridOptions = {
+    this.gridOptions1 = {
       paginationPageSize: 10,
       rowSelection: 'single',
       // onFirstDataRendered: this.onFirstDataRendered.bind(this),
     };
-    this.gridOptions.editType = 'fullRow';
-    this.gridOptions.enableRangeSelection = true;
-    this.gridOptions.animateRows = true;
-    this.gridOptions.columnDefs = [
+    this.gridOptions1.editType = 'fullRow';
+    this.gridOptions1.enableRangeSelection = true;
+    this.gridOptions1.animateRows = true;
+    this.gridOptions1.columnDefs = [
       {
-        headerName: 'Sl No',
-        field: 'slNo',
+        headerName: 'Item Code',
+        field: 'itemcode',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -121,8 +161,29 @@ export class MaterialReqSlipComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'MRS No',
-        field: 'mrsNo',
+        headerName: 'item Name',
+        field: 'itemname',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Description',
+        field: 'descrip',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+
+      {
+        headerName: 'Re-order Qty',
+        field: 'qunty',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -139,12 +200,38 @@ export class MaterialReqSlipComponent implements OnInit {
         resizable: true,
         suppressSizeToFit: true,
         valueGetter: (params: any) => {
-          return params.data.date ? this.datepipe.transform(params.data.date, 'dd-MM-yyyy') : '';
+          return params.data.insertDatetime ? this.datepipe.transform(params.data.insertDatetime, 'dd-MM-yyyy') : '';
         }
       },
+    
       {
-        headerName: 'Requestor Name',
-        field: 'requestorName',
+        headerName: 'Audit',
+        cellRenderer: 'iconRenderer',
+        width: 80,
+        // flex: 1,
+        suppressSizeToFit: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onAuditButtonClick.bind(this),
+          label: 'Audit'
+        },
+      },
+
+    ];
+  }
+  createDataGrid002(): void {
+    this.gridOptions2 = {
+      paginationPageSize: 10,
+      rowSelection: 'single',
+      // onFirstDataRendered: this.onFirstDataRendered.bind(this),
+    };
+    this.gridOptions2.editType = 'fullRow';
+    this.gridOptions2.enableRangeSelection = true;
+    this.gridOptions2.animateRows = true;
+    this.gridOptions2.columnDefs = [
+      {
+        headerName: 'Consumable Code',
+        field: 'cucode',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -153,8 +240,18 @@ export class MaterialReqSlipComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Department',
-        field: 'department',
+        headerName: 'Consumable Name',
+        field: 'cuname',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Description',
+        field: 'cudescrip',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -164,18 +261,8 @@ export class MaterialReqSlipComponent implements OnInit {
       },
 
       {
-        headerName: 'Item Code',
-        width: 200,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-        valueGetter: this.setSpares.bind(this)
-      },
-      {
-        headerName: 'Description',
-        field: 'description',
+        headerName: 'Re-order Qty',
+        field: 'cuqunty',
         width: 200,
         // flex: 1,
         sortable: true,
@@ -184,48 +271,173 @@ export class MaterialReqSlipComponent implements OnInit {
         suppressSizeToFit: true,
       },
       {
-        headerName: 'Quantity/Wt',
-        field: 'qty',
+        headerName: 'Date',
         width: 200,
         // flex: 1,
         sortable: true,
         filter: true,
         resizable: true,
         suppressSizeToFit: true,
+        valueGetter: (params: any) => {
+          return params.data.insertDatetime ? this.datepipe.transform(params.data.insertDatetime, 'dd-MM-yyyy') : '';
+        }
       },
       {
-        headerName: 'Remarks',
-        field: 'remarks',
-        width: 200,
-        // flex: 1,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        suppressSizeToFit: true,
-      },
-      {
-        headerName: 'Edit',
+        headerName: 'Audit',
         cellRenderer: 'iconRenderer',
         width: 80,
         // flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
-          onClick: this.onEditButtonClick.bind(this),
-          label: 'Edit'
+          onClick: this.onAuditButtonClick.bind(this),
+          label: 'Audit'
         },
       },
+
+    ];
+  }
+  createDataGrid003(): void {
+    this.gridOptions3 = {
+      paginationPageSize: 10,
+      rowSelection: 'single',
+      // onFirstDataRendered: this.onFirstDataRendered.bind(this),
+    };
+    this.gridOptions3.editType = 'fullRow';
+    this.gridOptions3.enableRangeSelection = true;
+    this.gridOptions3.animateRows = true;
+    this.gridOptions3.columnDefs = [
       {
-        headerName: 'Delete',
+        headerName: 'ChildPart Code',
+        field: 'cptcode',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+ 
+      {
+        headerName: 'ChildPart Name',
+        field: 'cptname',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Description',
+        field: 'cptdescrip',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+
+      {
+        headerName: 'Re-order Qty',
+        field: 'cptqunty',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Date',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        valueGetter: (params: any) => {
+          return params.data.insertDatetime ? this.datepipe.transform(params.data.insertDatetime, 'dd-MM-yyyy') : '';
+        }
+      },
+      {
+        headerName: 'Audit',
         cellRenderer: 'iconRenderer',
-        width: 85,
+        width: 80,
         // flex: 1,
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
         cellRendererParams: {
-          onClick: this.onDeleteButtonClick.bind(this),
-          label: 'Delete'
+          onClick: this.onAuditButtonClick.bind(this),
+          label: 'Audit'
         },
+      },
+
+    ];
+  }
+  createDataGrid004(): void {
+    this.gridOptions4 = {
+      paginationPageSize: 10,
+      rowSelection: 'single',
+      // onFirstDataRendered: this.onFirstDataRendered.bind(this),
+    };
+    this.gridOptions4.editType = 'fullRow';
+    this.gridOptions4.enableRangeSelection = true;
+    this.gridOptions4.animateRows = true;
+    this.gridOptions4.columnDefs = [
+      {
+        headerName: 'Part Code',
+        field: 'prtcode',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Part Name',
+        field: 'prtname',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Description',
+        field: 'prtdescrip',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+
+      {
+        headerName: 'Re-order Qty',
+        field: 'prtqunty',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+      },
+      {
+        headerName: 'Date',
+        width: 200,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        suppressSizeToFit: true,
+        valueGetter: (params: any) => {
+          return params.data.insertDatetime ? this.datepipe.transform(params.data.insertDatetime, 'dd-MM-yyyy') : '';
+        }
       },
       {
         headerName: 'Audit',
@@ -271,24 +483,24 @@ export class MaterialReqSlipComponent implements OnInit {
   }
 
   onDeleteButtonClick(params: any) {
-    const modalRef = this.modalService.open(ConformationComponent);
-    modalRef.componentInstance.details = "Material Requisition Slip";
-    modalRef.result.then((data) => {
-      if (data == "Yes") {
-        this.materialReqManager.materialreqDelete(params.data.slNo).subscribe((response) => {
-          for (let i = 0; i < this.materialrequisitions.length; i++) {
-            if (this.materialrequisitions[i].slNo == params.data.slNo) {
-              this.materialrequisitions?.splice(i, 1);
-              break;
-            }
-          }
-          const selectedRows = params.api.getSelectedRows();
-          params.api.applyTransaction({ remove: selectedRows });
-          this.gridOptions.api.deselectAll();
-          this.calloutService.showSuccess("Material Request Removed Successfully");
-        });
-      }
-    })
+    // const modalRef = this.modalService.open(ConformationComponent);
+    // modalRef.componentInstance.details = "Material Requisition Slip";
+    // modalRef.result.then((data) => {
+    //   if (data == "Yes") {
+    //     this.materialReqManager.materialreqDelete(params.data.slNo).subscribe((response) => {
+    //       for (let i = 0; i < this.materialrequisitions.length; i++) {
+    //         if (this.materialrequisitions[i].slNo == params.data.slNo) {
+    //           this.materialrequisitions?.splice(i, 1);
+    //           break;
+    //         }
+    //       }
+    //       const selectedRows = params.api.getSelectedRows();
+    //       params.api.applyTransaction({ remove: selectedRows });
+    //       this.gridOptions.api.deselectAll();
+    //       this.calloutService.showSuccess("Material Request Removed Successfully");
+    //     });
+    //   }
+    // })
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
@@ -300,56 +512,7 @@ export class MaterialReqSlipComponent implements OnInit {
     });
   }
 
-  onMaterialReqClick(event: any, MaterialReqForm: any) {
-    this.markFormGroupTouched(this.MaterialReqForm);
-    this.submitted = true;
-    if (this.MaterialReqForm.invalid) {
-      return;
-    }
-
-    let materialreqslip001wb = new Materialreqslip001wb();
-    materialreqslip001wb.spareSlno = this.f.spareSlno.value ? this.f.spareSlno.value : "";
-    materialreqslip001wb.mrsNo = this.f.mrsNo.value ? this.f.mrsNo.value : "";
-    materialreqslip001wb.date = new Date(this.f.date.value);
-    materialreqslip001wb.requestorName = this.f.requestorName.value ? this.f.requestorName.value : "";
-    materialreqslip001wb.department = this.f.department.value ? this.f.department.value : "";
-    materialreqslip001wb.description = this.f.description.value ? this.f.description.value : "";
-    materialreqslip001wb.qty = this.f.qty.value ? this.f.qty.value : "";
-    materialreqslip001wb.remarks = this.f.remarks.value ? this.f.remarks.value : "";
-
-    if (this.slNo) {
-      materialreqslip001wb.slNo = this.slNo;
-      materialreqslip001wb.unitslno = this.unitslno;
-      materialreqslip001wb.insertUser = this.insertUser;
-      materialreqslip001wb.insertDatetime = this.insertDatetime;
-      materialreqslip001wb.updatedUser = this.authManager.getcurrentUser.username;
-      materialreqslip001wb.updatedDatetime = new Date();
-      this.materialReqManager.materialreqUpdate(materialreqslip001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Request Updated Successfully");
-        this.MaterialReqForm.reset();
-        this.MaterialReqForm.patchValue(
-          { date: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
-        );
-        this.loadData();
-        this.slNo = null;
-        this.submitted = false;
-      });
-    } else {
-      materialreqslip001wb.date = new Date();
-      materialreqslip001wb.unitslno= this.user.unitslno;
-      materialreqslip001wb.insertUser = this.authManager.getcurrentUser.username;
-      materialreqslip001wb.insertDatetime = new Date();
-      this.materialReqManager.materialreqSave(materialreqslip001wb).subscribe((response) => {
-        this.calloutService.showSuccess("Material Request Saved Successfully");
-        this.MaterialReqForm.reset();
-        this.MaterialReqForm.patchValue(
-          { date: this.datepipe.transform(new Date(), 'dd-MM-yyyy') }
-        );
-        this.loadData();
-        this.submitted = false;
-      });
-    }
-  }
+ 
 
   onReset() {
     this.submitted = false;
@@ -364,24 +527,127 @@ export class MaterialReqSlipComponent implements OnInit {
   }
 
 
-  onViewClick() {
-    this.materialReqManager.materialreqslipPdf(this.user.unitslno).subscribe((response) => {
+  itemViewClick() {
+    this.materiealrequestiteManager.itemPdf(this.user.unitslno).subscribe((response) => {
       var blob = new Blob([response], { type: 'application/pdf' });
       var blobURL = URL.createObjectURL(blob);
       window.open(blobURL);
     })
   }
 
-  onGeneratePdfReport() {
-    this.materialReqManager.materialreqslipPdf(this.user.unitslno).subscribe((response) => {
-      saveAs(response, "Material_Req_Details");
+  itemPdfReport() {
+    this.materiealrequestiteManager.itemPdf(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
     })
   }
 
+  itemExcelReport() {
+    this.materiealrequestiteManager.itemExcel(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    });
+  }
+
+  // ------------consumablePdf-----------------
+
+  consumableViewClick() {
+    this.materiealrequestiteManager.consumablePdf(this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  consumablePdfReport() {
+    this.materiealrequestiteManager.consumablePdf(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    })
+  }
+
+  consumableExcelReport() {
+    this.materiealrequestiteManager.consumableExcel(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    });
+  }
+
+  // ------Childpart----------------
+
+  childPartViewClick() {
+    this.materiealrequestiteManager.childPartPdf(this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  childPartPdfReport() {
+    this.materiealrequestiteManager.childPartPdf(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    })
+  }
+
+  childPartExcelReport() {
+    this.materiealrequestiteManager.childPartExcel(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    });
+  }
+
+  // ------Part----------
+
+  partViewClick() {
+    this.materiealrequestiteManager.PartPdf(this.user.unitslno).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      var blobURL = URL.createObjectURL(blob);
+      window.open(blobURL);
+    })
+  }
+
+  partPdfReport() {
+    this.materiealrequestiteManager.PartPdf(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, ".Mteriealrequest-Details" + newdate);
+    })
+  }
+
+  partExcelReport() {
+    this.materiealrequestiteManager.PartExcel(this.user.unitslno).subscribe((response) => {
+      let date = new Date();
+      let newdate = this.datepipe.transform(date, 'dd-MM-yyyy');
+      saveAs(response, "Mteriealrequest-Details" + newdate);
+    });
+  }
+
+
+  onViewClick() {
+    // this.materialReqManager.materialreqslipPdf(this.user.unitslno).subscribe((response) => {
+    //   var blob = new Blob([response], { type: 'application/pdf' });
+    //   var blobURL = URL.createObjectURL(blob);
+    //   window.open(blobURL);
+    // })
+  }
+
+  onGeneratePdfReport() {
+    // this.materialReqManager.materialreqslipPdf(this.user.unitslno).subscribe((response) => {
+    //   saveAs(response, "Material_Req_Details");
+    // })
+  }
+
   onGenerateExcelReport() {
-    this.materialReqManager.materialreqslipExcel(this.user.unitslno).subscribe((response) => {
-     saveAs(response, "Material_Req_Details");
-      });
+    // this.materialReqManager.materialreqslipExcel(this.user.unitslno).subscribe((response) => {
+    //  saveAs(response, "Material_Req_Details");
+    //   });
   }
 
 
