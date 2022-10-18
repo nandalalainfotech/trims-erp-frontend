@@ -9,10 +9,10 @@ export class PersonManager extends BaseService {
     private personUrl: string = `${environment.apiUrl}/person`
 
     allperson() {
-        return this.getCallService(`${this.personUrl}` + "/findAll");
+        // return this.getCallService(`${this.personUrl}` + "/findAll");
     }
 
     allpersonRegister() {
-        return this.getCallService(`${this.personUrl}` + "/regFindAll");
+        // return this.getCallService(`${this.personUrl}` + "/regFindAll");
     }
 }

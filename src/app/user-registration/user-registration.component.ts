@@ -88,9 +88,9 @@ export class UserRegistrationComponent implements OnInit {
         this.departmentsManager.loginDeptFindAll().subscribe(response => {
             this.departmentSettings = deserialize<Departments001mb[]>(Departments001mb, response);
         });
-        this.systemPropertiesService.registerSystem(this.name, this.type).subscribe(response => {
-            this.systemproperties = deserialize<Systemproperties001mb[]>(Systemproperties001mb, response);
-        });
+        // this.systemPropertiesService.registerSystem(this.name, this.type).subscribe(response => {
+        //     this.systemproperties = deserialize<Systemproperties001mb[]>(Systemproperties001mb, response);
+        // });
         // this.systemPropertiesService.system(this.dname, this.dtype).subscribe(response => {
         //     this.dsystemproperties = deserialize<Systemproperties001mb[]>(Systemproperties001mb, response);
         // });
@@ -107,14 +107,14 @@ export class UserRegistrationComponent implements OnInit {
         //     this.persons = deserialize<User001mb[]>(User001mb, response);
         // })
 
-        this.userManager.alluserRegister().subscribe((response) => {
-            this.users = deserialize<User001mb[]>(User001mb, response);
-            if (this.users.length > 0) {
-                this.gridOptions?.api?.setRowData(this.users);
-            } else {
-                this.gridOptions?.api?.setRowData([]);
-            }
-        });
+        // this.userManager.alluserRegister().subscribe((response) => {
+        //     this.users = deserialize<User001mb[]>(User001mb, response);
+        //     if (this.users.length > 0) {
+        //         this.gridOptions?.api?.setRowData(this.users);
+        //     } else {
+        //         this.gridOptions?.api?.setRowData([]);
+        //     }
+        // });
     }
 
     private markFormGroupTouched(formGroup: FormGroup) {
