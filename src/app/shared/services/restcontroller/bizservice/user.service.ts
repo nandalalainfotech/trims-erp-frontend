@@ -50,7 +50,8 @@ export class UserManager extends BaseService {
   }
 
   alluserRegister() {
-    return this.getCallService(`${this.userUrl}` + "/registerfindAll");
+    // return this.getCallService(`${this.userUrl}` + "/registerfindAll");
+    
   }
 
 }

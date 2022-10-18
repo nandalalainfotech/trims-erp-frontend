@@ -20,6 +20,6 @@ export class SystemPropertiesService extends BaseService {
     var params: any = {};
     params['name'] = Nname;
     params['type'] = Ttype;
-    return this.getCallService(`${this.systemPropertiesUrl}` + '/getSystemPropertiesByNameAndTypeReg', params);
+    // return this.getCallService(`${this.systemPropertiesUrl}` + '/getSystemPropertiesByNameAndTypeReg', params);
   }
 }
