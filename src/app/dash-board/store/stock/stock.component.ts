@@ -164,16 +164,16 @@ export class StockComponent implements OnInit {
           this.Partcodes.push(this.rawmaterialinspection001wbs[i])
         }
       }
-      this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) =>  this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
-      this.Consumablecodes = this.Consumablecodes.filter((e, i) =>  this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
-      this.ChildPartcodes = this.ChildPartcodes.filter((e, i) =>  this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
-      this.Partcodes = this.Partcodes.filter((e, i) =>  this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
+      this.rawmetriealcodes = this.rawmetriealcodes.filter((e, i) => this.rawmetriealcodes.findIndex(a => a["itemcode"] === e["itemcode"]) === i);
+      this.Consumablecodes = this.Consumablecodes.filter((e, i) => this.Consumablecodes.findIndex(a => a["cucode"] === e["cucode"]) === i);
+      this.ChildPartcodes = this.ChildPartcodes.filter((e, i) => this.ChildPartcodes.findIndex(a => a["cptcode"] === e["cptcode"]) === i);
+      this.Partcodes = this.Partcodes.filter((e, i) => this.Partcodes.findIndex(a => a["prtcode"] === e["prtcode"]) === i);
       if (this.rawmetriealcodes.length > 0) {
         this.gridOptions1?.api?.setRowData(this.rawmetriealcodes);
       } else {
         this.gridOptions1?.api?.setRowData([]);
       }
-       if (this.Consumablecodes.length > 0) {
+      if (this.Consumablecodes.length > 0) {
         this.gridOptions2?.api?.setRowData(this.Consumablecodes);
       } else {
         this.gridOptions2?.api?.setRowData([]);
@@ -183,16 +183,16 @@ export class StockComponent implements OnInit {
       } else {
         this.gridOptions3?.api?.setRowData([]);
       }
-       if (this.Partcodes.length > 0) {
+      if (this.Partcodes.length > 0) {
         this.gridOptions4?.api?.setRowData(this.Partcodes);
       } else {
         this.gridOptions4?.api?.setRowData([]);
       }
     });
-      // this.rawmaterialinspectionManager.findByItem(this.user.unitslno).subscribe(response => {
+    // this.rawmaterialinspectionManager.findByItem(this.user.unitslno).subscribe(response => {
     //   this.rawmaterialinspection001wbs = deserialize<Rawmaterialinspection001wb[]>(Rawmaterialinspection001wb, response);
     //   console.log("this.rawmaterialinspection001wbs",this.rawmaterialinspection001wbs);
-      
+
     //   if (this.rawmaterialinspection001wbs.length > 0) {
     //     this.gridOptions1?.api?.setRowData(this.rawmaterialinspection001wbs);
     //   } else {
@@ -278,7 +278,7 @@ export class StockComponent implements OnInit {
         suppressSizeToFit: true,
         cellStyle: { textAlign: 'center' },
       },
-     
+
       {
         headerName: 'Opening Balance',
         field: 'acceptedsum',
@@ -291,7 +291,7 @@ export class StockComponent implements OnInit {
         cellStyle: (params: { data: { acceptedsum: number, itemcode2: { mslevel: number } } }) => {
           if (params.data.acceptedsum <= params.data.itemcode2.mslevel) {
             return { background: '#FF5733' };
-          } else if(params.data.acceptedsum >= params.data.itemcode2.mslevel) {
+          } else if (params.data.acceptedsum >= params.data.itemcode2.mslevel) {
             return { background: '#00FFFF' };
           }
           return null;
@@ -362,7 +362,22 @@ export class StockComponent implements OnInit {
         suppressSizeToFit: true,
         valueGetter: this.setorderlevel.bind(this)
       },
-     
+      {
+        headerName: 'Materieal Request',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onitemParamsClick.bind(this),
+          label: 'Approval Status',
+        },
+        suppressSizeToFit: true,
+      },
+
 
     ];
   }
@@ -371,18 +386,18 @@ export class StockComponent implements OnInit {
     return params.data.itemcode2 ? params.data.itemcode2.itemcode : null;
   }
   setlocation(params: any): string {
-    return params.data.itemcode2 ? params.data.itemcode2 .location : null;
+    return params.data.itemcode2 ? params.data.itemcode2.location : null;
   }
   setMSLevel(params: any): string {
-    return params.data.itemcode2 ? params.data.itemcode2 .mslevel : null;
+    return params.data.itemcode2 ? params.data.itemcode2.mslevel : null;
   }
   setleadtime(params: any): string {
-    return params.data.itemcode2 ? params.data.itemcode2 .leadtime : null;
+    return params.data.itemcode2 ? params.data.itemcode2.leadtime : null;
   }
   setorderlevel(params: any): string {
-    return params.data.itemcode2 ? params.data.itemcode2 .orderlevel : null;
+    return params.data.itemcode2 ? params.data.itemcode2.orderlevel : null;
   }
- 
+
 
   rowClicked(params: any) {
     params.node.setData({
@@ -482,7 +497,7 @@ export class StockComponent implements OnInit {
         cellStyle: (params: { data: { cuacceptedsum: number, cucode2: { mslevel: number } } }) => {
           if (params.data.cuacceptedsum <= params.data.cucode2.mslevel) {
             return { background: '#FF8C00' };
-          }  else if (params.data.cuacceptedsum >= params.data.cucode2.mslevel) {
+          } else if (params.data.cuacceptedsum >= params.data.cucode2.mslevel) {
             return { background: '#0000FF' };
           }
           return null;
@@ -552,6 +567,21 @@ export class StockComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         suppressSizeToFit: true,
         valueGetter: this.setcuorderlevel.bind(this)
+      },
+      {
+        headerName: 'Materieal Request',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onconsumableParamsClick.bind(this),
+          label: 'Approval Status',
+        },
+        suppressSizeToFit: true,
       },
 
     ];
@@ -697,6 +727,21 @@ export class StockComponent implements OnInit {
         suppressSizeToFit: true,
         valueGetter: this.setcptorderlevel.bind(this)
       },
+      {
+        headerName: 'Materieal Request',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onchildParamsClick.bind(this),
+          label: 'Approval Status',
+        },
+        suppressSizeToFit: true,
+      },
 
     ];
   }
@@ -840,7 +885,22 @@ export class StockComponent implements OnInit {
         suppressSizeToFit: true,
         valueGetter: this.setprtorderlevel.bind(this)
       },
-     
+      {
+        headerName: 'Materieal Request',
+        cellRenderer: 'iconRenderer',
+        width: 100,
+        // flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: { textAlign: 'center' },
+        cellRendererParams: {
+          onClick: this.onpartParamsClick.bind(this),
+          label: 'Approval Status',
+        },
+        suppressSizeToFit: true,
+      },
+
     ];
   }
 
@@ -942,41 +1002,104 @@ export class StockComponent implements OnInit {
     this.router.navigate(["/app-dash-board/app-store/app-return-stock"]);
   }
 
-  onApprovedParamsClick(params: any) {
+
+
+  onitemParamsClick(params: any) {
     //   consumableItems: any = [];
     // childpartItems: any = [];
     // partItems: any = [];
     let Returnitems: any = [];
-    if (params.data.itemcode ? params.data.itemcode : null) {
-      this.rawmetriealItems.push(params.data)
-    } else if (params.data.cucode ? params.data.cucode : null) {
-      this.consumableItems.push(params.data)
-    } else if (params.data.cptcode ? params.data.cptcode : null) {
-      this.childpartItems.push(params.data)
-    } else if (params.data.prtcode ? params.data.prtcode : null) {
-      this.partItems.push(params.data)
-    }
-    if (this.rawmetriealItems.length > 0) {
-      Returnitems = "Raw Material";
-    } if (this.consumableItems.length > 0) {
-      Returnitems = "Consumable Item";
-    } if (this.childpartItems.length > 0) {
-      Returnitems = "Child Part";
-    } if (this.partItems.length > 0) {
-      Returnitems = "Part";
-    }
-    const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
-    modalRef.componentInstance.Returnitems = Returnitems;
-    modalRef.componentInstance.RawMaterialcode = params.data;
-    modalRef.result.then((data) => {
-      this.rawmetrieal = [];
-      this.consumable = [];
-      this.childpart = [];
-      this.part = [];
-      if (data.status == 'Yes') {
-        this.loadData();
+
+    if (params.data.acceptedsum <= params.data.itemcode2.mslevel) {
+      if (params.data.itemcode ? params.data.itemcode : null) {
+        this.rawmetriealItems.push(params.data)
       }
-    })
+      if (this.rawmetriealItems.length > 0) {
+        Returnitems = "Raw Material";
+      }
+      const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
+      modalRef.componentInstance.Returnitems = Returnitems;
+      modalRef.componentInstance.RawMaterialcode = params.data;
+      modalRef.result.then((data) => {
+        this.rawmetrieal = [];
+        if (data.status == 'Yes') {
+          this.loadData();
+        }
+      })
+    } else{
+      this.calloutService.showWarning("This Opening Balance is Higher Then Ms Level ");
+    }
+  }
+
+  onconsumableParamsClick(params: any) {
+    let Returnitems: any = [];
+    if (params.data.cuacceptedsum <= params.data.cucode2.mslevel) {
+      if (params.data.cucode ? params.data.cucode : null) {
+        this.consumableItems.push(params.data)
+      }
+
+      if (this.consumableItems.length > 0) {
+        Returnitems = "Consumable Item";
+      }
+
+      const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
+      modalRef.componentInstance.Returnitems = Returnitems;
+      modalRef.componentInstance.RawMaterialcode = params.data;
+      modalRef.result.then((data) => {
+        this.consumable = [];
+        if (data.status == 'Yes') {
+          this.loadData();
+        }
+      })
+    }else{
+      this.calloutService.showWarning("This Opening Balance is Higher Than Ms Level ");
+    }
+  }
+  onchildParamsClick(params: any) {
+    let Returnitems: any = [];
+    if (params.data.cptacceptedsum <= params.data.cptcode2.mslevel) {
+      if (params.data.cptcode ? params.data.cptcode : null) {
+        this.childpartItems.push(params.data)
+      }
+      if (this.childpartItems.length > 0) {
+        Returnitems = "Child Part";
+      }
+
+      const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
+      modalRef.componentInstance.Returnitems = Returnitems;
+      modalRef.componentInstance.RawMaterialcode = params.data;
+      modalRef.result.then((data) => {
+        this.childpart = [];
+        if (data.status == 'Yes') {
+          this.loadData();
+        }
+      })
+    }else{
+      this.calloutService.showWarning("This Opening Balance is Higher Than Ms Level ");
+    }
+  }
+  onpartParamsClick(params: any) {
+    let Returnitems: any = [];
+    if (params.data.prtacceptedsum <= params.data.prtcode2.mslevel) {
+      if (params.data.prtcode ? params.data.prtcode : null) {
+        this.partItems.push(params.data)
+      }
+      if (this.partItems.length > 0) {
+        Returnitems = "Part";
+      }
+
+      const modalRef = this.modalService.open(MateriealrequestItemComponent, { windowClass: 'my-class' });
+      modalRef.componentInstance.Returnitems = Returnitems;
+      modalRef.componentInstance.RawMaterialcode = params.data;
+      modalRef.result.then((data) => {
+        this.part = [];
+        if (data.status == 'Yes') {
+          this.loadData();
+        }
+      })
+    }else{
+      this.calloutService.showWarning("This Opening Balance is Higher Than Ms Level ");
+    }
   }
 
 

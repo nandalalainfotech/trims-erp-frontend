@@ -38,4 +38,49 @@ export class MateriealrequestiteManager extends BaseService {
         return this.deleteCallService(`${this.materiealrequestitemUrl}` + "/delete", data);
     }
 
+    itemPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/itempdf", data)
+    }
+    itemExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/itemexcel", data)
+    }
+
+    consumablePdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/consumablepdf", data)
+    }
+    consumableExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/consumablexcel", data)
+    }
+
+    childPartPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/childPartpdf", data)
+    }
+    childPartExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/childPartexcel", data)
+    }
+
+
+    PartPdf(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/partpdf", data)
+    }
+    PartExcel(unitslno:any) {
+        let data:any={};
+        data['unitslno']=unitslno; 
+        return this.getCallService1(`${this.materiealrequestitemUrl}` + "/partexcel", data)
+    }
+
 }
